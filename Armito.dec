@@ -1,0 +1,8 @@
+[Defines]
+    DEC_SPECIFICATION   =   0x0001001B
+    PACKAGE_NAME        =   Armito
+    PACKAGE_GUID        =   7D6A2C91-8F34-4B75-A2E1-6C9D0F83B521
+    PACKAGE_VERSION     =   0.0.1
+
+[Includes]
+    Boot/Includes
