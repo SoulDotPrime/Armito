@@ -86,9 +86,40 @@ aguardar a confirmação do usuário antes de avançar.
 validada sem compilação e teste. Documentação deve distinguir
 implementado, integrado e validado.
 
+## D-021 --- Tabela de operações explícita
+
+**Decisão:** toda instrução de origem deve resultar em uma operação
+enumerada da IR ou em `ARMITO_IR_OP_UNSUPPORTED` com a codificação de
+origem preservada.
+
+**Consequência:** nunca se emite código aproximado sem semântica
+equivalente (alinhado à seção 8 de `COMPATIBILITY.md`). Uma instrução
+não suportada é visível na IR e rejeitável pelo backend.
+
 ## Processo de alteração
 
 Para alterar uma decisão: 1. identificar o número da decisão; 2.
 explicar o motivo da revisão; 3. registrar a nova decisão e suas
 consequências; 4. atualizar documentos afetados; 5. ajustar o roadmap e
 o status.
+
+## D-019 --- Universal IR de forma SSA com limites estáticos
+
+**Decisão:** a IR usa forma SSA (cada valor tem um único produtor), com
+tipos explícitos, operações enumeradas, blocos básicos por rótulo e
+limites estáticos iguais aos do Core.
+
+**Consequência:** a IR cabe em ambiente freestanding, sem alocador
+dinâmico, e o backend pode alocar registradores livremente. O custo é
+que construções com múltiplas atribuições exigem phi ou cópia explícita
+via `select`/`move`; phi ainda não está implementado.
+
+## D-020 --- Localização da IR em `IR/`
+
+**Decisão:** a Universal IR vive em `IR/`, na raiz do repositório, e não
+dentro de `Decoder/`. `Decoder/` contém o decodificador; `IR/` é a
+camada compartilhada entre o decodificador e os backends.
+
+**Consequência:** `Decoder/IR/` (vazio) deixa de ser o local da IR e
+precisa ser removido. Um backend em `CPUToCPU/` inclui `IR/` sem incluir
+`Decoder/`.

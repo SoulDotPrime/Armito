@@ -1,0 +1,49 @@
+#ifndef ARMITO_IR_TYPES_H
+#define ARMITO_IR_TYPES_H
+
+#include <stdint.h>
+#include <stddef.h>
+
+typedef enum {
+    ARMITO_IR_SUCCESS = 0,
+    ARMITO_IR_ERROR,
+    ARMITO_IR_INVALID_ARGUMENT,
+    ARMITO_IR_INVALID_STATE,
+    ARMITO_IR_OUT_OF_RESOURCES,
+    ARMITO_IR_OUT_OF_RANGE,
+    ARMITO_IR_TRUNCATED,
+    ARMITO_IR_NOT_SUPPORTED,
+    ARMITO_IR_SEMANTIC_ERROR,
+    ARMITO_IR_BACKEND_ERROR
+} ArmitoIRStatus;
+
+typedef enum {
+    ARMITO_IR_UNINITIALIZED = 0,
+    ARMITO_IR_READY,
+    ARMITO_IR_EMITTING,
+    ARMITO_IR_FINALIZED,
+    ARMITO_IR_FAILED
+} ArmitoIRState;
+
+typedef uint32_t ArmitoIRTypeID;
+typedef uint32_t ArmitoIRValueID;
+typedef uint32_t ArmitoIRLabelID;
+typedef uint32_t ArmitoIROperationID;
+
+#define ARMITO_IR_TYPE_INVALID  0
+#define ARMITO_IR_VALUE_INVALID 0
+#define ARMITO_IR_LABEL_INVALID 0
+
+#define ARMITO_IR_MAX_TYPES        32
+#define ARMITO_IR_MAX_VALUES       256
+#define ARMITO_IR_MAX_LABELS       64
+#define ARMITO_IR_MAX_OPERATIONS   1024
+#define ARMITO_IR_MAX_BLOCKS       64
+#define ARMITO_IR_MAX_SOURCE_BYTES 256
+#define ARMITO_IR_MAX_NAME         32
+#define ARMITO_IR_MAX_INPUTS       3
+#define ARMITO_IR_MAX_TARGETS      1
+
+#define ARMITO_IR_INDEX_INVALID 0xFFFFFFFFu
+
+#endif
