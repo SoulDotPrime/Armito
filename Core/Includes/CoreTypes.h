@@ -37,6 +37,16 @@ typedef enum {
     ARMITO_PRIORITY_LOW
 } ArmitoModulePriority;
 
+typedef enum {
+    ARMITO_CORE_UNINITIALIZED = 0,
+    ARMITO_CORE_READY,
+    ARMITO_CORE_RUNNING,
+    ARMITO_CORE_FAILED,
+    ARMITO_CORE_STOPPED
+} ArmitoCoreState;
+
+#define ARMITO_CORE_STATE_STORAGE uint32_t
+
 typedef uint32_t ArmitoModuleID;
 
 #define ARMITO_MODULE_ID_INVALID 0

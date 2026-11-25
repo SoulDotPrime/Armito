@@ -1,6 +1,6 @@
 #include "Includes/CoreIPC.h"
-#include "Registry/Includes/CoreRegistry.h"
-#include "Config/Includes/CoreConfig.h"
+#include "../Registry/Includes/CoreRegistry.h"
+#include "../Config/Includes/CoreConfig.h"
 #include <string.h>
 
 typedef struct {

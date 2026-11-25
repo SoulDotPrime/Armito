@@ -1,0 +1,57 @@
+Relatório técnico de auditoria do repositório privado SoulDotPrime/Armito (cópia local em /home/gui/Desktop/Armito-Workspace/Armito), com foco na pasta /Docs/. Público: o responsável pelo projeto (SoulDotPrime). Tom técnico, direto, em português do Brasil, sem inventar dados.
+
+CONTEXTO DO QUE FOI FEITO: li os 10 documentos de /Docs/ (MASTER.md, README.md, WHATISIT.md, ARCH.md, CORE.md, COMPATIBILITY.md, FAILS.md, DECISIONS.md, ROADMAP.md, STATUS.md — 2.149 linhas no total) e os 45 arquivos de código (.c/.h, 2.279 linhas em Core/, Boot/, Decoder/, JIT/). Compilei o Core de verdade com gcc no host Linux e rodei programas de teste (harness) exercitando Initialize/Start/Shutdown, rollback de falha, IPC, Scheduler, Diagnostics e Dispatch. Todas as conclusões de "não funciona" abaixo vêm de execução real, não de leitura.
+
+ESTRUTURA E NÚMEROS:
+- 55 arquivos no commit cb10763 "v0.0.1" (25/11/2026 19:41, -0300), único commit do repositório.
+- Documentação: 10 arquivos, 2.149 linhas. Código C: 2.279 linhas, sendo 1.503 em Core/ (12 subsistemas + Core.c) e o resto cabeçalhos.
+- 11 arquivos completamente VAZIOS (0 byte): Boot/Display.c, Boot/Fail.c, Boot/LogGen.c, Decoder/Decoder.c, Decoder/Includes/Decoder.h, Decoder/AARCH64/AARCH64.c, Decoder/AARCH64/Includes/AARCH64.h, Decoder/IR/IR.c, Decoder/IR/Includes/IR.h, JIT/JIT.c, JIT/Includes/JIT.h. Ou seja: o trio de falhas (fail/Display/LogGen) que os documentos chamam de "autoridade única" não tem uma linha; Decoder, IR e JIT existem apenas como pastas.
+- Boot/: 13 linhas úteis no total. UefiMain chama ArmitoBoot, que faz `return EFI_SUCCESS` e nunca chama o Core. O contrato "ArmitoBoot chama o Core" não existe no código.
+- Build: EDK2 (Armito.dsc, Armito.dec, Armito.inf). O .inf lista apenas Boot/BootEntry.c e Boot/ArmitoBoot.c — nenhum arquivo do Core entra na compilação. Não há Makefile, CMake, nem pasta de testes. Não há CI.
+
+QUALIDADE DA DOCUMENTAÇÃO (o ponto forte):
+- Coerente e bem separada: WHATISIT (definição), ARCH (camadas), CORE (subsistemas), COMPATIBILITY (ISA x firmware, com níveis A–E), FAILS (autoridade única), DECISIONS (13 decisões D-001..D-013), ROADMAP (fases 01–12), STATUS (tabela por subsistema), MASTER (consolidação).
+- O melhor traço: a documentação NÃO vende o projeto como pronto. Há um "Aviso de maturidade" no README, e STATUS/COMPATIBILITY exigem distinguir implementado / integrado / validado. Isso está acima da média de projetos nessa fase.
+- A separação conceitual mais valiosa é COMPATIBILITY.md: separar compatibilidade de ISA de compatibilidade de firmware (UEFI nativo, UEFI+CSM, Legacy BIOS puro), com a observação correta de que um .efi não boota em BIOS legacy e que CSM pode não ter GOP.
+- A matriz de status de COMPATIBILITY (seção 9) é honesta: tudo "planejado / em pesquisa / em definição".
+
+PROBLEMAS NA DOCUMENTAÇÃO (inconsistências a corrigir):
+1. STATUS.md é otimista onde o código prova o contrário. Ele diz "Implementado" para Shutdown e Config; o teste mostra que o Core não reinicializa após shutdown.
+2. ROADMAP e MASTER divergem na numeração e no conteúdo: ROADMAP tem 12 fases com "Fase 05 Decoder / 06 Universal IR / 07 Backend"; MASTER tem "Fase 07 Contrato do Decoder e IR / 08 Decoder / 09 CPUToCPU". Duas fontes de verdade para o mesmo roadmap.
+3. A "Próxima etapa" declarada (01.02.20 — integrar ArmitoCoreConfigShutdown() ao shutdown) é secundária: o defeito real é que ArmitoCoreShutdown() quebra a reinicialização do Core inteiro. A ordem do roadmap está invertida em relação à gravidade.
+4. CORE.md e MASTER.md descrevem Scheduler e IPC como se já fizessem parte do ciclo; na prática eles só são inicializados dentro de ArmitoCoreStart(), nunca antes, e não há sincronização.
+5. Nenhum documento menciona que o Core não compila como está (três caminhos de #include errados) — e o STATUS fala em "compilação independente pendente" como se fosse só falta de build script.
+6. Não há documento de contrato de API (assinaturas, quem chama o quê, quem é dono da memória). CORE.md lista 5 funções públicas mas não define pré/pós-condições.
+
+BUGS CONFIRMADOS EM EXECUÇÃO (por gravidade):
+A) CRÍTICO — Core não reinicializa. ArmitoCoreShutdown() chama ShutdownManagerReset() mas nunca ArmitoCoreConfigShutdown(); a flag `initialized` de CoreConfig.c continua 1. Depois de um shutdown, ArmitoCoreInitialize() devolve ARMITO_CORE_ALREADY_INITIALIZED (4) para sempre, o que é falso. Confirmado por teste.
+B) CRÍTICO — Init não reinicializa. ArmitoCoreInitShutdown() reseta prepared/executed/started, mas ArmitoCoreInitPrepare() chama ArmitoCoreRegistryInitialize() e ArmitoCoreDependencyInitialize(), que já estão "initialized" e devolvem ALREADY_INITIALIZED (4) → o prepare falha → nada roda de novo. O Core é de uso único. Confirmado por teste.
+C) ALTO — Rollback inexistente. Se o initialize() do módulo 2 falha, ArmitoCoreStart() retorna erro mas: o módulo 1 fica em INITIALIZED (recursos alocados, sem shutdown), o módulo 2 fica travado em INITIALIZING para sempre, e o módulo não recebe o estado INITIALIZATION_FAILED que CoreTypes.h define. O estado de falha existe no enum e não é usado. Confirmado por teste (a=3 INITIALIZED, b=2 INITIALIZING).
+D) ALTO — ArmitoCoreInitialize() não checa `core_started`: chamar Initialize depois de Start devolve ALREADY_INITIALIZED (4) em vez de INVALID_STATE (2), o que esconde erro de uso do chamador. Confirmado por teste.
+E) ALTO — Core sem módulos não sobe: com 0 módulos registrados, ArmitoCoreStart() devolve NOT_INITIALIZED (3). Um Core vazio deveria ser um caso válido. Confirmado por teste.
+F) ALTO — O Core não compila como está. Caminhos de include errados: (1) Core/Shutdown/CoreShutdown.c inclui "CoreIPC/Includes/CoreIPC.h", "CoreScheduler/Includes/CoreScheduler.h" e "CoreTopology/Includes/CoreTopology.h" — esses diretórios não existem (chamam-se IPC/, Scheduler/, Topology/); (2) vários headers de subsistema (Diagnostics, Dispatch, Monitor, Topology, Scheduler, IPC) fazem #include "Includes/Core.h", que só resolve se Core/ estiver no -I; (3) os .c de Dependency, Registry, Monitor, Scheduler, IPC e Shutdown fazem #include "Registry/Includes/..." contando com -ICore. Consegui compilar e rodar apenas criando links simbólicos para CoreIPC/CoreScheduler/CoreTopology e passando -ICore. Nada disso é documentado.
+G) MÉDIO — Diagnostics nunca é ligado a nada. ArmitoCoreDiagnosticsPresentFailure() devolve INVALID_STATE (2) porque nenhum handler é registrado — o Core não liga Display/LogGen (que estão vazios). E, quando um handler de display falha, o log handler nem chega a ser chamado (o código faz return antes). Isso contraria FAILS.md seção 6 ("falha de apresentação não pode impedir o registro").
+H) MÉDIO — IPC: (1) envia para módulo que não está RUNNING (só checa se existe no Registry); (2) permite auto-envio (sender == receiver); (3) usa memcpy/<string.h>, incompatível com freestanding/EDK2 (já reconhecido no MASTER, mas não no STATUS); (4) fila estática: 64 × (276+16) bytes ≈ 18 KB de .bss por padrão, e esse valor não é citado em nenhum documento; (5) sem lock: Send/Receive não são atômicos num ambiente com interrupção/AP.
+I) MÉDIO — Scheduler: tarefas concluídas/falhas nunca liberam slot (já reconhecido), prioridade só desempata no ExecuteNext, e ExecuteNext devolve INVALID_STATE quando não há tarefa pendente — misturando "fila vazia" com "erro de estado".
+J) MÉDIO — Dependency.Resolve percorre IDs 1..module_count assumindo IDs sequenciais e usa arrays indexados por ID com tamanho ARMITO_MAX_MODULES+1; se um dia houver ID esparso ou > 64, é leitura fora dos limites. Já apontado no MASTER, mas é um risco de corrupção, não de estilo.
+K) BAIXO — Reset público sem trava: ArmitoCoreDependencyReset(), ArmitoCoreRegistryReset() etc. podem ser chamados com o Core rodando e derrubam o estado silenciosamente. Confirmado.
+L) BAIXO — ArmitoCoreStart() lê a config e só depois inicializa os subsistemas opcionais; se um deles falha, os anteriores ficam inicializados sem rollback (o ConfigUnlock só acontece nos passos seguintes).
+M) BAIXO — Todos os limites (64 módulos, 16 dependências, 64 tarefas, 64 mensagens, 256 bytes) estão repetidos como #define em cada arquivo, além do CoreConfig. Duplicação que vai divergir.
+
+O QUE ESTÁ BOM E DEVE SER PRESERVADO:
+- A arquitetura em camadas e a regra "ArmitoBoot chama Core, Core chama Decoder" é correta e defensável.
+- A decisão de Universal IR independente de ISA (D-005) e a separação Decoder/backend (D-004) são as decisões certas.
+- O modelo de falha com autoridade única (D-006) e fallback sem GOP (FAILS.md §6) é exatamente o que falta em projetos desse tipo — o problema é que ainda não há código.
+- O estilo sem comentários e a disciplina de "um passo por vez" (D-010, D-011, D-012) produziram um código uniforme e fácil de auditar.
+- A ausência de malloc/dependências externas no Core é um bom ponto de partida para freestanding.
+
+RECOMENDAÇÃO DE ORDEM DE TRABALHO (substitui a "próxima etapa" atual):
+1. Corrigir os includes e criar um Makefile de host + um alvo EDK2 que inclua Core/ no .inf (sem isso, nada é verificável).
+2. ArmitoCoreConfigShutdown() dentro de ArmitoCoreShutdown(), na ordem certa (depois dos outros subsistemas).
+3. Tirar as chamadas de RegistryInitialize/DependencyInitialize de dentro de InitPrepare (ou torná-las idempotentes) para o Core poder reinicializar.
+4. Rollback de verdade em InitExecute/InitStart: usar INITIALIZATION_FAILED/EXECUTION_FAILED e chamar shutdown() do que já subiu.
+5. Criar a suíte de testes de host (os cenários deste relatório: ciclo duplo, falha no meio, 0 módulos, config bloqueada, IPC cheio, ciclo de dependência).
+6. Só depois: fail.c, Display.c e LogGen.c (hoje vazios) e a integração do Diagnostics.
+7. Só depois: Decoder AArch64 e Universal IR — que hoje são pastas vazias.
+
+FORMATO DO DOCUMENTO: relatório técnico de 4 a 6 páginas, com títulos de seção, tabelas (arquivos vazios, tabela de bugs com gravidade/arquivo/evidência, tabela de divergências entre documentos) e listas. Blocos de código curtos apenas para os trechos de include errado e para a saída dos testes. Nada de invenção: os números vêm da contagem real de arquivos e linhas.

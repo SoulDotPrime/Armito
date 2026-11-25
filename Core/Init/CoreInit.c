@@ -1,18 +1,48 @@
 #include "Includes/CoreInit.h"
 #include "../Registry/Includes/CoreRegistry.h"
 #include "../Dependency/Includes/CoreDependency.h"
+#include "../Config/Includes/CoreConfig.h"
 
-#define ARMITO_INIT_MAX_MODULES 64
-
-static ArmitoModuleID initialization_order[ARMITO_INIT_MAX_MODULES];
+static ArmitoModuleID initialization_order[ARMITO_CORE_MAX_MODULES];
 
 static uint32_t initialized_count = 0;
+static uint32_t started_count = 0;
 static uint32_t module_count = 0;
 
 static uint8_t prepared = 0;
 static uint8_t executed = 0;
 static uint8_t started = 0;
 
+static void RollbackModules(
+    uint32_t count,
+    ArmitoModuleState state)
+{
+    while (count > 0) {
+        count--;
+
+        ArmitoModuleID id = initialization_order[count];
+
+        const ArmitoModuleDescriptor *module =
+            ArmitoCoreRegistryGet(id);
+
+        if (module != NULL && module->shutdown != NULL)
+            module->shutdown();
+
+        ArmitoCoreRegistrySetState(id, state);
+    }
+}
+
+static ArmitoCoreStatus AbortStart(ArmitoCoreStatus status)
+{
+    RollbackModules(initialized_count, ARMITO_MODULE_STOPPED);
+
+    started_count = 0;
+    initialized_count = 0;
+    started = 0;
+    executed = 0;
+
+    return status;
+}
 
 ArmitoCoreStatus ArmitoCoreInitPrepare(void)
 {
@@ -28,17 +58,19 @@ ArmitoCoreStatus ArmitoCoreInitPrepare(void)
 
     status = ArmitoCoreDependencyInitialize();
 
-    if (status != ARMITO_CORE_SUCCESS)
+    if (status != ARMITO_CORE_SUCCESS) {
+        ArmitoCoreRegistryReset();
         return status;
+    }
 
     initialized_count = 0;
+    started_count = 0;
     module_count = 0;
 
     prepared = 1;
 
     return ARMITO_CORE_SUCCESS;
 }
-
 
 ArmitoCoreStatus ArmitoCoreInitExecute(void)
 {
@@ -50,7 +82,7 @@ ArmitoCoreStatus ArmitoCoreInitExecute(void)
 
     module_count = ArmitoCoreRegistryCount();
 
-    if (module_count > ARMITO_INIT_MAX_MODULES)
+    if (module_count > ARMITO_CORE_MAX_MODULES)
         return ARMITO_CORE_OUT_OF_RESOURCES;
 
     if (module_count == 0) {
@@ -63,7 +95,7 @@ ArmitoCoreStatus ArmitoCoreInitExecute(void)
     ArmitoCoreStatus status =
         ArmitoCoreDependencyResolve(
             initialization_order,
-            ARMITO_INIT_MAX_MODULES,
+            ARMITO_CORE_MAX_MODULES,
             &resolved_count
         );
 
@@ -81,7 +113,7 @@ ArmitoCoreStatus ArmitoCoreInitExecute(void)
             ArmitoCoreRegistryGet(id);
 
         if (module == NULL)
-            return ARMITO_CORE_ERROR;
+            return AbortStart(ARMITO_CORE_ERROR);
 
         status = ArmitoCoreRegistrySetState(
             id,
@@ -89,12 +121,22 @@ ArmitoCoreStatus ArmitoCoreInitExecute(void)
         );
 
         if (status != ARMITO_CORE_SUCCESS)
-            return status;
+            return AbortStart(status);
 
         status = module->initialize();
 
-        if (status != ARMITO_CORE_SUCCESS)
-            return status;
+        if (status != ARMITO_CORE_SUCCESS) {
+            ArmitoCoreRegistrySetState(
+                id,
+                ARMITO_MODULE_INITIALIZATION_FAILED
+            );
+
+            RollbackModules(initialized_count, ARMITO_MODULE_STOPPED);
+            initialized_count = 0;
+            executed = 0;
+
+            return ARMITO_CORE_INITIALIZATION_FAILED;
+        }
 
         status = ArmitoCoreRegistrySetState(
             id,
@@ -102,7 +144,7 @@ ArmitoCoreStatus ArmitoCoreInitExecute(void)
         );
 
         if (status != ARMITO_CORE_SUCCESS)
-            return status;
+            return AbortStart(status);
 
         initialized_count++;
     }
@@ -111,7 +153,6 @@ ArmitoCoreStatus ArmitoCoreInitExecute(void)
 
     return ARMITO_CORE_SUCCESS;
 }
-
 
 ArmitoCoreStatus ArmitoCoreInitStart(void)
 {
@@ -129,12 +170,18 @@ ArmitoCoreStatus ArmitoCoreInitStart(void)
             ArmitoCoreRegistryGet(id);
 
         if (module == NULL)
-            return ARMITO_CORE_ERROR;
+            return AbortStart(ARMITO_CORE_ERROR);
 
         ArmitoCoreStatus status = module->start();
 
-        if (status != ARMITO_CORE_SUCCESS)
-            return status;
+        if (status != ARMITO_CORE_SUCCESS) {
+            ArmitoCoreRegistrySetState(
+                id,
+                ARMITO_MODULE_EXECUTION_FAILED
+            );
+
+            return AbortStart(ARMITO_CORE_EXECUTION_FAILED);
+        }
 
         status = ArmitoCoreRegistrySetState(
             id,
@@ -142,7 +189,9 @@ ArmitoCoreStatus ArmitoCoreInitStart(void)
         );
 
         if (status != ARMITO_CORE_SUCCESS)
-            return status;
+            return AbortStart(status);
+
+        started_count++;
     }
 
     started = 1;
@@ -150,29 +199,12 @@ ArmitoCoreStatus ArmitoCoreInitStart(void)
     return ARMITO_CORE_SUCCESS;
 }
 
-
 void ArmitoCoreInitShutdown(void)
 {
-    for (uint32_t i = initialized_count; i > 0; i--) {
-
-        ArmitoModuleID id = initialization_order[i - 1];
-
-        const ArmitoModuleDescriptor *module =
-            ArmitoCoreRegistryGet(id);
-
-        if (module == NULL)
-            continue;
-
-        if (module->shutdown != NULL)
-            module->shutdown();
-
-        ArmitoCoreRegistrySetState(
-            id,
-            ARMITO_MODULE_STOPPED
-        );
-    }
+    RollbackModules(initialized_count, ARMITO_MODULE_STOPPED);
 
     initialized_count = 0;
+    started_count = 0;
     module_count = 0;
 
     started = 0;

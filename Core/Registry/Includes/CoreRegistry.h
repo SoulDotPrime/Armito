@@ -25,6 +25,13 @@ ArmitoCoreStatus ArmitoCoreRegistrySetState(
 
 uint32_t ArmitoCoreRegistryCount(void);
 
+uint32_t ArmitoCoreRegistryCapacity(void);
+
+ArmitoCoreStatus ArmitoCoreRegistryGetAt(
+    uint32_t index,
+    ArmitoModuleID *id
+);
+
 void ArmitoCoreRegistryReset(void);
 
 #endif

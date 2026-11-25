@@ -2,28 +2,31 @@
 #include "Registry/Includes/CoreRegistry.h"
 #include "Config/Includes/CoreConfig.h"
 
-#define ARMITO_MAX_MODULES 64
-
 typedef struct {
     ArmitoModuleID module_id;
-    ArmitoModuleID dependencies[ARMITO_MAX_DEPENDENCIES];
+    ArmitoModuleID dependencies[ARMITO_CORE_MAX_DEPENDENCIES];
     uint32_t dependency_count;
 } ArmitoDependencyEntry;
 
-static ArmitoDependencyEntry dependency_table[ARMITO_MAX_MODULES];
+static ArmitoDependencyEntry dependency_table[ARMITO_CORE_MAX_MODULES];
 static uint32_t entry_count = 0;
 static uint8_t initialized = 0;
+
+static uint8_t visited[ARMITO_CORE_MAX_MODULES];
+static uint8_t active[ARMITO_CORE_MAX_MODULES];
+static ArmitoModuleID module_at[ARMITO_CORE_MAX_MODULES];
+static uint32_t module_total = 0;
 
 ArmitoCoreStatus ArmitoCoreDependencyInitialize(void)
 {
     if (initialized)
         return ARMITO_CORE_ALREADY_INITIALIZED;
 
-    for (uint32_t i = 0; i < ARMITO_MAX_MODULES; i++) {
+    for (uint32_t i = 0; i < ARMITO_CORE_MAX_MODULES; i++) {
         dependency_table[i].module_id = ARMITO_MODULE_ID_INVALID;
         dependency_table[i].dependency_count = 0;
 
-        for (uint32_t j = 0; j < ARMITO_MAX_DEPENDENCIES; j++)
+        for (uint32_t j = 0; j < ARMITO_CORE_MAX_DEPENDENCIES; j++)
             dependency_table[i].dependencies[j] = ARMITO_MODULE_ID_INVALID;
     }
 
@@ -41,6 +44,16 @@ static ArmitoDependencyEntry *FindEntry(ArmitoModuleID module_id)
     }
 
     return NULL;
+}
+
+static int IndexOf(ArmitoModuleID id)
+{
+    for (uint32_t i = 0; i < module_total; i++) {
+        if (module_at[i] == id)
+            return (int)i;
+    }
+
+    return -1;
 }
 
 ArmitoCoreStatus ArmitoCoreDependencyAdd(
@@ -69,7 +82,7 @@ ArmitoCoreStatus ArmitoCoreDependencyAdd(
     ArmitoDependencyEntry *entry = FindEntry(module_id);
 
     if (entry == NULL) {
-        if (entry_count >= ARMITO_MAX_MODULES)
+        if (entry_count >= ARMITO_CORE_MAX_MODULES)
             return ARMITO_CORE_OUT_OF_RESOURCES;
 
         entry = &dependency_table[entry_count++];
@@ -83,7 +96,7 @@ ArmitoCoreStatus ArmitoCoreDependencyAdd(
     }
 
     if (entry->dependency_count >= config.max_dependencies ||
-        entry->dependency_count >= ARMITO_MAX_DEPENDENCIES)
+        entry->dependency_count >= ARMITO_CORE_MAX_DEPENDENCIES)
         return ARMITO_CORE_OUT_OF_RESOURCES;
 
     entry->dependencies[entry->dependency_count++] = dependency_id;
@@ -112,46 +125,40 @@ ArmitoCoreStatus ArmitoCoreDependencyValidate(void)
 }
 
 static int Visit(
-    ArmitoModuleID id,
-    uint8_t *visited,
-    uint8_t *active,
+    uint32_t index,
     ArmitoModuleID *ordered,
     uint32_t *count,
     uint32_t capacity)
 {
-    if (id == ARMITO_MODULE_ID_INVALID || id > ARMITO_MAX_MODULES)
+    if (active[index])
         return 0;
 
-    if (active[id])
-        return 0;
-
-    if (visited[id])
+    if (visited[index])
         return 1;
 
-    active[id] = 1;
+    active[index] = 1;
 
-    ArmitoDependencyEntry *entry = FindEntry(id);
+    ArmitoDependencyEntry *entry = FindEntry(module_at[index]);
 
     if (entry != NULL) {
         for (uint32_t i = 0; i < entry->dependency_count; i++) {
-            if (!Visit(
-                    entry->dependencies[i],
-                    visited,
-                    active,
-                    ordered,
-                    count,
-                    capacity))
+            int dependency_index = IndexOf(entry->dependencies[i]);
+
+            if (dependency_index < 0)
+                return 0;
+
+            if (!Visit((uint32_t)dependency_index, ordered, count, capacity))
                 return 0;
         }
     }
 
-    active[id] = 0;
-    visited[id] = 1;
+    active[index] = 0;
+    visited[index] = 1;
 
     if (*count >= capacity)
         return 0;
 
-    ordered[(*count)++] = id;
+    ordered[(*count)++] = module_at[index];
 
     return 1;
 }
@@ -174,32 +181,31 @@ ArmitoCoreStatus ArmitoCoreDependencyResolve(
     if (status != ARMITO_CORE_SUCCESS)
         return status;
 
-    uint32_t total_modules = ArmitoCoreRegistryCount();
+    module_total = ArmitoCoreRegistryCount();
 
-    if (total_modules > ARMITO_MAX_MODULES)
+    if (module_total > ARMITO_CORE_MAX_MODULES)
         return ARMITO_CORE_OUT_OF_RESOURCES;
 
-    if (capacity < total_modules)
+    if (capacity < module_total)
         return ARMITO_CORE_OUT_OF_RESOURCES;
 
-    uint8_t visited[ARMITO_MAX_MODULES + 1] = {0};
-    uint8_t active[ARMITO_MAX_MODULES + 1] = {0};
+    for (uint32_t i = 0; i < ARMITO_CORE_MAX_MODULES; i++) {
+        visited[i] = 0;
+        active[i] = 0;
+        module_at[i] = ARMITO_MODULE_ID_INVALID;
+    }
 
-    for (ArmitoModuleID id = 1; id <= total_modules; id++) {
-        if (ArmitoCoreRegistryGet(id) == NULL)
-            return ARMITO_CORE_DEPENDENCY_ERROR;
-
-        if (!Visit(
-                id,
-                visited,
-                active,
-                ordered_modules,
-                resolved_count,
-                capacity))
+    for (uint32_t i = 0; i < module_total; i++) {
+        if (ArmitoCoreRegistryGetAt(i, &module_at[i]) != ARMITO_CORE_SUCCESS)
             return ARMITO_CORE_DEPENDENCY_ERROR;
     }
 
-    if (*resolved_count != total_modules)
+    for (uint32_t i = 0; i < module_total; i++) {
+        if (!Visit(i, ordered_modules, resolved_count, capacity))
+            return ARMITO_CORE_DEPENDENCY_ERROR;
+    }
+
+    if (*resolved_count != module_total)
         return ARMITO_CORE_DEPENDENCY_ERROR;
 
     return ARMITO_CORE_SUCCESS;
@@ -217,7 +223,7 @@ uint32_t ArmitoCoreDependencyCount(ArmitoModuleID module_id)
 
 void ArmitoCoreDependencyReset(void)
 {
-    for (uint32_t i = 0; i < ARMITO_MAX_MODULES; i++) {
+    for (uint32_t i = 0; i < ARMITO_CORE_MAX_MODULES; i++) {
         dependency_table[i].module_id = ARMITO_MODULE_ID_INVALID;
         dependency_table[i].dependency_count = 0;
     }

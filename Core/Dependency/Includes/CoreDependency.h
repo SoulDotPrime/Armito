@@ -3,8 +3,6 @@
 
 #include "../../Includes/Core.h"
 
-#define ARMITO_MAX_DEPENDENCIES 16
-
 ArmitoCoreStatus ArmitoCoreDependencyInitialize(void);
 
 ArmitoCoreStatus ArmitoCoreDependencyAdd(

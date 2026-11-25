@@ -7,17 +7,17 @@ static uint8_t locked = 0;
 
 static ArmitoCoreConfig DefaultConfig(void)
 {
-    ArmitoCoreConfig config;
-
-    config.max_modules = 64;
-    config.max_dependencies = 16;
-    config.max_tasks = 64;
-    config.max_ipc_messages = 64;
-    config.max_ipc_payload = 256;
-    config.enable_scheduler = 1;
-    config.enable_ipc = 1;
-    config.enable_monitor = 1;
-    config.enable_diagnostics = 1;
+    ArmitoCoreConfig config = {
+        ARMITO_CORE_MAX_MODULES,
+        ARMITO_CORE_MAX_DEPENDENCIES,
+        ARMITO_CORE_MAX_TASKS,
+        ARMITO_CORE_MAX_IPC_MESSAGES,
+        ARMITO_CORE_MAX_IPC_PAYLOAD,
+        1,
+        1,
+        1,
+        1
+    };
 
     return config;
 }

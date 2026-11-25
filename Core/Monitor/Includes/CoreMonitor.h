@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_MONITOR_H
 #define ARMITO_CORE_MONITOR_H
 
-#include "Includes/Core.h"
+#include "../../Includes/Core.h"
 
 typedef struct {
     uint32_t total;

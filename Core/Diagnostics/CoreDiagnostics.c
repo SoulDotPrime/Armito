@@ -1,5 +1,5 @@
 #include "Includes/CoreDiagnostics.h"
-#include "Config/Includes/CoreConfig.h"
+#include "../Config/Includes/CoreConfig.h"
 
 static ArmitoDiagnosticDisplayHandler display_handler = NULL;
 static ArmitoDiagnosticLogHandler log_handler = NULL;

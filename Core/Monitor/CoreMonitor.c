@@ -1,6 +1,6 @@
 #include "Includes/CoreMonitor.h"
-#include "Registry/Includes/CoreRegistry.h"
-#include "Config/Includes/CoreConfig.h"
+#include "../Registry/Includes/CoreRegistry.h"
+#include "../Config/Includes/CoreConfig.h"
 
 static uint8_t initialized = 0;
 

@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_DIAGNOSTICS_H
 #define ARMITO_CORE_DIAGNOSTICS_H
 
-#include "Includes/Core.h"
+#include "../../Includes/Core.h"
 
 typedef enum {
     ARMITO_DIAGNOSTIC_INFO = 0,

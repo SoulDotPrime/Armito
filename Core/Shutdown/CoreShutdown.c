@@ -1,13 +1,14 @@
 #include "Includes/CoreShutdown.h"
-#include "Init/Includes/CoreInit.h"
-#include "CoreIPC/Includes/CoreIPC.h"
-#include "CoreScheduler/Includes/CoreScheduler.h"
-#include "Dispatch/Includes/CoreDispatch.h"
-#include "Monitor/Includes/CoreMonitor.h"
-#include "Diagnostics/Includes/CoreDiagnostics.h"
-#include "CoreTopology/Includes/CoreTopology.h"
-#include "Dependency/Includes/CoreDependency.h"
-#include "Registry/Includes/CoreRegistry.h"
+#include "../Init/Includes/CoreInit.h"
+#include "../IPC/Includes/CoreIPC.h"
+#include "../Scheduler/Includes/CoreScheduler.h"
+#include "../Dispatch/Includes/CoreDispatch.h"
+#include "../Monitor/Includes/CoreMonitor.h"
+#include "../Diagnostics/Includes/CoreDiagnostics.h"
+#include "../Topology/Includes/CoreTopology.h"
+#include "../Dependency/Includes/CoreDependency.h"
+#include "../Registry/Includes/CoreRegistry.h"
+#include "../Config/Includes/CoreConfig.h"
 
 static uint8_t initialized = 0;
 static uint8_t requested = 0;
@@ -52,13 +53,14 @@ ArmitoCoreStatus ArmitoCoreShutdownManagerExecute(void)
     ArmitoCoreInitShutdown();
 
     ArmitoCoreSchedulerReset();
+    ArmitoCoreIPCReset();
     ArmitoCoreDispatchReset();
     ArmitoCoreMonitorReset();
     ArmitoCoreDiagnosticsReset();
     ArmitoCoreTopologyReset();
-    ArmitoCoreIPCReset();
     ArmitoCoreDependencyReset();
     ArmitoCoreRegistryReset();
+    ArmitoCoreConfigShutdown();
 
     completed = 1;
 
