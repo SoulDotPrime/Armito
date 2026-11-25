@@ -1,0 +1,193 @@
+{
+ "file": "sptm.img",
+ "size": 1327104,
+ "cputype": "0x100000c",
+ "cpusub": "0xc0000002",
+ "filetype": 2,
+ "ncmds": 13,
+ "segments": [
+  {
+   "seg": "__TEXT",
+   "vmaddr": 18446744005644402688,
+   "vmsize": 98304,
+   "fileoff": 0,
+   "filesize": 98304,
+   "sections": [
+    {
+     "sect": "__cstring",
+     "seg": "__TEXT",
+     "addr": 18446744005644404912,
+     "size": 86760,
+     "fileoff": 2224,
+     "flags": 2
+    },
+    {
+     "sect": "__const",
+     "seg": "__TEXT",
+     "addr": 18446744005644491680,
+     "size": 2676,
+     "fileoff": 88992,
+     "flags": 0
+    },
+    {
+     "sect": "__binname",
+     "seg": "__TEXT",
+     "addr": 18446744005644494356,
+     "size": 64,
+     "fileoff": 91668,
+     "flags": 0
+    },
+    {
+     "sect": "__chain_starts",
+     "seg": "__TEXT",
+     "addr": 18446744005644494420,
+     "size": 20,
+     "fileoff": 91732,
+     "flags": 0
+    }
+   ]
+  },
+  {
+   "seg": "__DATA_CONST",
+   "vmaddr": 18446744005644500992,
+   "vmsize": 32768,
+   "fileoff": 98304,
+   "filesize": 32768,
+   "sections": [
+    {
+     "sect": "__const",
+     "seg": "__DATA_CONST",
+     "addr": 18446744005644500992,
+     "size": 31488,
+     "fileoff": 98304,
+     "flags": 0
+    }
+   ]
+  },
+  {
+   "seg": "__LATE_CONST",
+   "vmaddr": 18446744005644533760,
+   "vmsize": 589824,
+   "fileoff": 131072,
+   "filesize": 589824,
+   "sections": [
+    {
+     "sect": "__late_const",
+     "seg": "__LATE_CONST",
+     "addr": 18446744005644533760,
+     "size": 575552,
+     "fileoff": 131072,
+     "flags": 0
+    }
+   ]
+  },
+  {
+   "seg": "__TEXT_EXEC",
+   "vmaddr": 18446744005645123584,
+   "vmsize": 393216,
+   "fileoff": 720896,
+   "filesize": 393216,
+   "sections": [
+    {
+     "sect": "__text",
+     "seg": "__TEXT_EXEC",
+     "addr": 18446744005645123584,
+     "size": 376512,
+     "fileoff": 720896,
+     "flags": 2147484672
+    },
+    {
+     "sect": "__exc",
+     "seg": "__TEXT_EXEC",
+     "addr": 18446744005645500416,
+     "size": 8192,
+     "fileoff": 1097728,
+     "flags": 2147484672
+    }
+   ]
+  },
+  {
+   "seg": "__LAST",
+   "vmaddr": 18446744005645516800,
+   "vmsize": 16384,
+   "fileoff": 1114112,
+   "filesize": 16384,
+   "sections": [
+    {
+     "sect": "__pinst",
+     "seg": "__LAST",
+     "addr": 18446744005645516800,
+     "size": 12,
+     "fileoff": 1114112,
+     "flags": 0
+    }
+   ]
+  },
+  {
+   "seg": "__DATA",
+   "vmaddr": 18446744005645533184,
+   "vmsize": 81920,
+   "fileoff": 1130496,
+   "filesize": 81920,
+   "sections": [
+    {
+     "sect": "__data",
+     "seg": "__DATA",
+     "addr": 18446744005645533184,
+     "size": 15,
+     "fileoff": 1130496,
+     "flags": 0
+    },
+    {
+     "sect": "__auth_ptr",
+     "seg": "__DATA",
+     "addr": 18446744005645533200,
+     "size": 24,
+     "fileoff": 1130512,
+     "flags": 0
+    },
+    {
+     "sect": "__bss",
+     "seg": "__DATA",
+     "addr": 18446744005645533312,
+     "size": 24488,
+     "fileoff": 1130624,
+     "flags": 0
+    },
+    {
+     "sect": "__common",
+     "seg": "__DATA",
+     "addr": 18446744005645557824,
+     "size": 46216,
+     "fileoff": 1155136,
+     "flags": 0
+    }
+   ]
+  },
+  {
+   "seg": "__BOOTDATA",
+   "vmaddr": 18446744005645615104,
+   "vmsize": 98304,
+   "fileoff": 1212416,
+   "filesize": 98304,
+   "sections": [
+    {
+     "sect": "__data",
+     "seg": "__BOOTDATA",
+     "addr": 18446744005645615104,
+     "size": 98304,
+     "fileoff": 1212416,
+     "flags": 0
+    }
+   ]
+  },
+  {
+   "seg": "__LINKEDIT",
+   "vmaddr": 18446744005645713408,
+   "vmsize": 16384,
+   "fileoff": 1310720,
+   "filesize": 32,
+   "sections": []
+  }
+ ]
+}
