@@ -89,15 +89,22 @@ atendidos.
 
 ## Fase 06 --- Universal IR
 
--   [ ] 06.01 --- Definir modelo de tipos e larguras
--   [ ] 06.02 --- Definir registradores virtuais e estado de CPU
--   [ ] 06.03 --- Definir operações aritméticas e lógicas
--   [ ] 06.04 --- Definir operações de memória
--   [ ] 06.05 --- Definir flags e condições
--   [ ] 06.06 --- Definir blocos básicos e fluxo de controle
--   [ ] 06.07 --- Definir chamadas, retornos e efeitos colaterais
+-   [x] 06.01 --- Definir modelo de tipos e larguras
+-   [x] 06.02 --- Definir registradores virtuais e estado de CPU
+-   [x] 06.03 --- Definir operações aritméticas e lógicas
+-   [x] 06.04 --- Definir operações de memória
+-   [x] 06.05 --- Definir flags e condições
+-   [x] 06.06 --- Definir blocos básicos e fluxo de controle
+-   [x] 06.07 --- Definir chamadas, retornos e efeitos colaterais
 -   [ ] 06.08 --- Definir validação e serialização, se necessária
+    -   [x] 06.08.01 --- Validação estrutural e semântica
+    -   [ ] 06.08.02 --- Serialização / desserialização
 -   [ ] 06.09 --- Criar testes semânticos da IR
+    -   [x] 06.09.01 --- Testes de contrato (`Tests/IRTest.c`, 172
+        verificações)
+    -   [ ] 06.09.02 --- Testes semânticos com instruções AArch64 reais
+-   [ ] 06.10 --- Phi / merge de valores em blocos
+-   [ ] 06.11 --- Integrar a IR ao ciclo do Core como módulo
 
 ## Fase 07 --- Tradução e backend x86_64
 
@@ -168,5 +175,5 @@ registradas.
 
 ## Próxima etapa
 
-**01.02.20 --- Integrar `ArmitoCoreConfigShutdown()` ao gerenciador de
-shutdown.** Em seguida, continuar a auditoria do Init.
+**05.01 --- Definir a API pública e o contrato de entrada do Decoder
+AArch64**, consumindo a IR já definida em `IR/` (ver `Docs/IR.md`).

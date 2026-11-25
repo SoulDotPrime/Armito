@@ -1,6 +1,6 @@
 # Development Status
 
-**Última consolidação documental:** 2026-11-25\
+**Última consolidação documental:** 2026-11-26\
 **Foco atual:** auditoria e consolidação do Core\
 **Estado geral:** em desenvolvimento; não declarar pronto para
 integração final.
