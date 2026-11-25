@@ -1,0 +1,62 @@
+#ifndef ARMITO_DECODER_REGISTER_H
+#define ARMITO_DECODER_REGISTER_H
+
+#include "Includes/DecoderTypes.h"
+
+#define ARMITO_DECODER_GPR_COUNT 31
+#define ARMITO_DECODER_SIMD_COUNT 32
+#define ARMITO_DECODER_MAX_SIMD_BITS 128
+
+typedef enum {
+    ARMITO_DECODER_GPR_X0 = 0,
+    ARMITO_DECODER_GPR_X1,
+    ARMITO_DECODER_GPR_X2,
+    ARMITO_DECODER_GPR_X3,
+    ARMITO_DECODER_GPR_X4,
+    ARMITO_DECODER_GPR_X5,
+    ARMITO_DECODER_GPR_X6,
+    ARMITO_DECODER_GPR_X7,
+    ARMITO_DECODER_GPR_X8,
+    ARMITO_DECODER_GPR_X9,
+    ARMITO_DECODER_GPR_X10,
+    ARMITO_DECODER_GPR_X11,
+    ARMITO_DECODER_GPR_X12,
+    ARMITO_DECODER_GPR_X13,
+    ARMITO_DECODER_GPR_X14,
+    ARMITO_DECODER_GPR_X15,
+    ARMITO_DECODER_GPR_X16,
+    ARMITO_DECODER_GPR_X17,
+    ARMITO_DECODER_GPR_X18,
+    ARMITO_DECODER_GPR_X19,
+    ARMITO_DECODER_GPR_X20,
+    ARMITO_DECODER_GPR_X21,
+    ARMITO_DECODER_GPR_X22,
+    ARMITO_DECODER_GPR_X23,
+    ARMITO_DECODER_GPR_X24,
+    ARMITO_DECODER_GPR_X25,
+    ARMITO_DECODER_GPR_X26,
+    ARMITO_DECODER_GPR_X27,
+    ARMITO_DECODER_GPR_X28,
+    ARMITO_DECODER_GPR_X29_FP,
+    ARMITO_DECODER_GPR_X30_LR,
+    ARMITO_DECODER_GPR_SP,
+    ARMITO_DECODER_GPR_XZR
+} ArmitoDecoderGPR;
+
+typedef struct {
+    uint8_t is_sp;
+    uint8_t is_zero;
+    uint8_t index;
+    uint8_t width_bits;
+    ArmitoDecoderGPR gpr;
+} ArmitoDecoderRegisterRef;
+
+ArmitoDecoderStatus ArmitoDecoderRegisterDecode(
+    uint8_t field,
+    uint8_t is_sp_allowed,
+    uint8_t width_bits,
+    ArmitoDecoderRegisterRef *reg
+);
+const char *ArmitoDecoderRegisterName(ArmitoDecoderGPR gpr);
+
+#endif

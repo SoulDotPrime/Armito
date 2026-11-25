@@ -1,6 +1,6 @@
 CC      ?= gcc
 CFLAGS  ?= -std=gnu11 -Wall -Wextra -O2
-CPPFLAGS ?= -ICore -IIR
+CPPFLAGS ?= -ICore -IIR -IDecoder -I.
 
 CORE_SRC := \
     Core/Core.c \
@@ -25,21 +25,33 @@ IR_SRC := \
     IR/IRBlock.c \
     IR/IRCPUState.c
 
+DECODER_SRC := \
+    Decoder/Decoder.c \
+    Decoder/DecoderSource.c \
+    Decoder/DecoderRegister.c \
+    Decoder/DecoderStats.c \
+    Decoder/AARCH64/AARCH64.c
+
 CORE_OBJ := $(patsubst %.c,Build/%.o,$(CORE_SRC))
 IR_OBJ   := $(patsubst %.c,Build/%.o,$(IR_SRC))
+DECODER_OBJ := $(patsubst %.c,Build/%.o,$(DECODER_SRC))
 
 CORE_TEST := Build/coretest
 IR_TEST   := Build/irtest
+DECODER_TEST := Build/decodertest
 
 .PHONY: all test core-test ir-test clean
 
-all: $(CORE_TEST) $(IR_TEST)
+all: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST)
 
 $(CORE_TEST): $(CORE_OBJ) Tests/CoreTest.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) Tests/CoreTest.c $(CORE_OBJ) -o $@
 
 $(IR_TEST): $(IR_OBJ) Tests/IRTest.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) Tests/IRTest.c $(IR_OBJ) -o $@
+
+$(DECODER_TEST): $(DECODER_OBJ) $(IR_OBJ) Tests/DecoderTest.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) Tests/DecoderTest.c $(DECODER_OBJ) $(IR_OBJ) -o $@
 
 Build/%.o: %.c
 	@mkdir -p $(dir $@)
@@ -51,9 +63,13 @@ core-test: $(CORE_TEST)
 ir-test: $(IR_TEST)
 	./$(IR_TEST)
 
-test: $(CORE_TEST) $(IR_TEST)
+decoder-test: $(DECODER_TEST)
+	./$(DECODER_TEST)
+
+test: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST)
 	./$(CORE_TEST)
 	./$(IR_TEST)
+	./$(DECODER_TEST)
 
 clean:
 	rm -rf Build
