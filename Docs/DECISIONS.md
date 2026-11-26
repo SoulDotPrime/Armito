@@ -123,3 +123,23 @@ camada compartilhada entre o decodificador e os backends.
 **Consequência:** `Decoder/IR/` (vazio) deixa de ser o local da IR e
 precisa ser removido. Um backend em `CPUToCPU/` inclui `IR/` sem incluir
 `Decoder/`.
+
+## D-022 --- Semântica PAC explícita
+
+**Decisão:** Pointer Authentication tem operações próprias na IR e um
+provedor criptográfico substituível na camada AArch64. Operações PAC
+reconhecidas sem backend permanecem explicitamente não suportadas.
+
+**Consequência:** PAC não pode ser reduzido a NOP ou a uma operação genérica
+sem chave, modificador e efeitos preservados. O provedor de software
+disponibilizado para testes é uma implementação de compatibilidade, não
+uma reprodução criptográfica do hardware Apple.
+
+## D-023 --- Identificação ARM64E sem loader implícito
+
+**Decisão:** a integração Mach-O desta etapa identifica metadados ARM64E e
+slices universais, sem declarar que carregamento ou execução de Mach-O
+estejam implementados.
+
+**Consequência:** parsing de relocations autenticadas, loader, backend e
+runtime devem ser etapas explícitas e testadas separadamente.

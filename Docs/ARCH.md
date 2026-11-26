@@ -91,6 +91,21 @@ O contrato de entrada e saída, o tratamento de instruções variáveis e a
 política de blocos precisam ser especificados antes de declarar o
 Decoder concluído.
 
+### 4.1 Apple ARM64E
+
+`CPU/AARCH64/AARCH64MachO` identifica `CPU_TYPE_ARM64` e separa o subtype
+base dos bits de capacidade. `CPU_SUBTYPE_ARM64E` tem valor base 2;
+`ARM64E_X1` é reconhecido separadamente. A camada também lê cabeçalhos
+Mach-O 64-bit e localiza slices ARM64E em arquivos universais, mas não é
+um loader e ainda não interpreta relocations autenticadas.
+
+O Decoder preserva as operações PAC em operações específicas da IR,
+incluindo assinatura, autenticação, remoção, branch/call/return e load
+autenticados. Elas são reconhecidas e modeladas, mas continuam
+explicitamente não suportadas pela tradução enquanto não houver backend.
+O estado da CPU contém as chaves, contexto e falhas PAC; não há ainda
+runtime que conecte esse estado à execução traduzida.
+
 ## 5. Universal IR
 
 A IR deve representar operações sem depender diretamente dos códigos de
@@ -110,7 +125,8 @@ projeto:
 
 A IR precisa ter regras formais de tipos, largura, efeitos colaterais e
 semântica. Uma IR "universal" não deve apagar diferenças semânticas
-entre arquiteturas.
+entre arquiteturas. O modelo ARM64E mantém as operações PAC distintas e
+não as transforma em NOP; consulte [IR.md](IR.md).
 
 ## 6. Translator e backends
 

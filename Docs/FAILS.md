@@ -123,3 +123,13 @@ original por uma falha secundária.
 -   Testar falhas antes e depois da inicialização do Core.
 -   Testar ausência de display, falha de log e falha durante o próprio
     diagnóstico.
+
+## 10. Falhas de autenticação ARM64E
+
+Uma assinatura PAC inválida é uma falha arquitetural do estado convidado,
+não uma falha global do Core. A API PAC registra a falha e invalida o
+resultado; helpers de branch e return autenticados também registram uma
+exceção no estado AArch64. Falhas de configuração, chave indisponível ou
+provedor são retornadas como erros da API, não convertidas silenciosamente
+em sucesso. Ainda não há executor que encaminhe essas exceções ao
+`fail.c` ou implemente a política de trap de um runtime.

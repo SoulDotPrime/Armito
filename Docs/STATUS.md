@@ -1,16 +1,16 @@
 # Development Status
 
 **Última consolidação documental:** 2026-11-26\
-**Foco atual:** auditoria e consolidação do Core\
+**Foco atual:** consolidação do Core e base arquitetural ARM64E\
 **Estado geral:** em desenvolvimento; não declarar pronto para
 integração final.
 
 ## 1. Resumo
 
-O projeto está concentrado na estrutura do Core. Existem implementações
-para os subsistemas listados abaixo, mas ainda há auditorias, correções
-de ciclo de vida, integração de diagnóstico e validação de build/testes
-pendentes.
+O Core continua em consolidação e a base ARM64E está parcialmente
+implementada. Existem implementações para os subsistemas listados abaixo,
+mas ainda há auditorias, correções de ciclo de vida, integração de
+diagnóstico e validação de build/testes pendentes.
 
 ## 2. Estado do Core
 
@@ -91,14 +91,19 @@ existentes. Não representam capacidade validada em execução.
 
 ## 5. Decoder e IR
 
-O Decoder AArch64 possui API de fonte de bytes, classificacao e extracao de
-operandos para um subconjunto de controle de fluxo, movimentacao e aritmetica.
-NOP, B, BR e RET sao traduzidos para IR; instrucoes reconhecidas sem semantica
-de IR completa sao preservadas como `ARMITO_IR_OP_UNSUPPORTED`. O Core e a IR
-passam nos testes de host; o Decoder tambem passa sua suite de host (224
-verificacoes). Os builds EDK2 X64 DEBUG e RELEASE passaram com GCC e geraram
-aplicacoes EFI PE32+. A execucao em firmware UEFI real nao foi testada. Isso
-nao representa suporte completo AArch64.
+O Decoder AArch64 possui API de fonte de bytes, classificação e extração de
+operandos para um subconjunto de controle de fluxo, movimentação e aritmética.
+NOP, B, BR e RET têm tradução existente. Para ARM64E, as instruções PAC/AUT,
+XPAC, PACIASP/AUTIASP, RETAA/RETAB, branches autenticados e LDRAA/LDRAB
+offset-addressing reconhecidos geram operações PAC específicas da IR e
+continuam marcados como não suportados pela tradução. As formas LDRAA/LDRAB
+pre-index com writeback permanecem não reconhecidas. O Decoder passou 224
+verificações host; a suíte
+ARM64E passou 514 verificações host com ASan/UBSan; CPU State passou 58.
+EDK2 X64 DEBUG e RELEASE foram compilados em workspace isolado com GCC e
+geraram aplicações EFI PE32+. Execução em firmware UEFI real não foi testada.
+Os fontes `Tests/CoreTest.c` e `Tests/IRTest.c` não existem no worktree atual,
+embora sejam referenciados pelo Makefile; esses alvos não foram validados.
 
 A IR possui tipos, valores, operacoes, blocos e um validador inicial. A
 validacao nao cobre ainda todos os contratos semanticos da IR descritos no
@@ -107,15 +112,29 @@ camadas restantes.
 
 ## 5.1 Estado arquitetural da CPU AArch64
 
-O modulo `CPU/AARCH64/AARCH64CPUState` armazena X0-X30, SP, PC, NZCV, FPCR,
-FPSR, V0-V31, estado de excecao e slots de chaves ARM64E. As vistas Wn/WSP
-limitam escritas a 32 bits e zero-estendem; XZR/WZR leem zero e descartam
-escritas. Vetores sao armazenados em 128 bits; escrita de 64 bits limpa a
-metade superior. A suite host passa 58 verificacoes e os builds EDK2 X64
-DEBUG e RELEASE incluem o modulo.
+O módulo `CPU/AARCH64/AARCH64CPUState` armazena X0-X30, SP, PC, NZCV, FPCR,
+FPSR, V0-V31, estado de exceção e as chaves PAC IA, IB, DA, DB e GA. As
+vistas Wn/WSP limitam escritas a 32 bits e zero-estendem; XZR/WZR leem zero
+e descartam escritas. Vetores são armazenados em 128 bits; escrita de 64
+bits limpa a metade superior. A suite host CPU State passa 58
+verificações.
 
-Os slots de ARM64E sao apenas armazenamento de estado. Assinatura,
-autenticacao de ponteiros e politica de falha ainda nao estao implementadas.
+`AARCH64PointerAuth` implementa assinatura, autenticação, remoção de PAC,
+diversificadores, address diversity, seleção de chaves Apple, helpers para
+LR/SP e controle autenticado de fluxo. O provedor de software é
+determinístico, apenas compatível para testes e não é criptograficamente
+equivalente ao hardware Apple. A integração com um executor/backend ainda
+não existe.
+
+## 5.2 Estado ARM64E e Mach-O
+
+`AARCH64MachO` reconhece ARM64 subtype base 2 sem confundir os bits de
+capacidade; separa os indicadores de ABI Pointer Authentication e a versão
+codificada. Distingue `ARM64E_X1` do subtype ARM64E. Lê cabeçalho Mach-O
+64-bit e fat/fat64 para localizar slices ARM64E; não carrega imagens nem
+processa relocations autenticadas. A suíte específica passou 514
+verificações host. Os builds EDK2 X64 DEBUG e RELEASE incluem os módulos e
+foram validados por compilação e link.
 
 ## 6. Integração com ArmitoBoot
 

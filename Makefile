@@ -34,20 +34,25 @@ DECODER_SRC := \
     Decoder/AARCH64/AARCH64.c
 
 AARCH64_CPU_STATE_SRC := CPU/AARCH64/AARCH64CPUState.c
+AARCH64_ARM64E_SRC := \
+    CPU/AARCH64/AARCH64PointerAuth.c \
+    CPU/AARCH64/AARCH64MachO.c
 
 CORE_OBJ := $(patsubst %.c,Build/%.o,$(CORE_SRC))
 IR_OBJ   := $(patsubst %.c,Build/%.o,$(IR_SRC))
 DECODER_OBJ := $(patsubst %.c,Build/%.o,$(DECODER_SRC))
 AARCH64_CPU_STATE_OBJ := $(patsubst %.c,Build/%.o,$(AARCH64_CPU_STATE_SRC))
+AARCH64_ARM64E_OBJ := $(patsubst %.c,Build/%.o,$(AARCH64_ARM64E_SRC))
 
 CORE_TEST := Build/coretest
 IR_TEST   := Build/irtest
 DECODER_TEST := Build/decodertest
 AARCH64_CPU_STATE_TEST := Build/aarch64cpustatetest
+ARM64E_TEST := Build/arm64etest
 
-.PHONY: all test core-test ir-test decoder-test cpu-state-test clean
+.PHONY: all test core-test ir-test decoder-test cpu-state-test arm64e-test clean
 
-all: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST)
+all: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST) $(ARM64E_TEST)
 
 $(CORE_TEST): $(CORE_OBJ) Tests/CoreTest.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) Tests/CoreTest.c $(CORE_OBJ) -o $@
@@ -60,6 +65,9 @@ $(DECODER_TEST): $(DECODER_OBJ) $(IR_OBJ) Tests/DecoderTest.c
 
 $(AARCH64_CPU_STATE_TEST): $(AARCH64_CPU_STATE_OBJ) CPU/AARCH64/CPUStateHostTest.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) CPU/AARCH64/CPUStateHostTest.c $(AARCH64_CPU_STATE_OBJ) -o $@
+
+$(ARM64E_TEST): $(AARCH64_CPU_STATE_OBJ) $(AARCH64_ARM64E_OBJ) $(DECODER_OBJ) $(IR_OBJ) CPU/AARCH64/ARM64EHostTest.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) CPU/AARCH64/ARM64EHostTest.c $(AARCH64_CPU_STATE_OBJ) $(AARCH64_ARM64E_OBJ) $(DECODER_OBJ) $(IR_OBJ) -o $@
 
 Build/%.o: %.c
 	@mkdir -p $(dir $@)
@@ -77,11 +85,15 @@ decoder-test: $(DECODER_TEST)
 cpu-state-test: $(AARCH64_CPU_STATE_TEST)
 	./$(AARCH64_CPU_STATE_TEST)
 
-test: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST)
+arm64e-test: $(ARM64E_TEST)
+	./$(ARM64E_TEST)
+
+test: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST) $(ARM64E_TEST)
 	./$(CORE_TEST)
 	./$(IR_TEST)
 	./$(DECODER_TEST)
 	./$(AARCH64_CPU_STATE_TEST)
+	./$(ARM64E_TEST)
 
 clean:
 	rm -rf Build

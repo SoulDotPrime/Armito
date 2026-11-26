@@ -331,6 +331,16 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
              opcode == AARCH64_OPCODE_BLR ||
              opcode == AARCH64_OPCODE_B_COND ||
              opcode == AARCH64_OPCODE_RET ||
+             opcode == AARCH64_OPCODE_BRAA ||
+             opcode == AARCH64_OPCODE_BRAB ||
+             opcode == AARCH64_OPCODE_BRAAZ ||
+             opcode == AARCH64_OPCODE_BRABZ ||
+             opcode == AARCH64_OPCODE_BLRAA ||
+             opcode == AARCH64_OPCODE_BLRAB ||
+             opcode == AARCH64_OPCODE_BLRAAZ ||
+             opcode == AARCH64_OPCODE_BLRABZ ||
+             opcode == AARCH64_OPCODE_RETAA ||
+             opcode == AARCH64_OPCODE_RETAB ||
              opcode == AARCH64_OPCODE_CBZ ||
              opcode == AARCH64_OPCODE_CBNZ ||
              opcode == AARCH64_OPCODE_TBZ ||

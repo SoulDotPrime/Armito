@@ -23,6 +23,13 @@ instruction address.
 - `MOV` register alias, `MOVN`, `MOVZ`, and `MOVK`
 - `ADD`, `ADDS`, `SUB`, and `SUBS` immediate forms
 - `ADD`, `ADDS`, `SUB`, and `SUBS` shifted-register forms
+- ARM64E: `PACIA/B`, `PACDA/DB`, `PACIZA/ZB`, `PACDZA/DZB`,
+  `AUTIA/B`, `AUTDA/DB`, `AUTIZA/ZB`, `AUTDZA/DZB`, `XPACI/XPACD`,
+  `PACIASP/PACIBSP`, `AUTIASP/AUTIBSP`, `RETAA/RETAB`, authenticated
+  `BRAA/BRAB` and `BLRAA/BLRAB` forms (including zero-modifier variants),
+  and `LDRAA/LDRAB` offset-addressing forms. Their pre-index/writeback
+  encodings are not decoded as these instructions; with
+  `record_unsupported` enabled they are retained as generic unsupported IR.
 
 This list describes decoder classification and operand extraction, not
 executable translation support.
@@ -38,6 +45,12 @@ branch semantics are not yet modeled. Encodings outside the implemented
 classification are reported as unsupported and are preserved in IR when
 `record_unsupported` is enabled.
 
+The listed ARM64E instructions are decoded with operands, key, modifier,
+and memory/flow metadata, then emitted as dedicated PAC IR operations. They
+remain unsupported by translation: emitting the IR does not execute PAC or
+provide an x86_64 equivalent. Authenticated branch, call, and return forms
+terminate a decode block when `stop_at_branch` is enabled.
+
 ## Validation
 
 Run the host suite with:
@@ -49,9 +62,12 @@ make test
 The decoder tests cover classification, operand extraction, source bounds,
 unsupported-instruction recording, branch stopping, and the return IR
 operation. The decoder is not a complete AArch64/ARM64E implementation.
+ARM64E subtype and Mach-O slice identification are provided by
+`CPU/AARCH64/AARCH64MachO`; this is not a Mach-O loader.
 
-The EDK2 X64 DEBUG and RELEASE builds were validated with the GCC toolchain;
-both produced a PE32+ EFI application. This verifies compilation and linking,
-not execution on UEFI firmware. Memory, SIMD, pointer authentication, system
-instructions, a reference interpreter, native x86_64 code generation, and
-Mach-O loading remain unimplemented or unverified.
+The EDK2 X64 DEBUG and RELEASE builds were validated with GCC in an isolated
+workspace; both produced a PE32+ EFI application. This verifies compilation
+and linking, not execution on UEFI firmware. Memory, SIMD, system
+instructions, a reference interpreter, native x86_64 code generation, PAC
+execution, and Mach-O loading remain unimplemented or unverified. PAC decoder
+and IR host coverage is tracked by `make arm64e-test`.

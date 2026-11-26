@@ -9,10 +9,12 @@ fica entre o Decoder e os backends de destino.
 AArch64 (Apple M2)  ->  Decoder  ->  Universal IR  ->  Backend x86_64 (FX-8320E)
 ```
 
-Nada específico de AArch64 pode aparecer na IR, e nada específico de
-x86_64 pode ser exigido por ela. Quando uma instrução não tem operação
-equivalente na IR, ela é registrada como `ARMITO_IR_OP_UNSUPPORTED` com
-a codificação de origem preservada — nunca aproximada.
+Codificações e nomes de instruções não aparecem como operações da IR.
+Quando uma instrução não tem operação genérica equivalente, a IR pode
+usar uma operação semântica explícita para preservar seus efeitos; as
+operações PAC ARM64E são um exemplo. Uma instrução sem operação modelada
+é registrada como `ARMITO_IR_OP_UNSUPPORTED` com a codificação de origem
+preservada — nunca aproximada.
 
 ## 2. Topologia
 
@@ -79,6 +81,15 @@ Grupos de operação:
 - controle: `branch`, `branch.cond`, `branch.indirect`, `call`,
   `return`, `trap`;
 - outros: `barrier`, `unsupported`.
+- ARM64E: `pac.sign`, `pac.authenticate`, `pac.strip`,
+  `pac.branch.auth`, `pac.call.auth`, `pac.return.auth`,
+  `pac.load.auth` e `pac.authentication.failure`.
+
+As operações PAC carregam chave, modificador/diversidade, efeitos de
+registrador e informação da instrução de origem. Falhas de autenticação
+são distintas de uma operação de autenticação normal. Não há backend que
+execute essas operações; o Decoder as mantém marcadas como não suportadas
+pela tradução.
 
 ### 3.4 Blocos (`ArmitoIRBlock`)
 
@@ -101,8 +112,9 @@ mantido separadamente por `CPU/AARCH64/AARCH64CPUState`.
 1. `ArmitoIRInitialize()` uma vez por tradução.
 2. Para cada instrução: declarar valores, emitir operação, anotar flags,
    origem e alvos.
-3. Instrução sem tradução: emitir `ARMITO_IR_OP_UNSUPPORTED` com a
-   codificação de origem — nunca omitir.
+3. Instrução sem tradução: emitir uma operação semântica explícita se
+   houver modelo adequado; caso contrário, emitir
+   `ARMITO_IR_OP_UNSUPPORTED` com a codificação de origem — nunca omitir.
 4. `ArmitoIRFinalize()` valida a IR inteira antes de o backend rodar.
 
 ## 5. Contrato com o Backend
@@ -112,6 +124,8 @@ Ele deve:
 
 - mapear cada `kind` para instrução nativa ou sequência equivalente;
 - tratar `ARMITO_IR_OP_UNSUPPORTED` como rejeição controlada;
+- rejeitar operações PAC ARM64E enquanto não houver implementação
+  funcional para elas;
 - honrar a máscara de flags quando o destino tiver flags diferentes;
 - não depender de `source_offset` para gerar código.
 
@@ -149,11 +163,13 @@ freestanding, sem alocador dinâmico (ver decisão D-003 do Core).
 |---|---|
 | Tipos, valores, operações, blocos, estado da CPU | implementado |
 | Ciclo de vida e validação | implementado |
-| Testes de host (`Tests/IRTest.c`) | 172 verificações, 0 falhas |
+| Testes de host IR (`Tests/IRTest.c`) | fonte ausente no worktree atual; histórico 172/0 |
 | Serialização / desserialização | não implementada |
-| Integração com Decoder real | pendente (Fase 05) |
+| Operações PAC ARM64E | modeladas e cobertas pela suíte ARM64E (512 verificações); backend não implementado |
+| Integração com Decoder AArch64 | parcial; inclui operações PAC explícitas |
 | Backend x86_64 | pendente (Fase 07) |
 
-Este documento descreve o contrato da IR. A IR está implementada e
-testada isoladamente; ela ainda não recebe instruções de um decoder
-AArch64 real.
+Este documento descreve o contrato da IR. Tipos, valores, operações e
+validação são implementados; há integração parcial com o Decoder
+AArch64. As operações PAC são preservadas semanticamente, mas ainda não
+podem ser executadas por backend.

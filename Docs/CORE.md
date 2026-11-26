@@ -157,6 +157,9 @@ desempenho ou adequação a qualquer plataforma.
 -   Monitor precisa distinguir módulos obrigatórios e opcionais.
 -   Diagnostics precisa ser conectado ao `fail.c`, `Display.c` e
     `LogGen.c`.
+-   O estado arquitetural AArch64, incluindo o estado PAC ARM64E, fica
+    em `CPU/AARCH64/`; sua integração com o ciclo de execução do Core
+    ainda não existe.
 
 ## 9. Regra de falhas
 

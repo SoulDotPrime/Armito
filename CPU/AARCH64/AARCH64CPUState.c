@@ -28,6 +28,22 @@ AARCH64CPUStateStatus AARCH64CPUStateReset(AARCH64CPUState *state)
     state->exception.syndrome = 0;
 
     state->pointer_auth.enabled = 0;
+    state->pointer_auth.initialized_key_mask = 0;
+    state->pointer_auth.authentication_failed = 0;
+    state->pointer_auth.last_key = AARCH64_PAC_KEY_INVALID;
+    state->pointer_auth.last_operation = 0;
+    state->pointer_auth.return_address_signed = 0;
+    state->pointer_auth.address_mask = 0x0000FFFFFFFFFFFFULL;
+    state->pointer_auth.pac_mask = 0xFFFF000000000000ULL;
+    state->pointer_auth.last_modifier = 0;
+    state->pointer_auth.last_context_address = 0;
+    state->pointer_auth.failed_pointer = 0;
+    state->pointer_auth.invalid_pointer = 0;
+    state->pointer_auth.failure_count = 0;
+    state->pointer_auth.last_context.modifier = 0;
+    state->pointer_auth.last_context.context_address = 0;
+    state->pointer_auth.last_context.discriminator = 0;
+    state->pointer_auth.last_context.address_diversity = 0;
     state->pointer_auth.api_a.low = 0;
     state->pointer_auth.api_a.high = 0;
     state->pointer_auth.api_b.low = 0;

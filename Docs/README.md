@@ -64,12 +64,12 @@ todos os componentes ou fluxos estão concluídos ou validados.
 
 ## Estado atual
 
-O trabalho está concentrado na consolidação do `Core`. Já existem
-subsistemas para configuração, registro de módulos, dependências,
-inicialização, diagnóstico, despacho, monitoramento, topologia,
-escalonamento, IPC e encerramento. A presença de código não significa,
-por si só, que cada subsistema esteja auditado, testado ou pronto para
-produção.
+O trabalho inclui a consolidação do `Core` e uma base arquitetural
+parcial para Apple ARM64E: identificação de subtype Mach-O, estado PAC,
+operações PAC na IR e decodificação de instruções selecionadas. Isso não
+representa execução de binários ARM64E. A presença de código não
+significa, por si só, que cada subsistema esteja auditado, testado ou
+pronto para produção.
 
 Consulte [STATUS.md](STATUS.md) para o estado de desenvolvimento e
 [ROADMAP.md](ROADMAP.md) para as próximas etapas.
@@ -77,8 +77,10 @@ Consulte [STATUS.md](STATUS.md) para o estado de desenvolvimento e
 ## Compatibilidade
 
 A direção inicial é ARM64 Apple como origem e x86_64 como destino. O
-suporte efetivo depende de decoder, IR, tradutor, backend e serviços de
-plataforma compatíveis. Consulte [COMPATIBILITY.md](COMPATIBILITY.md).
+suporte estrutural ARM64E ainda não inclui loader Mach-O, backend x86_64
+ou runtime Apple. O provedor PAC de software serve apenas para testes e
+não reproduz a criptografia do hardware. Consulte
+[COMPATIBILITY.md](COMPATIBILITY.md) e [STATUS.md](STATUS.md).
 
 ## Princípios do projeto
 
@@ -105,6 +107,10 @@ plataforma compatíveis. Consulte [COMPATIBILITY.md](COMPATIBILITY.md).
 
   [CORE.md](CORE.md)                     Estrutura, responsabilidades e
                                          estado do Core
+
+  [IR.md](IR.md)                         Contrato e estado da Universal IR
+
+  [DECODER.md](DECODER.md)               Contrato e estado do Decoder AArch64
 
   [COMPATIBILITY.md](COMPATIBILITY.md)   Arquiteturas, firmware e ambientes
 

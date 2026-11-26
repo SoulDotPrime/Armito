@@ -2,6 +2,7 @@
 #define ARMITO_IR_OPERATION_H
 
 #include "Includes/IRTypes.h"
+#include "Includes/IRCPUState.h"
 
 typedef enum {
     ARMITO_IR_OP_NOP = 0,
@@ -57,8 +58,32 @@ typedef enum {
     ARMITO_IR_OP_TRAP,
 
     ARMITO_IR_OP_BARRIER,
-    ARMITO_IR_OP_UNSUPPORTED
+    ARMITO_IR_OP_UNSUPPORTED,
+    ARMITO_IR_OP_PAC_SIGN,
+    ARMITO_IR_OP_PAC_AUTHENTICATE,
+    ARMITO_IR_OP_PAC_STRIP,
+    ARMITO_IR_OP_PAC_BRANCH_AUTHENTICATED,
+    ARMITO_IR_OP_PAC_CALL_AUTHENTICATED,
+    ARMITO_IR_OP_PAC_RETURN_AUTHENTICATED,
+    ARMITO_IR_OP_PAC_LOAD_AUTHENTICATED,
+    ARMITO_IR_OP_PAC_AUTHENTICATION_FAILURE
 } ArmitoIROperationKind;
+
+typedef enum {
+    ARMITO_IR_PAC_KEY_IA = 0,
+    ARMITO_IR_PAC_KEY_IB,
+    ARMITO_IR_PAC_KEY_DA,
+    ARMITO_IR_PAC_KEY_DB,
+    ARMITO_IR_PAC_KEY_INVALID = 0xFF
+} ArmitoIRPointerAuthKey;
+
+typedef enum {
+    ARMITO_IR_PAC_FLAG_ADDRESS_DIVERSITY = 1u << 0,
+    ARMITO_IR_PAC_FLAG_MODIFIER_IS_SP = 1u << 1,
+    ARMITO_IR_PAC_FLAG_MODIFIER_IS_ZERO = 1u << 2,
+    ARMITO_IR_PAC_FLAG_WRITES_LINK_REGISTER = 1u << 3,
+    ARMITO_IR_PAC_FLAG_FAIL_CLOSED = 1u << 4
+} ArmitoIRPointerAuthFlag;
 
 typedef enum {
     ARMITO_IR_FLAG_N = 1u << 0,
@@ -81,6 +106,12 @@ typedef struct {
     uint32_t source_encoding;
     uint32_t source_length;
     uint16_t aux;
+    uint8_t pointer_auth_key;
+    uint8_t pointer_auth_flags;
+    uint16_t pointer_auth_discriminator;
+    uint8_t has_effect_register;
+    uint8_t effect_register_class;
+    uint8_t effect_register_index;
 } ArmitoIROperation;
 
 ArmitoIRStatus ArmitoIROperationsReset(void);
@@ -110,6 +141,17 @@ ArmitoIRStatus ArmitoIROperationSetSource(
 ArmitoIRStatus ArmitoIROperationSetAux(
     ArmitoIROperationID operation_id,
     uint16_t aux
+);
+ArmitoIRStatus ArmitoIROperationSetPointerAuth(
+    ArmitoIROperationID operation_id,
+    ArmitoIRPointerAuthKey key,
+    uint8_t flags,
+    uint16_t discriminator
+);
+ArmitoIRStatus ArmitoIROperationSetEffectRegister(
+    ArmitoIROperationID operation_id,
+    ArmitoIRRegisterClass reg_class,
+    uint8_t index
 );
 ArmitoIRStatus ArmitoIROperationGet(
     ArmitoIROperationID operation_id,

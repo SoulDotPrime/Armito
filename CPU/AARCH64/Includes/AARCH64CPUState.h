@@ -11,6 +11,7 @@
 #define AARCH64_NZCV_C 0x02u
 #define AARCH64_NZCV_V 0x01u
 #define AARCH64_NZCV_MASK 0x0Fu
+#define AARCH64_CPU_EXCEPTION_POINTER_AUTH 0x50414301u
 
 typedef enum {
     AARCH64_CPU_STATE_SUCCESS = 0,
@@ -33,8 +34,38 @@ typedef struct {
     uint64_t high;
 } AARCH64PointerAuthKey;
 
+typedef enum {
+    AARCH64_PAC_KEY_IA = 0,
+    AARCH64_PAC_KEY_IB,
+    AARCH64_PAC_KEY_DA,
+    AARCH64_PAC_KEY_DB,
+    AARCH64_PAC_KEY_GA,
+    AARCH64_PAC_KEY_COUNT,
+    AARCH64_PAC_KEY_INVALID = 0xFF
+} AARCH64PointerAuthKeyID;
+
+typedef struct {
+    uint64_t modifier;
+    uint64_t context_address;
+    uint16_t discriminator;
+    uint8_t address_diversity;
+} AARCH64PointerAuthContext;
+
 typedef struct {
     uint8_t enabled;
+    uint8_t initialized_key_mask;
+    uint8_t authentication_failed;
+    uint8_t last_key;
+    uint8_t last_operation;
+    uint8_t return_address_signed;
+    uint64_t address_mask;
+    uint64_t pac_mask;
+    uint64_t last_modifier;
+    uint64_t last_context_address;
+    uint64_t failed_pointer;
+    uint64_t invalid_pointer;
+    uint32_t failure_count;
+    AARCH64PointerAuthContext last_context;
     AARCH64PointerAuthKey api_a;
     AARCH64PointerAuthKey api_b;
     AARCH64PointerAuthKey apda;

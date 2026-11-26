@@ -179,6 +179,10 @@ typedef enum {
     AARCH64_OPCODE_BRABZ,
     AARCH64_OPCODE_RETAA,
     AARCH64_OPCODE_RETAB,
+    AARCH64_OPCODE_PACIASP,
+    AARCH64_OPCODE_PACIBSP,
+    AARCH64_OPCODE_AUTIASP,
+    AARCH64_OPCODE_AUTIBSP,
 
     /* ARM64E: assinatura de memoria */
     AARCH64_OPCODE_STG,
@@ -329,6 +333,8 @@ typedef enum {
     AARCH64_OPCODE_ADR_SMALL,
     AARCH64_OPCODE_B_AL,
     AARCH64_OPCODE_LDR_PAC,
+    AARCH64_OPCODE_LDRAA,
+    AARCH64_OPCODE_LDRAB,
     AARCH64_OPCODE_B,
     AARCH64_OPCODE_BLR,
     AARCH64_OPCODE_CNEG,
@@ -337,6 +343,13 @@ typedef enum {
     AARCH64_OPCODE_BICS_IMM,
     AARCH64_OPCODE_INVALID_ENCODING
 } AARCH64Opcode;
+
+typedef enum {
+    AARCH64_AUTH_KEY_IA = 0,
+    AARCH64_AUTH_KEY_IB,
+    AARCH64_AUTH_KEY_DA,
+    AARCH64_AUTH_KEY_DB
+} AARCH64AuthKey;
 
 typedef struct {
     AARCH64Opcode opcode;
@@ -355,6 +368,10 @@ typedef struct {
     uint8_t shift_amount;
     uint8_t condition;
     uint8_t is_64bit_immediate;
+    uint8_t auth_key;
+    uint8_t auth_modifier_is_sp;
+    uint8_t auth_modifier_is_zero;
+    uint8_t auth_address_diversity;
     int64_t immediate;
     uint64_t branch_target;
     uint32_t encoding;

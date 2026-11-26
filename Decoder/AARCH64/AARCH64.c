@@ -26,12 +26,90 @@ static void AARCH64SetRegister(
     *register_is_zero = (uint8_t)(index == 31u && !is_sp);
 }
 
+static ArmitoDecoderStatus AARCH64ClassifyPointerAuth(
+    uint32_t encoding,
+    AARCH64Opcode *opcode
+)
+{
+    uint32_t masked;
+
+    switch (encoding) {
+    case 0xD503233Fu: *opcode = AARCH64_OPCODE_PACIASP; return ARMITO_DECODER_SUCCESS;
+    case 0xD503237Fu: *opcode = AARCH64_OPCODE_PACIBSP; return ARMITO_DECODER_SUCCESS;
+    case 0xD50323BFu: *opcode = AARCH64_OPCODE_AUTIASP; return ARMITO_DECODER_SUCCESS;
+    case 0xD50323FFu: *opcode = AARCH64_OPCODE_AUTIBSP; return ARMITO_DECODER_SUCCESS;
+    case 0xD65F0BFFu: *opcode = AARCH64_OPCODE_RETAA; return ARMITO_DECODER_SUCCESS;
+    case 0xD65F0FFFu: *opcode = AARCH64_OPCODE_RETAB; return ARMITO_DECODER_SUCCESS;
+    default: break;
+    }
+
+    masked = encoding & 0xFFFFFC00u;
+    switch (masked) {
+    case 0xDAC10000u: *opcode = AARCH64_OPCODE_PACIA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC10400u: *opcode = AARCH64_OPCODE_PACIB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC10800u: *opcode = AARCH64_OPCODE_PACDA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC10C00u: *opcode = AARCH64_OPCODE_PACDB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC11000u: *opcode = AARCH64_OPCODE_AUTIA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC11400u: *opcode = AARCH64_OPCODE_AUTIB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC11800u: *opcode = AARCH64_OPCODE_AUTDA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC11C00u: *opcode = AARCH64_OPCODE_AUTDB; return ARMITO_DECODER_SUCCESS;
+    case 0xD71F0800u: *opcode = AARCH64_OPCODE_BRAA; return ARMITO_DECODER_SUCCESS;
+    case 0xD71F0C00u: *opcode = AARCH64_OPCODE_BRAB; return ARMITO_DECODER_SUCCESS;
+    case 0xD73F0800u: *opcode = AARCH64_OPCODE_BLRAA; return ARMITO_DECODER_SUCCESS;
+    case 0xD73F0C00u: *opcode = AARCH64_OPCODE_BLRAB; return ARMITO_DECODER_SUCCESS;
+    case 0xF8200400u: *opcode = AARCH64_OPCODE_LDRAA; return ARMITO_DECODER_SUCCESS;
+    case 0xF8A00400u: *opcode = AARCH64_OPCODE_LDRAB; return ARMITO_DECODER_SUCCESS;
+    default: break;
+    }
+
+    masked = encoding & 0xFFFFFFE0u;
+    switch (masked) {
+    case 0xDAC123E0u: *opcode = AARCH64_OPCODE_PACIZA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC127E0u: *opcode = AARCH64_OPCODE_PACIZB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC12BE0u: *opcode = AARCH64_OPCODE_PACDZA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC12FE0u: *opcode = AARCH64_OPCODE_PACDZB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC133E0u: *opcode = AARCH64_OPCODE_AUTIZA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC137E0u: *opcode = AARCH64_OPCODE_AUTIZB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC13BE0u: *opcode = AARCH64_OPCODE_AUTDZA; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC13FE0u: *opcode = AARCH64_OPCODE_AUTDZB; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC143E0u: *opcode = AARCH64_OPCODE_XPACI; return ARMITO_DECODER_SUCCESS;
+    case 0xDAC147E0u: *opcode = AARCH64_OPCODE_XPACD; return ARMITO_DECODER_SUCCESS;
+    default: break;
+    }
+
+    masked = encoding & 0xFFFFFC1Fu;
+    switch (masked) {
+    case 0xD61F081Fu: *opcode = AARCH64_OPCODE_BRAAZ; return ARMITO_DECODER_SUCCESS;
+    case 0xD61F0C1Fu: *opcode = AARCH64_OPCODE_BRABZ; return ARMITO_DECODER_SUCCESS;
+    case 0xD63F081Fu: *opcode = AARCH64_OPCODE_BLRAAZ; return ARMITO_DECODER_SUCCESS;
+    case 0xD63F0C1Fu: *opcode = AARCH64_OPCODE_BLRABZ; return ARMITO_DECODER_SUCCESS;
+    default: break;
+    }
+
+    if ((encoding & 0xFFA00C00u) == 0xF8200400u) {
+        *opcode = AARCH64_OPCODE_LDRAA;
+        return ARMITO_DECODER_SUCCESS;
+    }
+    if ((encoding & 0xFFA00C00u) == 0xF8A00400u) {
+        *opcode = AARCH64_OPCODE_LDRAB;
+        return ARMITO_DECODER_SUCCESS;
+    }
+
+    return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+}
+
 ArmitoDecoderStatus AARCH64Classify(uint32_t encoding, AARCH64Opcode *opcode)
 {
+    ArmitoDecoderStatus pointer_auth_status;
+
     if (opcode == NULL)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
     *opcode = AARCH64_OPCODE_UNKNOWN;
+
+    pointer_auth_status = AARCH64ClassifyPointerAuth(encoding, opcode);
+    if (pointer_auth_status == ARMITO_DECODER_SUCCESS)
+        return pointer_auth_status;
 
     if ((encoding & 0xFFFFF01Fu) == 0xD503201Fu) {
         *opcode = encoding == 0xD503201Fu
@@ -194,6 +272,10 @@ ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruc
     instruction->shift_amount = 0;
     instruction->condition = 0;
     instruction->is_64bit_immediate = 0;
+    instruction->auth_key = 0;
+    instruction->auth_modifier_is_sp = 0;
+    instruction->auth_modifier_is_zero = 0;
+    instruction->auth_address_diversity = 0;
     instruction->immediate = 0;
     instruction->branch_target = 0;
     instruction->encoding = encoding;
@@ -251,6 +333,126 @@ ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruc
             rn, 0, &instruction->rn_index,
             &instruction->rn_is_sp, &instruction->rn_is_zero
         );
+        return ARMITO_DECODER_SUCCESS;
+    }
+
+    if (opcode == AARCH64_OPCODE_PACIA || opcode == AARCH64_OPCODE_PACIB ||
+        opcode == AARCH64_OPCODE_PACDA || opcode == AARCH64_OPCODE_PACDB ||
+        opcode == AARCH64_OPCODE_AUTIA || opcode == AARCH64_OPCODE_AUTIB ||
+        opcode == AARCH64_OPCODE_AUTDA || opcode == AARCH64_OPCODE_AUTDB) {
+        rd = (uint8_t)(encoding & 0x1Fu);
+        rn = (uint8_t)((encoding >> 5) & 0x1Fu);
+        AARCH64SetRegister(
+            rd, 0, &instruction->rd_index,
+            &instruction->rd_is_sp, &instruction->rd_is_zero
+        );
+        AARCH64SetRegister(
+            rn, 1, &instruction->rn_index,
+            &instruction->rn_is_sp, &instruction->rn_is_zero
+        );
+        instruction->auth_key = (uint8_t)(
+            opcode == AARCH64_OPCODE_PACIA || opcode == AARCH64_OPCODE_AUTIA
+                ? AARCH64_AUTH_KEY_IA
+                : opcode == AARCH64_OPCODE_PACIB || opcode == AARCH64_OPCODE_AUTIB
+                    ? AARCH64_AUTH_KEY_IB
+                    : opcode == AARCH64_OPCODE_PACDA || opcode == AARCH64_OPCODE_AUTDA
+                        ? AARCH64_AUTH_KEY_DA
+                        : AARCH64_AUTH_KEY_DB
+        );
+        instruction->auth_modifier_is_zero = instruction->rn_is_zero;
+        return ARMITO_DECODER_SUCCESS;
+    }
+
+    if (opcode == AARCH64_OPCODE_PACIZA || opcode == AARCH64_OPCODE_PACIZB ||
+        opcode == AARCH64_OPCODE_PACDZA || opcode == AARCH64_OPCODE_PACDZB ||
+        opcode == AARCH64_OPCODE_AUTIZA || opcode == AARCH64_OPCODE_AUTIZB ||
+        opcode == AARCH64_OPCODE_AUTDZA || opcode == AARCH64_OPCODE_AUTDZB ||
+        opcode == AARCH64_OPCODE_XPACI || opcode == AARCH64_OPCODE_XPACD) {
+        rd = (uint8_t)(encoding & 0x1Fu);
+        AARCH64SetRegister(
+            rd, 0, &instruction->rd_index,
+            &instruction->rd_is_sp, &instruction->rd_is_zero
+        );
+        instruction->rn_index = 31u;
+        instruction->rn_is_zero = 1;
+        instruction->auth_modifier_is_zero = 1;
+        if (opcode == AARCH64_OPCODE_PACIZB ||
+            opcode == AARCH64_OPCODE_AUTIZB) {
+            instruction->auth_key = AARCH64_AUTH_KEY_IB;
+        } else if (opcode == AARCH64_OPCODE_PACDZA ||
+                   opcode == AARCH64_OPCODE_AUTDZA ||
+                   opcode == AARCH64_OPCODE_XPACD) {
+            instruction->auth_key = AARCH64_AUTH_KEY_DA;
+        } else if (opcode == AARCH64_OPCODE_PACDZB ||
+                   opcode == AARCH64_OPCODE_AUTDZB) {
+            instruction->auth_key = AARCH64_AUTH_KEY_DB;
+        } else {
+            instruction->auth_key = AARCH64_AUTH_KEY_IA;
+        }
+        return ARMITO_DECODER_SUCCESS;
+    }
+
+    if (opcode == AARCH64_OPCODE_PACIASP || opcode == AARCH64_OPCODE_PACIBSP ||
+        opcode == AARCH64_OPCODE_AUTIASP || opcode == AARCH64_OPCODE_AUTIBSP ||
+        opcode == AARCH64_OPCODE_RETAA || opcode == AARCH64_OPCODE_RETAB) {
+        instruction->rd_index = 30u;
+        instruction->rn_index = 31u;
+        instruction->rn_is_sp = 1;
+        instruction->auth_modifier_is_sp = 1;
+        instruction->auth_key =
+            (opcode == AARCH64_OPCODE_PACIBSP ||
+             opcode == AARCH64_OPCODE_AUTIBSP ||
+             opcode == AARCH64_OPCODE_RETAB)
+                ? AARCH64_AUTH_KEY_IB
+                : AARCH64_AUTH_KEY_IA;
+        return ARMITO_DECODER_SUCCESS;
+    }
+
+    if (opcode == AARCH64_OPCODE_BRAA || opcode == AARCH64_OPCODE_BRAB ||
+        opcode == AARCH64_OPCODE_BLRAA || opcode == AARCH64_OPCODE_BLRAB ||
+        opcode == AARCH64_OPCODE_BRAAZ || opcode == AARCH64_OPCODE_BRABZ ||
+        opcode == AARCH64_OPCODE_BLRAAZ || opcode == AARCH64_OPCODE_BLRABZ) {
+        rn = (uint8_t)((encoding >> 5) & 0x1Fu);
+        rm = (uint8_t)(encoding & 0x1Fu);
+        AARCH64SetRegister(
+            rn, 0, &instruction->rn_index,
+            &instruction->rn_is_sp, &instruction->rn_is_zero
+        );
+        AARCH64SetRegister(
+            rm, 0, &instruction->rm_index,
+            &instruction->rm_is_sp, &instruction->rm_is_zero
+        );
+        instruction->auth_key =
+            (opcode == AARCH64_OPCODE_BRAB ||
+             opcode == AARCH64_OPCODE_BLRAB ||
+             opcode == AARCH64_OPCODE_BRABZ ||
+             opcode == AARCH64_OPCODE_BLRABZ)
+                ? AARCH64_AUTH_KEY_IB
+                : AARCH64_AUTH_KEY_IA;
+        instruction->auth_modifier_is_zero = instruction->rm_is_zero;
+        return ARMITO_DECODER_SUCCESS;
+    }
+
+    if (opcode == AARCH64_OPCODE_LDRAA || opcode == AARCH64_OPCODE_LDRAB) {
+        rd = (uint8_t)(encoding & 0x1Fu);
+        rn = (uint8_t)((encoding >> 5) & 0x1Fu);
+        AARCH64SetRegister(
+            rd, 0, &instruction->rd_index,
+            &instruction->rd_is_sp, &instruction->rd_is_zero
+        );
+        AARCH64SetRegister(
+            rn, 1, &instruction->rn_index,
+            &instruction->rn_is_sp, &instruction->rn_is_zero
+        );
+        instruction->immediate = AARCH64SignExtend(
+            ((encoding >> 12) & 0x1FFu) | (((encoding >> 22) & 1u) << 9),
+            10
+        ) * 8;
+        instruction->auth_key =
+            opcode == AARCH64_OPCODE_LDRAA
+                ? AARCH64_AUTH_KEY_DA
+                : AARCH64_AUTH_KEY_DB;
+        instruction->auth_address_diversity = 1;
         return ARMITO_DECODER_SUCCESS;
     }
 
@@ -345,6 +547,276 @@ ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruc
     return ARMITO_DECODER_INVALID_INSTRUCTION;
 }
 
+static ArmitoIRStatus AARCH64IRGetRegisterValue(
+    uint8_t index,
+    uint8_t is_sp,
+    uint8_t is_zero,
+    ArmitoIRTypeID type_u64,
+    ArmitoIRValueID *value
+)
+{
+    ArmitoIRStatus status;
+
+    if (value == NULL)
+        return ARMITO_IR_INVALID_ARGUMENT;
+
+    if (is_zero) {
+        status = ArmitoIRValuesDeclare(
+            ARMITO_IR_VALUE_IMMEDIATE, type_u64, "xzr", value
+        );
+        if (status != ARMITO_IR_SUCCESS)
+            return status;
+        return ArmitoIRValuesSetImmediate(*value, 0);
+    }
+
+    if (is_sp)
+        return ArmitoIRCPUStateLookup(
+            ARMITO_IR_REG_STACK_POINTER, 31, value
+        );
+
+    return ArmitoIRCPUStateLookup(ARMITO_IR_REG_GPR, index, value);
+}
+
+static ArmitoDecoderStatus AARCH64PointerAuthToIR(
+    const AARCH64Instruction *instruction,
+    uint64_t address,
+    uint32_t *operations_emitted
+)
+{
+    ArmitoIROperationKind kind;
+    ArmitoIRTypeID type_u64;
+    ArmitoIRValueID inputs[2] = {
+        ARMITO_IR_VALUE_INVALID,
+        ARMITO_IR_VALUE_INVALID
+    };
+    ArmitoIRValueID result = ARMITO_IR_VALUE_INVALID;
+    ArmitoIROperationID operation_id;
+    ArmitoIRPointerAuthKey key;
+    uint8_t input_count = 0;
+    uint8_t flags = 0;
+    uint8_t has_result = 0;
+    uint8_t effect_register = 0;
+    ArmitoIRRegisterClass effect_class = ARMITO_IR_REG_GPR;
+    uint8_t effect_index = 0;
+    ArmitoIRStatus ir_status;
+
+    if (ArmitoIRTypesLookup(
+            ARMITO_IR_CLASS_INT, 64, 1, 0, &type_u64
+        ) != ARMITO_IR_SUCCESS)
+        return ARMITO_DECODER_IR_ERROR;
+
+    key = (ArmitoIRPointerAuthKey)instruction->auth_key;
+
+    if (instruction->opcode == AARCH64_OPCODE_PACIA ||
+        instruction->opcode == AARCH64_OPCODE_PACIB ||
+        instruction->opcode == AARCH64_OPCODE_PACDA ||
+        instruction->opcode == AARCH64_OPCODE_PACDB ||
+        instruction->opcode == AARCH64_OPCODE_PACIZA ||
+        instruction->opcode == AARCH64_OPCODE_PACIZB ||
+        instruction->opcode == AARCH64_OPCODE_PACDZA ||
+        instruction->opcode == AARCH64_OPCODE_PACDZB ||
+        instruction->opcode == AARCH64_OPCODE_PACIASP ||
+        instruction->opcode == AARCH64_OPCODE_PACIBSP) {
+        kind = ARMITO_IR_OP_PAC_SIGN;
+        has_result = 1;
+    } else if (instruction->opcode == AARCH64_OPCODE_AUTIA ||
+               instruction->opcode == AARCH64_OPCODE_AUTIB ||
+               instruction->opcode == AARCH64_OPCODE_AUTDA ||
+               instruction->opcode == AARCH64_OPCODE_AUTDB ||
+               instruction->opcode == AARCH64_OPCODE_AUTIZA ||
+               instruction->opcode == AARCH64_OPCODE_AUTIZB ||
+               instruction->opcode == AARCH64_OPCODE_AUTDZA ||
+               instruction->opcode == AARCH64_OPCODE_AUTDZB ||
+               instruction->opcode == AARCH64_OPCODE_AUTIASP ||
+               instruction->opcode == AARCH64_OPCODE_AUTIBSP) {
+        kind = ARMITO_IR_OP_PAC_AUTHENTICATE;
+        has_result = 1;
+        flags |= ARMITO_IR_PAC_FLAG_FAIL_CLOSED;
+    } else if (instruction->opcode == AARCH64_OPCODE_XPACI ||
+               instruction->opcode == AARCH64_OPCODE_XPACD) {
+        kind = ARMITO_IR_OP_PAC_STRIP;
+        has_result = 1;
+    } else if (instruction->opcode == AARCH64_OPCODE_BRAA ||
+               instruction->opcode == AARCH64_OPCODE_BRAB ||
+               instruction->opcode == AARCH64_OPCODE_BRAAZ ||
+               instruction->opcode == AARCH64_OPCODE_BRABZ) {
+        kind = ARMITO_IR_OP_PAC_BRANCH_AUTHENTICATED;
+        flags |= ARMITO_IR_PAC_FLAG_FAIL_CLOSED;
+        effect_register = 1;
+        effect_class = ARMITO_IR_REG_PC;
+    } else if (instruction->opcode == AARCH64_OPCODE_BLRAA ||
+               instruction->opcode == AARCH64_OPCODE_BLRAB ||
+               instruction->opcode == AARCH64_OPCODE_BLRAAZ ||
+               instruction->opcode == AARCH64_OPCODE_BLRABZ) {
+        kind = ARMITO_IR_OP_PAC_CALL_AUTHENTICATED;
+        flags |= ARMITO_IR_PAC_FLAG_FAIL_CLOSED |
+                 ARMITO_IR_PAC_FLAG_WRITES_LINK_REGISTER;
+        effect_register = 1;
+        effect_class = ARMITO_IR_REG_PC;
+    } else if (instruction->opcode == AARCH64_OPCODE_RETAA ||
+               instruction->opcode == AARCH64_OPCODE_RETAB) {
+        kind = ARMITO_IR_OP_PAC_RETURN_AUTHENTICATED;
+        flags |= ARMITO_IR_PAC_FLAG_FAIL_CLOSED |
+                 ARMITO_IR_PAC_FLAG_MODIFIER_IS_SP;
+        effect_register = 1;
+        effect_class = ARMITO_IR_REG_PC;
+    } else if (instruction->opcode == AARCH64_OPCODE_LDRAA ||
+               instruction->opcode == AARCH64_OPCODE_LDRAB) {
+        kind = ARMITO_IR_OP_PAC_LOAD_AUTHENTICATED;
+        flags |= ARMITO_IR_PAC_FLAG_ADDRESS_DIVERSITY |
+                 ARMITO_IR_PAC_FLAG_FAIL_CLOSED;
+        has_result = 1;
+    } else {
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+    }
+
+    if (kind == ARMITO_IR_OP_PAC_RETURN_AUTHENTICATED) {
+        if (AARCH64IRGetRegisterValue(30, 0, 0, type_u64, &inputs[0]) !=
+                ARMITO_IR_SUCCESS ||
+            AARCH64IRGetRegisterValue(31, 1, 0, type_u64, &inputs[1]) !=
+                ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+        input_count = 2;
+        effect_index = 0;
+    } else if (kind == ARMITO_IR_OP_PAC_BRANCH_AUTHENTICATED ||
+               kind == ARMITO_IR_OP_PAC_CALL_AUTHENTICATED) {
+        if (AARCH64IRGetRegisterValue(
+                instruction->rn_index,
+                instruction->rn_is_sp,
+                instruction->rn_is_zero,
+                type_u64,
+                &inputs[0]
+            ) != ARMITO_IR_SUCCESS ||
+            AARCH64IRGetRegisterValue(
+                instruction->rm_index,
+                instruction->rm_is_sp,
+                instruction->rm_is_zero,
+                type_u64,
+                &inputs[1]
+            ) != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+        input_count = 2;
+        effect_index = 0;
+        if (instruction->auth_modifier_is_zero)
+            flags |= ARMITO_IR_PAC_FLAG_MODIFIER_IS_ZERO;
+    } else if (kind == ARMITO_IR_OP_PAC_LOAD_AUTHENTICATED) {
+        if (AARCH64IRGetRegisterValue(
+                instruction->rn_index,
+                instruction->rn_is_sp,
+                instruction->rn_is_zero,
+                type_u64,
+                &inputs[0]
+            ) != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+        ir_status = ArmitoIRValuesDeclare(
+            ARMITO_IR_VALUE_IMMEDIATE, type_u64, "pac-load-offset", &inputs[1]
+        );
+        if (ir_status != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+        ir_status = ArmitoIRValuesSetImmediate(
+            inputs[1], (uint64_t)instruction->immediate
+        );
+        if (ir_status != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+        input_count = 2;
+        effect_index = instruction->rd_index;
+        effect_register = (uint8_t)!instruction->rd_is_zero;
+    } else {
+        if (AARCH64IRGetRegisterValue(
+                instruction->rd_index,
+                instruction->rd_is_sp,
+                instruction->rd_is_zero,
+                type_u64,
+                &inputs[0]
+            ) != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+        input_count = 1;
+        if (kind != ARMITO_IR_OP_PAC_STRIP) {
+            if (instruction->auth_modifier_is_sp) {
+                if (AARCH64IRGetRegisterValue(
+                        31, 1, 0, type_u64, &inputs[1]
+                    ) != ARMITO_IR_SUCCESS)
+                    return ARMITO_DECODER_IR_ERROR;
+                flags |= ARMITO_IR_PAC_FLAG_MODIFIER_IS_SP;
+            } else if (instruction->auth_modifier_is_zero) {
+                if (AARCH64IRGetRegisterValue(
+                        31, 0, 1, type_u64, &inputs[1]
+                    ) != ARMITO_IR_SUCCESS)
+                    return ARMITO_DECODER_IR_ERROR;
+                flags |= ARMITO_IR_PAC_FLAG_MODIFIER_IS_ZERO;
+            } else if (AARCH64IRGetRegisterValue(
+                           instruction->rn_index,
+                           instruction->rn_is_sp,
+                           instruction->rn_is_zero,
+                           type_u64,
+                           &inputs[1]
+                       ) != ARMITO_IR_SUCCESS) {
+                return ARMITO_DECODER_IR_ERROR;
+            }
+            input_count = 2;
+        }
+        effect_index = instruction->rd_index;
+        effect_register = (uint8_t)!instruction->rd_is_zero;
+        if (instruction->auth_modifier_is_sp)
+            flags |= ARMITO_IR_PAC_FLAG_MODIFIER_IS_SP;
+    }
+
+    if (has_result) {
+        ir_status = ArmitoIRValuesDeclare(
+            ARMITO_IR_VALUE_VIRTUAL_REGISTER,
+            type_u64,
+            "pac-result",
+            &result
+        );
+        if (ir_status != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+    }
+
+    ir_status = ArmitoIROperationEmit(
+        kind,
+        has_result ? type_u64 : ARMITO_IR_TYPE_INVALID,
+        result,
+        inputs,
+        input_count,
+        &operation_id
+    );
+    if (ir_status != ARMITO_IR_SUCCESS)
+        return ARMITO_DECODER_IR_ERROR;
+
+    ir_status = ArmitoIROperationSetPointerAuth(
+        operation_id, key, flags, 0
+    );
+    if (ir_status != ARMITO_IR_SUCCESS)
+        return ARMITO_DECODER_IR_ERROR;
+
+    if (effect_register) {
+        ir_status = ArmitoIROperationSetEffectRegister(
+            operation_id,
+            kind == ARMITO_IR_OP_PAC_LOAD_AUTHENTICATED ||
+                    kind == ARMITO_IR_OP_PAC_SIGN ||
+                    kind == ARMITO_IR_OP_PAC_AUTHENTICATE ||
+                    kind == ARMITO_IR_OP_PAC_STRIP
+                ? ARMITO_IR_REG_GPR
+                : effect_class,
+            effect_index
+        );
+        if (ir_status != ARMITO_IR_SUCCESS)
+            return ARMITO_DECODER_IR_ERROR;
+    }
+
+    ir_status = ArmitoIROperationSetSource(
+        operation_id,
+        (uint32_t)(address & 0xFFFFFFFFu),
+        instruction->encoding,
+        ARMITO_DECODER_INSTRUCTION_SIZE
+    );
+    if (ir_status != ARMITO_IR_SUCCESS)
+        return ARMITO_DECODER_IR_ERROR;
+
+    *operations_emitted = 1;
+    return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+}
+
 ArmitoDecoderStatus AARCH64ToIR(
     const AARCH64Instruction *instruction,
     uint64_t address,
@@ -362,6 +834,46 @@ ArmitoDecoderStatus AARCH64ToIR(
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
     *operations_emitted = 0;
+
+    switch (instruction->opcode) {
+    case AARCH64_OPCODE_PACIA:
+    case AARCH64_OPCODE_PACIB:
+    case AARCH64_OPCODE_PACDA:
+    case AARCH64_OPCODE_PACDB:
+    case AARCH64_OPCODE_PACIZA:
+    case AARCH64_OPCODE_PACIZB:
+    case AARCH64_OPCODE_PACDZA:
+    case AARCH64_OPCODE_PACDZB:
+    case AARCH64_OPCODE_AUTIA:
+    case AARCH64_OPCODE_AUTIB:
+    case AARCH64_OPCODE_AUTDA:
+    case AARCH64_OPCODE_AUTDB:
+    case AARCH64_OPCODE_AUTIZA:
+    case AARCH64_OPCODE_AUTIZB:
+    case AARCH64_OPCODE_AUTDZA:
+    case AARCH64_OPCODE_AUTDZB:
+    case AARCH64_OPCODE_XPACI:
+    case AARCH64_OPCODE_XPACD:
+    case AARCH64_OPCODE_PACIASP:
+    case AARCH64_OPCODE_PACIBSP:
+    case AARCH64_OPCODE_AUTIASP:
+    case AARCH64_OPCODE_AUTIBSP:
+    case AARCH64_OPCODE_RETAA:
+    case AARCH64_OPCODE_RETAB:
+    case AARCH64_OPCODE_BRAA:
+    case AARCH64_OPCODE_BRAB:
+    case AARCH64_OPCODE_BRAAZ:
+    case AARCH64_OPCODE_BRABZ:
+    case AARCH64_OPCODE_BLRAA:
+    case AARCH64_OPCODE_BLRAB:
+    case AARCH64_OPCODE_BLRAAZ:
+    case AARCH64_OPCODE_BLRABZ:
+    case AARCH64_OPCODE_LDRAA:
+    case AARCH64_OPCODE_LDRAB:
+        return AARCH64PointerAuthToIR(instruction, address, operations_emitted);
+    default:
+        break;
+    }
 
     switch (instruction->opcode) {
     case AARCH64_OPCODE_NOP:
@@ -442,6 +954,40 @@ const char *AARCH64OpcodeName(AARCH64Opcode opcode)
     case AARCH64_OPCODE_BR: return "br";
     case AARCH64_OPCODE_BLR: return "blr";
     case AARCH64_OPCODE_RET: return "ret";
+    case AARCH64_OPCODE_PACIA: return "pacia";
+    case AARCH64_OPCODE_PACIB: return "pacib";
+    case AARCH64_OPCODE_PACDA: return "pacda";
+    case AARCH64_OPCODE_PACDB: return "pacdb";
+    case AARCH64_OPCODE_PACIZA: return "paciza";
+    case AARCH64_OPCODE_PACIZB: return "pacizb";
+    case AARCH64_OPCODE_PACDZA: return "pacdza";
+    case AARCH64_OPCODE_PACDZB: return "pacdzb";
+    case AARCH64_OPCODE_AUTIA: return "autia";
+    case AARCH64_OPCODE_AUTIB: return "autib";
+    case AARCH64_OPCODE_AUTDA: return "autda";
+    case AARCH64_OPCODE_AUTDB: return "autdb";
+    case AARCH64_OPCODE_AUTIZA: return "autiza";
+    case AARCH64_OPCODE_AUTIZB: return "autizb";
+    case AARCH64_OPCODE_AUTDZA: return "autdza";
+    case AARCH64_OPCODE_AUTDZB: return "autdzb";
+    case AARCH64_OPCODE_XPACI: return "xpaci";
+    case AARCH64_OPCODE_XPACD: return "xpacd";
+    case AARCH64_OPCODE_PACIASP: return "paciasp";
+    case AARCH64_OPCODE_PACIBSP: return "pacibsp";
+    case AARCH64_OPCODE_AUTIASP: return "autiasp";
+    case AARCH64_OPCODE_AUTIBSP: return "autibsp";
+    case AARCH64_OPCODE_RETAA: return "retaa";
+    case AARCH64_OPCODE_RETAB: return "retab";
+    case AARCH64_OPCODE_BRAA: return "braa";
+    case AARCH64_OPCODE_BRAB: return "brab";
+    case AARCH64_OPCODE_BRAAZ: return "braaz";
+    case AARCH64_OPCODE_BRABZ: return "brabz";
+    case AARCH64_OPCODE_BLRAA: return "blraa";
+    case AARCH64_OPCODE_BLRAB: return "blrab";
+    case AARCH64_OPCODE_BLRAAZ: return "blraaz";
+    case AARCH64_OPCODE_BLRABZ: return "blrabz";
+    case AARCH64_OPCODE_LDRAA: return "ldraa";
+    case AARCH64_OPCODE_LDRAB: return "ldrab";
     case AARCH64_OPCODE_B_COND: return "b.cond";
     case AARCH64_OPCODE_CBZ: return "cbz";
     case AARCH64_OPCODE_CBNZ: return "cbnz";

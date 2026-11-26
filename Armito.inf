@@ -11,6 +11,8 @@
     Boot/ArmitoBoot.c
 
     CPU/AARCH64/AARCH64CPUState.c
+    CPU/AARCH64/AARCH64PointerAuth.c
+    CPU/AARCH64/AARCH64MachO.c
 
     # Core (fechado: Tests/CoreTest.c 74/0)
     Core/Core.c

@@ -2,6 +2,58 @@
 
 static volatile uint32_t ir_module_state = ARMITO_IR_UNINITIALIZED;
 
+static ArmitoIRStatus ArmitoIRValidatePointerAuthOperation(
+    const ArmitoIROperation *operation
+)
+{
+    uint8_t expected_inputs;
+    uint8_t requires_result;
+
+    switch (operation->kind) {
+    case ARMITO_IR_OP_PAC_SIGN:
+    case ARMITO_IR_OP_PAC_AUTHENTICATE:
+    case ARMITO_IR_OP_PAC_BRANCH_AUTHENTICATED:
+    case ARMITO_IR_OP_PAC_CALL_AUTHENTICATED:
+    case ARMITO_IR_OP_PAC_RETURN_AUTHENTICATED:
+    case ARMITO_IR_OP_PAC_LOAD_AUTHENTICATED:
+        expected_inputs = 2;
+        requires_result =
+            (uint8_t)(operation->kind == ARMITO_IR_OP_PAC_SIGN ||
+                      operation->kind == ARMITO_IR_OP_PAC_AUTHENTICATE ||
+                      operation->kind == ARMITO_IR_OP_PAC_LOAD_AUTHENTICATED);
+        break;
+    case ARMITO_IR_OP_PAC_STRIP:
+        expected_inputs = 1;
+        requires_result = 1;
+        break;
+    case ARMITO_IR_OP_PAC_AUTHENTICATION_FAILURE:
+        expected_inputs = 1;
+        requires_result = 0;
+        break;
+    default:
+        return ARMITO_IR_SUCCESS;
+    }
+
+    if (operation->input_count != expected_inputs)
+        return ARMITO_IR_SEMANTIC_ERROR;
+
+    if (requires_result && operation->result == ARMITO_IR_VALUE_INVALID)
+        return ARMITO_IR_SEMANTIC_ERROR;
+
+    if ((uint32_t)operation->pointer_auth_key >
+        (uint32_t)ARMITO_IR_PAC_KEY_DB)
+        return ARMITO_IR_SEMANTIC_ERROR;
+
+    if ((operation->pointer_auth_flags & (uint8_t)~0x1Fu) != 0)
+        return ARMITO_IR_SEMANTIC_ERROR;
+
+    if (operation->has_effect_register &&
+        operation->effect_register_class > ARMITO_IR_REG_STACK_POINTER)
+        return ARMITO_IR_SEMANTIC_ERROR;
+
+    return ARMITO_IR_SUCCESS;
+}
+
 ArmitoIRStatus ArmitoIRReset(void)
 {
     ArmitoIRStatus status;
@@ -113,6 +165,10 @@ ArmitoIRStatus ArmitoIRValidate(void)
             return ARMITO_IR_SEMANTIC_ERROR;
 
         if (operation.kind == ARMITO_IR_OP_ADD && operation.input_count != 2)
+            return ARMITO_IR_SEMANTIC_ERROR;
+
+        if (ArmitoIRValidatePointerAuthOperation(&operation) !=
+            ARMITO_IR_SUCCESS)
             return ARMITO_IR_SEMANTIC_ERROR;
     }
 
