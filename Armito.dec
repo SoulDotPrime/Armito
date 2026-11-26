@@ -6,3 +6,6 @@
 
 [Includes]
     Boot/Includes
+    Core/Includes
+    IR/Includes
+    Decoder/Includes

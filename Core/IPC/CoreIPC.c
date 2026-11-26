@@ -1,7 +1,7 @@
 #include "Includes/CoreIPC.h"
 #include "../Registry/Includes/CoreRegistry.h"
 #include "../Config/Includes/CoreConfig.h"
-#include <string.h>
+#include "../Memory/Includes/CoreMemory.h"
 
 typedef struct {
     ArmitoIPCMessage message;
@@ -114,7 +114,7 @@ ArmitoCoreStatus ArmitoCoreIPCSend(
             entry->message.size = size;
 
             if (size > 0)
-                memcpy(entry->message.payload, payload, size);
+                ArmitoMemoryCopy(entry->message.payload, payload, size);
 
             entry->sequence = next_sequence++;
             entry->occupied = 1;

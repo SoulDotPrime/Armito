@@ -10,9 +10,40 @@
     Boot/BootEntry.c
     Boot/ArmitoBoot.c
 
+    # Core (fechado: Tests/CoreTest.c 74/0)
+    Core/Core.c
+    Core/Config/CoreConfig.c
+    Core/Config/CoreConfigValidation.c
+    Core/Registry/CoreRegistry.c
+    Core/Dependency/CoreDependency.c
+    Core/Init/CoreInit.c
+    Core/Diagnostics/CoreDiagnostics.c
+    Core/Dispatch/CoreDispatch.c
+    Core/Monitor/CoreMonitor.c
+    Core/Topology/CoreTopology.c
+    Core/Scheduler/CoreScheduler.c
+    Core/IPC/CoreIPC.c
+    Core/Memory/CoreMemory.c
+    Core/Shutdown/CoreShutdown.c
+
+    # Universal IR (fechada: Tests/IRTest.c 172/0)
+    IR/IR.c
+    IR/IRTypeset.c
+    IR/IRValue.c
+    IR/IROperation.c
+    IR/IRBlock.c
+    IR/IRCPUState.c
+
+    # Decoder AArch64 / ARM64E
+    Decoder/Decoder.c
+    Decoder/DecoderSource.c
+    Decoder/DecoderRegister.c
+    Decoder/DecoderStats.c
+    Decoder/AARCH64/AARCH64.c
+
 [Packages]
     MdePkg/MdePkg.dec
-    Armito.dec
+    ArmitoPkg/Armito.dec
 
 [LibraryClasses]
     UefiApplicationEntryPoint

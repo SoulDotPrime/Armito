@@ -15,6 +15,7 @@ CORE_SRC := \
     Core/Topology/CoreTopology.c \
     Core/Scheduler/CoreScheduler.c \
     Core/IPC/CoreIPC.c \
+    Core/Memory/CoreMemory.c \
     Core/Shutdown/CoreShutdown.c
 
 IR_SRC := \
