@@ -1,3 +1,25 @@
+# Fase 3.2.5.1 — sobreposições e limitações (2026-11-26)
+
+Relatório `integer_alias_predicates.csv` registra por codificação 106
+predicados simultaneamente preferidos LSL/UBFIZ em UBFM; runtime escolhe
+UBFIZ, LLVM MC 18.1.3 imprime LSL. Há ainda 170 impressões LLVM BFI quando
+o catálogo Arm escolhe BFC para `Rn=ZR`; ambas preservam a codificação BFM.
+Diferença de mnemonic não prova divergência arquitetural. Antes de encerrar
+3.2.5.1, fundamentar desempate normativo entre aliases concorrentes e provar
+equivalência formal independente de cada alias; execução real só será
+verificada nas futuras fases semânticas. Nenhuma correção C foi justificada
+apenas pelas diferenças de apresentação. A lacuna do corpus histórico de 506
+REJECT continua irrecuperada e não se confunde com estas sobreposições.
+
+# Fase 3.2.5 — cobertura pendente (2026-11-26)
+
+Campanha `integer_condition_audit.csv`: 6.656 pares condicionais confrontados
+com probe e LLVM, sem divergência arquitetural justificada nessa amostra.
+Diferenças apenas textuais (por exemplo CNEG com fonte ZR) não são tratadas
+como falhas de codificação. Falta validar todas as condições/predicados de
+alias e prioridades das 93 entradas nas 195 formas; a fase permanece aberta.
+Não confundir esse trabalho com a lacuna histórica irrecuperada dos 506 REJECT.
+
 # Fase 3.2.4 — resolução dos 56 REJECT atuais (2026-11-26)
 
 Os 56 pares individualizados em

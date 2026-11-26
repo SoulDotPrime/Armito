@@ -1,3 +1,27 @@
+# Fase 3.2.5.1 — cobertura de Decoder parcial (2026-11-26)
+
+93 aliases inventariados individualmente; 48.005 pares forma/codificação em
+66 formas, 142.731 linhas CSV de predicado/prioridade. Os 92 aliases elegíveis
+foram observados como seleção; REV64 tem `preferred=false` no catálogo Arm.
+106 sobreposições LSL/UBFIZ (36 de 32 bits, 70 de 64 bits) exigem distinção
+entre preferência textual e operação UBFM. O oráculo concorda com as escolhas
+do probe na amostra; LLVM imprime LSL nesses 106 casos, sem diferença de
+codificação. Evidência não é prova de equivalência semântica executada;
+predicados constantes não têm caso negativo válido e alguns predicados
+`true` dependem de rejeição da forma, não do alias. 3.2.5.1 segue aberta.
+6.656 condicionais e as baselines anteriores permanecem imutáveis.
+
+# Fase 3.2.5 — em andamento (2026-11-26)
+
+Inventário: 195 formas Integer/Data Processing; 93 aliases em 66 formas;
+16 formas condicionais. O oráculo independente cobre 6.656 codificações
+condsel/condcmp, todas as 16 condições em ambas as larguras, NZCV de 0 a 15
+para CCMP/CCMN, igualdade e desigualdade dos registradores, AL/NV e aliases
+CSET/CSETM/CINC/CINV/CNEG. Compara campos e escolhas de alias com o probe
+e texto aplicável com LLVM MC 18.1.3. Ainda não valida todos os 93 aliases,
+prioridades ou equivalência semântica; fase NÃO encerrada. Baselines 3.2.2,
+3.2.3 e 3.2.4 continuam preservadas. Lacuna histórica ainda aberta.
+
 # Fase 3.2.4 — máscaras auditadas na baseline atual (2026-11-26)
 
 As 14 formas AND/ORR/EOR/ANDS/SBFM/UBFM/BFM foram verificadas nas duas

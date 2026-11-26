@@ -1,3 +1,42 @@
+# Campanha 3.2.5.1 — aliases Integer (2026-11-26)
+
+Fonte normativa: pacote Arm `Build/arm-isa-2025-12.tar.gz` (SHA-256 abaixo),
+arquivos `ubfm.xml`, `bfm.xml` e aliases correspondentes, e funções
+`BFXPreferred`, `MoveWidePreferred` em `shared_pseudocode.xml`. O catálogo
+JSON preserva os 93 ASTs extraídos do MRA Arm; oráculo Python independente
+do runtime C: `Tests/Decoder/AARCH64/integer_alias_predicates.py`.
+48.005 pares forma/codificação nas 66 formas com alias, 142.731 linhas CSV
+por alias e codificação (incluindo 47.877 linhas de codificações rejeitadas e
+94.854 verificadas). Relatório `Tests/Decoder/AARCH64/integer_alias_predicates.csv`
+SHA-256 `e9f412f73d15c3595bb844da9dd9519da76f7fc8cdc92a057763b12cfd0babeb`.
+O teste regenera e verifica bytes e hash, não sobrescreve. 106 sobreposições
+LSL/UBFIZ; 170 diferenças textuais BFC/BFI. LLVM MC 18.1.3 é comparador,
+não norma de preferência. Esta campanha é adicional às 214.407 ocorrências
+prévias (30.212+62.851+114.688+6.656), sem alterar seus CSVs. Nenhuma
+alegação de equivalência semântica completa nem de execução comprovada:
+3.2.5.1 aberta até provar todos os aliases e a prioridade normativa.
+Nesta execução passaram, sequencialmente, `make -B test`, `make test`,
+`make catalog-test`, seguidos de EDK2 X64 GCC DEBUG e RELEASE (saída zero).
+Os hashes das baselines anteriores, inclusive o CSV de 6.656 condicionais,
+permaneceram iguais; catálogo/runtime C não foram modificados.
+
+# Campanha parcial 3.2.5 — condições (2026-11-26)
+
+Referência normativa: `Build/arm-isa-2025-12.tar.gz` (hash Arm registrado
+abaixo), `shared_pseudocode.xml` (`ConditionHolds`), `csel.xml`, `csinc.xml`,
+`csinv.xml`, `csneg.xml`, `ccmp_reg.xml`, `ccmp_imm.xml`, `ccmn_reg.xml` e
+`ccmn_imm.xml` e arquivos XML de aliases condicionais. Oráculo Python
+`Tests/Decoder/AARCH64/integer_condition_audit.py`; relatório imutável
+`Tests/Decoder/AARCH64/integer_condition_audit.csv`, SHA-256
+`49b7cf96af57e6172f95bac7b25895d5013c4b5e7eca594a0bb5119f0105f8fe`.
+6.656 pares por forma/codificação, 16 formas, 16 condições; relatório
+regenerado e comparado byte a byte sem sobrescrita. Esse corpus é **adicional**
+às 207.751 ocorrências das três campanhas anteriores; não as modifica.
+Limitação: predicados dos demais aliases e semântica não auditados; a fase
+3.2.5 permanece aberta.
+Nesta execução, `make -B test`, `make test` e `make catalog-test` passaram
+sequencialmente; builds EDK2 X64 GCC DEBUG e RELEASE também passaram.
+
 # Manifesto de validação da Fase 3.2.4 (2026-11-26)
 
 Fonte normativa: pacote oficial Arm `Build/arm-isa-2025-12.tar.gz`, SHA-256

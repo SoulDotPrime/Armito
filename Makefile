@@ -183,6 +183,8 @@ operand-extraction-test: $(AARCH64_OPERANDS_TEST) $(INTEGER_OPERANDS_REFERENCE) 
 	python3 $(AARCH64_TEST_DIR)/integer_immediate_differential.py ./$(INTEGER_FORM_PROBE)
 	python3 $(AARCH64_TEST_DIR)/integer_immediate_rejection_audit.py ./$(INTEGER_FORM_PROBE)
 	python3 $(AARCH64_TEST_DIR)/bitmask_exhaustive.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/integer_condition_audit.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/integer_alias_predicates.py ./$(INTEGER_FORM_PROBE)
 
 test: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST) $(ARM64E_TEST) catalog-test operand-extraction-test
 	./$(CORE_TEST)

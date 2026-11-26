@@ -1,3 +1,29 @@
+# Contrato parcial de aliases Integer — 3.2.5.1
+
+O alias é metadado de apresentação associado à forma/operation_id canônicos;
+seleção de alias não deve sobrescrever operação ou operandos arquiteturais.
+`Tests/Decoder/AARCH64/integer_alias_predicates.py` interpreta separadamente
+os 93 ASTs de condição/preferência da fonte Arm usando campos extraídos por
+posição do opcode, sem chamar a lógica de predicados C. Inclui comparação de
+registradores SP/ZR pelo valor codificado e função independente de bitmasks
+para MoveWidePreferred. Predicados falsos/verdadeiros e sobreposições são
+registrados individualmente. UBFM admite simultaneamente LSL e UBFIZ quando
+imms+1==immr; o runtime escolhe UBFIZ, LLVM imprime LSL, ambos representam o
+mesmo opcode UBFM. A semântica de execução futura precisa verificar efeitos
+de NZCV, SP/ZR, extensões e larguras no tradutor/IR, além da equivalência
+formal de cada alias; esta campanha não implementa execução.
+
+# Condições e aliases Integer — campanha parcial 3.2.5
+
+O oráculo separado em `Tests/Decoder/AARCH64/integer_condition_audit.py`
+implementa a tabela de `ConditionHolds` do XML Arm: EQ/NE por Z, CS/CC por C,
+MI/PL por N, VS/VC por V, HI/LS por C e Z, GE/LT por N==V, GT/LE por N==V
+e Z; AL e NV avaliam verdadeiro no pseudocódigo, mas não são inversos
+intercambiáveis na seleção de aliases. Inversão de alias apenas para cond<14.
+NZCV é tratado como quatro bits N:Z:C:V. Predicados de preferência não são
+restrições de codificação; aliases não mudam a operação canônica do probe.
+Esta auditoria parcial não constitui validação de semântica em execução.
+
 # Contrato de máscaras — Fase 3.2.4 (2026-11-26)
 
 O pseudocódigo Arm `DecodeBitMasks` recebe `immediate=true` nas oito formas

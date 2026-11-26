@@ -1,3 +1,23 @@
+# Fase 3.2.5.1 — campanha de predicados e prioridades, ainda aberta (2026-11-26)
+
+Inventário completo dos 93 aliases Integer nas 66 formas; campanha determinística
+de 48.005 pares, 142.731 registros individuais de alias. Oráculo Python
+independente do catálogo C avalia AST de condições, funções Arm BFXPreferred e
+MoveWidePreferred, cruza o probe e LLVM MC 18.1.3. 92 aliases possuem seleção
+positiva; REV64 tem preferência Arm explicitamente falsa. Sobreposição
+LSL/UBFIZ identificada em 106 codificações. Ainda não foi provada equivalência
+semântica independente para todos os aliases, nem prioridade normativa
+inequívoca para essa sobreposição; por isso a validação 3.2.5.1 não está
+encerrada. Não iniciar 3.2.6. Lacuna histórica dos 506 REJECT mantida.
+
+# Fase 3.2.5 — auditoria parcial; fase aberta (2026-11-26)
+
+Campanha nova para condições das 16 formas `condsel`/`condcmp` e aliases
+condicionais: 6.656 pares em relatório imutável. Ainda falta auditar
+independentemente os predicados e prioridades das 93 entradas de alias
+Integer, os demais grupos e a equivalência semântica; não declarar a fase
+concluída nem iniciar a 3.2.6. A lacuna histórica dos 506 REJECT permanece.
+
 # Fase 3.2.4 — DecodeBitMasks e validação bitfield (2026-11-26)
 
 Concluída na baseline atual: oráculo independente por bit verifica 114.688 pares
