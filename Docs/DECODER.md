@@ -1,69 +1,57 @@
-# Decoder AArch64 — API publica e contrato de entrada (Fase 05.01)
+# AArch64 Decoder
 
-Status: **API e contrato fechados; implementacao em depuracao (33 falhas em 166 verificacoes).**
+Status: partial implementation. The decoder uses a byte-buffer source and
+does not dereference guest virtual addresses.
 
-## 1. Contrato de entrada
+## Input contract
 
-O Decoder nunca recebe ponteiro cru de memoria do firmware. Ele recebe uma
-**fonte de instrucoes** (`ArmitoDecoderSource`) que descreve onde o codigo esta:
+`ArmitoDecoderSourceSet` provides a readable byte buffer, its size, guest base
+address, and executable/readable flags. AArch64 instructions are 4 bytes,
+little-endian, and require 4-byte alignment. Out-of-range and truncated reads
+are reported as explicit decoder statuses.
 
-- `base` — endereco virtual da primeira instrucao (deve ser multiplo de 4);
-- `length` — tamanho em bytes da regiao decodificavel;
-- `read` — funcao de leitura fornecida pelo chamador (permite mapear paginas
-  de forma segura, sem dereferenciar endereco arbitrario);
-- `context` — opaco devolvido em cada `read`.
+`AARCH64Classify` and `AARCH64Decode` are stateless. The latter extracts
+operands from supported encodings. Branch immediates are returned as signed
+byte displacements; `AARCH64ToIR` resolves the direct `B` target using the
+instruction address.
 
-Regras do contrato:
+## Implemented classification and operand extraction
 
-1. Toda instrucao AArch64 tem 4 bytes e o PC e sempre alinhado a 4; endereco
-   desalinhado ou fora de `[base, base+length)` e erro de entrada, nao
-   instrucao invalida.
-2. O decoder **nao escreve** na fonte; le uma vez por instrucao e trata leitura
-   falha como `ARMITO_DECODER_READ_ERROR`.
-3. O decoder nao aloca memoria: estado vive em `ArmitoDecoder` e nos buffers do
-   chamador.
-4. Saida de uma instrucao: `AARCH64Opcode` (classificacao) + `AARCH64Instruction`
-   (operandos ja extraidos: registradores, imediato, condicao, deslocamento).
-5. Instrucao nao traduzida nao e aproximada: vira `ARMITO_IR_OP_UNSUPPORTED`
-   com a codificacao original preservada (D-021).
+- `NOP` and `HINT`
+- `B`, `BL`, `BR`, `BLR`, and `RET`
+- `B.cond`, `CBZ`, `CBNZ`, `TBZ`, and `TBNZ`
+- `MOV` register alias, `MOVN`, `MOVZ`, and `MOVK`
+- `ADD`, `ADDS`, `SUB`, and `SUBS` immediate forms
+- `ADD`, `ADDS`, `SUB`, and `SUBS` shifted-register forms
 
-## 2. API publica
+This list describes decoder classification and operand extraction, not
+executable translation support.
 
-### Ciclo de vida (`Decoder/Includes/Decoder.h`)
+## Translation to IR
 
-| Funcao | Contrato |
-|---|---|
-| `ArmitoDecoderInitialize(ArmitoDecoder *)` | estado inicial; idempotente |
-| `ArmitoDecoderReset(ArmitoDecoder *)` | zera estatisticas, mantem fonte |
-| `ArmitoDecoderSetSource(ArmitoDecoder *, const ArmitoDecoderSource *)` | valida base/4 e `read != NULL` |
-| `ArmitoDecoderDecodeInstruction(...)` | decodifica uma instrucao |
-| `ArmitoDecoderDecodeBlock(...)` | decodifica ate `max_instructions` ou ate desvio |
-| `ArmitoDecoderToIR(...)` | traduz o ultimo bloco para a IR universal |
-| `ArmitoDecoderGetStats(...)` | contadores |
+Translated: `NOP`, direct `B`, register `BR`, and `RET`. `RET` produces an IR
+return using the decoded target register; it is not represented as a `NOP`.
 
-### Classificacao (`Decoder/AARCH64/Includes/AARCH64.h`)
+Other recognized instructions, including `BL` and `BLR`, are preserved as
+`ARMITO_IR_OP_UNSUPPORTED`. Call/link-register side effects and conditional
+branch semantics are not yet modeled. Encodings outside the implemented
+classification are reported as unsupported and are preserved in IR when
+`record_unsupported` is enabled.
 
-`AARCH64Classify(encoding, &opcode)` e `AARCH64Decode(encoding, &instruction)`
-sao puras: nao tocam memoria do processo, nao dependem de estado global.
-`AARCH64ToIR` e a unica funcao que emite na IR.
+## Validation
 
-### Codigos de retorno (`ArmitoDecoderStatus`)
+Run the host suite with:
 
-`SUCCESS`, `INVALID_ARGUMENT`, `INVALID_STATE`, `READ_ERROR`,
-`UNALIGNED_ADDRESS`, `TRUNCATED_INSTRUCTION`, `UNSUPPORTED_INSTRUCTION`,
-`IR_ERROR`.
+```sh
+make test
+```
 
-## 3. Cobertura desta fase
+The decoder tests cover classification, operand extraction, source bounds,
+unsupported-instruction recording, branch stopping, and the return IR
+operation. The decoder is not a complete AArch64/ARM64E implementation.
 
-Classificadas: `NOP`, `RET`, `BR`, `BL` (imediato e registrador), `B.cond`,
-`CBZ`/`CBNZ`, `TBZ`/`TBNZ`, `MOV` (registrador), `MOV` imediato,
-`ADD`/`SUB` deslocados. Todo o resto do espaco de codificacao devolve
-`UNSUPPORTED_INSTRUCTION` sem consumir a instrucao do bloco.
-
-## 4. Ponto aberto
-
-`Tests/DecoderTest.c` ainda falha em 33 de 166 verificacoes, concentradas em
-`AARCH64Classify` para o grupo de desvios. A investigacao mostrou que o
-classificador gera a comparacao correta no binario mas o desvio de controle
-nao e tomado como esperado — e preciso isolar com um binario minimo antes de
-mexer no resto do decoder.
+The EDK2 X64 DEBUG and RELEASE builds were validated with the GCC toolchain;
+both produced a PE32+ EFI application. This verifies compilation and linking,
+not execution on UEFI firmware. Memory, SIMD, pointer authentication, system
+instructions, a reference interpreter, native x86_64 code generation, and
+Mach-O loading remain unimplemented or unverified.

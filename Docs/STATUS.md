@@ -91,9 +91,31 @@ existentes. Não representam capacidade validada em execução.
 
 ## 5. Decoder e IR
 
-A arquitetura prevê Decoder e Universal IR como camadas centrais, mas o
-foco atual é terminar a base do Core. Não marcar Decoder ou IR como
-concluídos sem código, contratos e testes correspondentes.
+O Decoder AArch64 possui API de fonte de bytes, classificacao e extracao de
+operandos para um subconjunto de controle de fluxo, movimentacao e aritmetica.
+NOP, B, BR e RET sao traduzidos para IR; instrucoes reconhecidas sem semantica
+de IR completa sao preservadas como `ARMITO_IR_OP_UNSUPPORTED`. O Core e a IR
+passam nos testes de host; o Decoder tambem passa sua suite de host (224
+verificacoes). Os builds EDK2 X64 DEBUG e RELEASE passaram com GCC e geraram
+aplicacoes EFI PE32+. A execucao em firmware UEFI real nao foi testada. Isso
+nao representa suporte completo AArch64.
+
+A IR possui tipos, valores, operacoes, blocos e um validador inicial. A
+validacao nao cobre ainda todos os contratos semanticos da IR descritos no
+roadmap. Mantenha Decoder e IR como parciais ate implementar e testar as
+camadas restantes.
+
+## 5.1 Estado arquitetural da CPU AArch64
+
+O modulo `CPU/AARCH64/AARCH64CPUState` armazena X0-X30, SP, PC, NZCV, FPCR,
+FPSR, V0-V31, estado de excecao e slots de chaves ARM64E. As vistas Wn/WSP
+limitam escritas a 32 bits e zero-estendem; XZR/WZR leem zero e descartam
+escritas. Vetores sao armazenados em 128 bits; escrita de 64 bits limpa a
+metade superior. A suite host passa 58 verificacoes e os builds EDK2 X64
+DEBUG e RELEASE incluem o modulo.
+
+Os slots de ARM64E sao apenas armazenamento de estado. Assinatura,
+autenticacao de ponteiros e politica de falha ainda nao estao implementadas.
 
 ## 6. Integração com ArmitoBoot
 

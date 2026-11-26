@@ -11,6 +11,42 @@ static ArmitoIRTypeID armito_type_flags = ARMITO_IR_TYPE_INVALID;
 static ArmitoIRValueID armito_register_values[ARMITO_DECODER_GPR_COUNT + 1];
 static uint8_t armito_registers_mapped = 0;
 
+static ArmitoDecoderStatus ArmitoEmitUnsupported(
+    const ArmitoDecoderInstruction *instruction,
+    uint32_t *operations
+)
+{
+    ArmitoIROperationID operation_id;
+    ArmitoIRStatus ir_status;
+
+    *operations = 0;
+    if (!armito_decoder_config.record_unsupported)
+        return ARMITO_DECODER_SUCCESS;
+
+    ir_status = ArmitoIROperationEmit(
+        ARMITO_IR_OP_UNSUPPORTED,
+        ARMITO_IR_TYPE_INVALID,
+        ARMITO_IR_VALUE_INVALID,
+        NULL,
+        0,
+        &operation_id
+    );
+    if (ir_status != ARMITO_IR_SUCCESS)
+        return ARMITO_DECODER_IR_ERROR;
+
+    ir_status = ArmitoIROperationSetSource(
+        operation_id,
+        (uint32_t)(instruction->address & 0xFFFFFFFFu),
+        instruction->encoding,
+        ARMITO_DECODER_INSTRUCTION_SIZE
+    );
+    if (ir_status != ARMITO_IR_SUCCESS)
+        return ARMITO_DECODER_IR_ERROR;
+
+    *operations = 1;
+    return ARMITO_DECODER_SUCCESS;
+}
+
 static ArmitoDecoderStatus ArmitoMapRegisters(void)
 {
     uint8_t i;
@@ -166,8 +202,14 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
 
     if (status != ARMITO_DECODER_SUCCESS) {
         *result = AARCH64ResultFor(status);
+        if (status == ARMITO_DECODER_UNSUPPORTED_INSTRUCTION) {
+            ArmitoDecoderStatus emit_status =
+                ArmitoEmitUnsupported(instruction, &operations);
+            if (emit_status != ARMITO_DECODER_SUCCESS)
+                return emit_status;
+        }
         ArmitoDecoderStatsRecord(
-            *result, instruction->offset, instruction->encoding, 0
+            *result, instruction->offset, instruction->encoding, operations
         );
         return status;
     }
@@ -177,7 +219,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
     if (status != ARMITO_DECODER_SUCCESS) {
         *result = AARCH64ResultFor(status);
         ArmitoDecoderStatsRecord(
-            *result, instruction->offset, instruction->encoding, 0
+            *result, instruction->offset, instruction->encoding, operations
         );
         return status;
     }
@@ -200,6 +242,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
     ArmitoDecoderInstruction instruction;
     ArmitoDecoderSummary local;
     ArmitoDecoderStatus status;
+    ArmitoDecoderStatus terminal_status = ARMITO_DECODER_SUCCESS;
     ArmitoDecodeResult result;
     ArmitoIRLabelID block_id = ARMITO_IR_LABEL_INVALID;
     ArmitoIRStatus ir_status;
@@ -209,10 +252,6 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
 
     if (summary == NULL)
         return ARMITO_DECODER_INVALID_ARGUMENT;
-
-    if (armito_decoder_state != ARMITO_DECODER_READY &&
-        armito_decoder_state != ARMITO_DECODER_DECODING)
-        return ARMITO_DECODER_INVALID_STATE;
 
     status = ArmitoDecoderSourceGet(&src);
 
@@ -226,6 +265,13 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
 
     if (offset % ARMITO_DECODER_ALIGNMENT != 0)
         return ARMITO_DECODER_INVALID_ARGUMENT;
+
+    if (offset >= src.size)
+        return ARMITO_DECODER_OUT_OF_RANGE;
+
+    if (armito_decoder_state != ARMITO_DECODER_READY &&
+        armito_decoder_state != ARMITO_DECODER_DECODING)
+        return ARMITO_DECODER_INVALID_STATE;
 
     local.isa = ARMITO_ISA_AARCH64;
     local.instructions_decoded = 0;
@@ -252,6 +298,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
         status = ArmitoDecoderSourceFetch(offset, &instruction);
 
         if (status != ARMITO_DECODER_SUCCESS) {
+            terminal_status = status;
             local.last_result = ARMITO_DECODE_INVALID;
             break;
         }
@@ -262,6 +309,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
 
         if (result == ARMITO_DECODE_INVALID) {
             local.instructions_invalid++;
+            terminal_status = status;
             break;
         }
 
@@ -275,20 +323,19 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
         local.bytes_consumed += ARMITO_DECODER_INSTRUCTION_SIZE;
         local.next_address = src.address + offset;
 
-        if (status == ARMITO_DECODER_SUCCESS) {
-            AARCH64Classify(instruction.encoding, &opcode);
-
-            if (armito_decoder_config.stop_at_branch &&
-                (opcode == AARCH64_OPCODE_BR ||
-                 opcode == AARCH64_OPCODE_BL ||
-                 opcode == AARCH64_OPCODE_B_COND ||
-                 opcode == AARCH64_OPCODE_RET ||
-                 opcode == AARCH64_OPCODE_CBZ ||
-                 opcode == AARCH64_OPCODE_CBNZ ||
-                 opcode == AARCH64_OPCODE_TBZ ||
-                 opcode == AARCH64_OPCODE_TBNZ))
-                break;
-        }
+        AARCH64Classify(instruction.encoding, &opcode);
+        if (armito_decoder_config.stop_at_branch &&
+            (opcode == AARCH64_OPCODE_B ||
+             opcode == AARCH64_OPCODE_BL ||
+             opcode == AARCH64_OPCODE_BR ||
+             opcode == AARCH64_OPCODE_BLR ||
+             opcode == AARCH64_OPCODE_B_COND ||
+             opcode == AARCH64_OPCODE_RET ||
+             opcode == AARCH64_OPCODE_CBZ ||
+             opcode == AARCH64_OPCODE_CBNZ ||
+             opcode == AARCH64_OPCODE_TBZ ||
+             opcode == AARCH64_OPCODE_TBNZ))
+            break;
 
         if (offset >= src.size)
             break;
@@ -312,7 +359,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
 
     armito_decoder_state = ARMITO_DECODER_FINISHED;
 
-    return ARMITO_DECODER_SUCCESS;
+    return terminal_status;
 }
 
 ArmitoDecoderStatus ArmitoDecoderGetStats(ArmitoDecoderStats *stats)

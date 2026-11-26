@@ -92,6 +92,10 @@ O mapeamento `(classe, índice) -> valor` descreve como o estado da CPU
 de origem foi projetado na IR. Classes: `GPR`, `VECTOR`, `FLAGS`, `PC`,
 `STACK_POINTER`.
 
+Esse mapeamento é simbólico e não contém os valores concretos dos
+registradores da CPU convidada. O estado arquitetural AArch64 em runtime é
+mantido separadamente por `CPU/AARCH64/AARCH64CPUState`.
+
 ## 4. Contrato com o Decoder
 
 1. `ArmitoIRInitialize()` uma vez por tradução.

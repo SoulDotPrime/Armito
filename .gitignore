@@ -1,3 +1,6 @@
 Tests/
 /Docs/FIRMWARE/
 /Docs/AUDI/
+.vscode/
+Build/
+Makefile

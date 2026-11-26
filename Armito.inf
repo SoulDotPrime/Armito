@@ -10,6 +10,8 @@
     Boot/BootEntry.c
     Boot/ArmitoBoot.c
 
+    CPU/AARCH64/AARCH64CPUState.c
+
     # Core (fechado: Tests/CoreTest.c 74/0)
     Core/Core.c
     Core/Config/CoreConfig.c
