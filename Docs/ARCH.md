@@ -1,3 +1,34 @@
+# Contrato de máscaras — Fase 3.2.4 (2026-11-26)
+
+O pseudocódigo Arm `DecodeBitMasks` recebe `immediate=true` nas oito formas
+logical immediate e `false` nas seis bitfield. `immN:NOT(imms)` determina
+len; levels=(1<<len)-1, S=imms&levels, R=immr&levels, diff=(S-R)&63,
+esize=1<<len, welem=Ones(S+1), telem=Ones((diff&levels)+1). `wmask` replica
+ROR(welem,R), `tmask` replica telem até a largura da operação. Logical
+immediate reserva S==levels; bitfield o admite, mas exige N==sf e, em 32 bits,
+immr[5]==imms[5]==0. A implementação C existente evita shifts de 64 bits
+e rotação por largura inteira mediante testes e máscara de largura; o oráculo
+não chama nem compartilha rotinas do runtime. Aliases bitfield são conferidos
+por seus parâmetros arquiteturais, não por igualdade textual de mnemonic.
+
+# Contrato de rastreabilidade da baseline 3.2.3 (2026-11-26)
+
+Chave de identidade: `(form, encoding)`; a lista preserva ordenação e inclui
+todos os `REJECT`. `integer_immediate_rejection_audit.py` recalcula formas,
+amostras e deduplicação determinística (`dict.fromkeys` mantém a ordem de
+inserção), consulta o probe e LLVM MC e exige igualdade de **bytes** com
+`integer_immediate_all_candidates.csv` e
+`integer_immediate_rejections.csv`. Jamais substituir automaticamente a
+baseline durante testes; modificar um corpus exige revisão explícita e novo
+hash. As categorias são atribuídas uma vez por candidato; a soma de todos os
+cinco grupos deve ser 62.851 e a chave não pode se repetir. O diferencial
+immediate confronta campos brutos com bits do próprio opcode e os valores
+efetivos com LLVM e invariantes de sinal/escala. Os `SETF` são verificados
+contra os quatro bits fixos Arm (`1101`) e registrados separadamente, pois
+LLVM não imprime uma máscara numérica. Rejeição LLVM sozinha não é oráculo de
+invalidade. A verificação da validade do próprio `DecodeBitMasks` foi
+**transferida**, integralmente (1.016), para 3.2.4.
+
 # Guardas Integer immediate (Fase 3.2.3.1)
 
 `AARCH64CatalogFormEncodingValid` aplica as regras oficiais Arm às formas

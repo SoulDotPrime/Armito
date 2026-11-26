@@ -1,5 +1,7 @@
 import collections
 import csv
+import hashlib
+import io
 import json
 import sys
 
@@ -55,15 +57,21 @@ def fields_for(form, word):
     return ""
 
 
-def write_report(path, rows):
-    with open(path, "w", newline="", encoding="utf-8") as stream:
-        writer = csv.writer(stream)
-        writer.writerow(("form", "operation", "group", "encoding", "fields",
-                         "architectural_reason", "probe", "llvm", "category"))
-        writer.writerows(rows)
+def verify_report(path, rows):
+    stream = io.StringIO(newline="")
+    writer = csv.writer(stream)
+    writer.writerow(("form", "operation", "group", "encoding", "fields",
+                     "architectural_reason", "probe", "llvm", "category"))
+    writer.writerows(rows)
+    regenerated = stream.getvalue().encode("utf-8")
+    with open(path, "rb") as stored:
+        original = stored.read()
+    if original != regenerated:
+        raise RuntimeError(f"byte-for-byte corpus mismatch: {path}")
+    return hashlib.sha256(original).hexdigest()
 
 
-def main(probe, record=False):
+def main(probe):
     with open(register.CATALOG, encoding="utf-8") as stream:
         catalog = json.load(stream)
     forms = [form for form in catalog["instruction_forms"]
@@ -123,9 +131,8 @@ def main(probe, record=False):
         raise RuntimeError(f"immediate reconciliation {dict(counters)} != {expected}: {failures[:10]}")
     if len(report) != 9682:
         raise RuntimeError("immediate audit rows changed")
-    if record:
-        write_report(FULL_REPORT, all_rows)
-        write_report(REPORT, report)
+    full_hash = verify_report(FULL_REPORT, all_rows)
+    rejection_hash = verify_report(REPORT, report)
     with open(FULL_REPORT, newline="", encoding="utf-8") as stream:
         full_stored = list(csv.DictReader(stream))
     if len(full_stored) != len(all_rows) or any(
@@ -146,6 +153,7 @@ def main(probe, record=False):
         raise RuntimeError("immediate audit category count changed")
     print("Immediate audit:", dict(counters), "rows=", len(report),
           "all-candidate-rows=", len(full_stored))
+    print("Immutable immediate corpora SHA-256:", full_hash, rejection_hash)
     baseline = [(form["id"], word) for form in forms
                 for word in register.sample_words(patterns[form["encoding_id"]],
                                                   register.bit_fields(form, groups, sets))]
@@ -206,7 +214,9 @@ def main(probe, record=False):
 
 if __name__ == "__main__":
     try:
-        main(sys.argv[1], len(sys.argv) == 3 and sys.argv[2] == "--record")
+        if len(sys.argv) != 2:
+            raise ValueError("usage: integer_immediate_rejection_audit.py PROBE")
+        main(sys.argv[1])
     except (OSError, ValueError, IndexError, RuntimeError) as error:
         print("Rejection audit failed:", error, file=sys.stderr)
         raise SystemExit(1)

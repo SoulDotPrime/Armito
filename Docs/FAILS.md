@@ -1,4 +1,47 @@
-# Fase 3.2.3.1 — resolução de rejeições (2026-11-26)
+# Fase 3.2.4 — resolução dos 56 REJECT atuais (2026-11-26)
+
+Os 56 pares individualizados em
+`Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv` são
+verificados um a um contra `bitmask_exhaustive.csv`: 40 possuem S==levels
+(logical immediate all-ones reservado) e 16 possuem len<1. Todos são
+rejeitados pelo runtime e pelo LLVM MC 18.1.3; a invalidade decorre do
+oráculo arquitetural, não da rejeição LLVM isolada. Os outros 960 casos
+transferidos têm máscaras válidas iguais às produzidas pelo extrator.
+Nenhuma divergência comprovada de DecodeBitMasks exigiu correção C. A lacuna
+do corpus histórico de 506 REJECT permanece independente e não resolvida.
+
+# Lacuna histórica permanente da Fase 3.2.3 (2026-11-26)
+
+Busca realizada: `git log --all`, `git reflog --all`, branch
+`backup/main-before-sync`, refs de checkpoints Cline e Agent, `git fsck
+--no-reflogs --unreachable`, stash e artefatos `/tmp/armito-phase323*`.
+O CSV de 62.851 pares, o gerador e o probe aparecem pela primeira vez no
+commit `86cd1bb`; não existem no pai, no backup ou nos checkpoints anteriores.
+Os nove commits inalcançáveis e 295 blobs soltos examinados não fornecem o
+corpus de 506. Logs com o prefixo `/tmp/armito-phase323-` do resumo não estão
+presentes. O único probe anterior preservado em
+`/tmp/armito-phase3231-original-probe` (SHA-256
+`da3173477b117b78ce270c752e76a456768f4dc417be1c9b3fbd827bb753e6e0`)
+é artefato local criado para comparar a lógica anterior às guardas, **não**
+o probe do resumo perdido; o arquivo original de candidatos não foi
+recuperado. Não há comparação par a par possível com o corpus perdido, nem
+atribuição confiável das duas codificações em diferença.
+
+Aplicando esse probe anterior **somente aos 62.851 pares atualmente
+preservados**, obtêm-se 504 `REJECT`: 448 bitfield + 56 log_imm. As 9.176
+respostas LLVM-invalid entre os então aceitos correspondem exatamente a
+24 addsub_ext + 128 addsub_shift + 256 log_shift + 8.768 bitfield.
+O resumo perdido descreve 506 `REJECT` (459 bitfield + 47 addsub_shift) e
+904 + 264 + 2.312 + 5.696 rejeições LLVM por esses quatro grupos. Contagens
+iguais de 9.176 **não demonstram** identidade de pares. A diferença pode
+envolver geração, probe, classificação ou revisão de catálogo; sem os
+artefatos, não se pode isolar qual fator mudou. As guardas novas, que
+rejeitam os 9.176 pares inválidos do CSV atual, explicam a diferença entre
+probes **no mesmo corpus**, não entre corpora. Não reconstruir registros
+históricos a partir de totais. Baseline atual independente dessa lacuna,
+limitada à 3.2.3; 1.016 bitmasks transferidos para 3.2.4.
+
+# Fase 3.2.3.1 — resolução de rejeições (registro anterior, 2026-11-26)
 
 Registro completo em `Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv`
 (62.851 candidatos); relatórios de rejeições e exceções em
@@ -24,9 +67,9 @@ probe (459 bitfield e 47 addsub_shift), e 9.176 rejeições LLVM distribuídas
 em 904 addsub_ext, 264 addsub_shift, 2.312 log_shift e 5.696 bitfield.
 O corpus regenerado aqui produz 504 rejeições do probe (448 bitfield e 56
 log_imm) e 9.176 LLVM-invalid aceitos antes da correção distribuídos em
-24 addsub_ext, 128 addsub_shift, 256 log_shift e 8.768 bitfield. Os logs
-originais não foram encontrados; números globais iguais não identificam
-codificações iguais. Portanto não declarar Fase 3.2.3 concluída.
+Os logs originais não foram encontrados; números globais iguais não
+identificam codificações iguais. Este bloqueio permanece histórico; somente
+a baseline oficial atual pode ser declarada concluída.
 
 # Fase 3.2.3 — classificação de rejeições immediate (2026-11-26)
 

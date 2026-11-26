@@ -1,4 +1,29 @@
-# Fase 3.2.3.1: auditoria reproduzível Integer immediate (2026-11-26)
+# Fase 3.2.4 — DecodeBitMasks e validação bitfield (2026-11-26)
+
+Concluída na baseline atual: oráculo independente por bit verifica 114.688 pares
+(14 formas × 2 valores de N × 64 immr × 64 imms) e máscaras extraídas. Os
+1.016 casos transferidos da 3.2.3 foram confrontados por par, inclusive os 56
+rejeitados (40 all-ones, 16 len inválido). O runtime C existente concordou com
+o pseudocódigo Arm; não houve correção arquitetural necessária. Resultado e
+reprodução: `Docs/COMPATIBILITY.md`. A 3.2.5 e tradução semântica não foram
+iniciadas. A lacuna do corpus histórico de 506 continua aberta.
+
+# Fase 3.2.3: baseline atual encerrada; lacuna histórica registrada (2026-11-26)
+
+Para a baseline versionada em `86cd1bb`, o teste imutável regenera e compara
+byte a byte os 62.851 candidatos (89 formas/118 campos): 52.209 verificações
+numéricas LLVM, 9.624 rejeições arquiteturais justificadas, dois `SETF`
+fixos. Os 1.016 `log_imm` (960 aceitos, 56 rejeitados) estão formalmente
+transferidos à 3.2.4, **não** validados nesta fase. Os 67 testemunhos de
+regressão de registradores, as 195 formas e as 880 rejeições arquiteturais
+do seu corpus continuam verificadas. Somente a cobertura immediate aplicável
+à baseline atual permite encerrar **3.2.3 para esta baseline**; 3.2 integral,
+efeitos implícitos, demais operandos e tradução semântica continuam abertos.
+Não iniciar 3.2.4 nesta execução. A diferença com as contagens do resumo
+anterior é uma lacuna histórica permanente, não equivalência inferida; detalhes
+e hashes em `STATUS.md`, `COMPATIBILITY.md` e `FAILS.md`.
+
+# Fase 3.2.3.1: auditoria reproduzível Integer immediate (histórico, 2026-11-26)
 
 No corpus reproduzido nesta árvore, 9.176 rejeições pelo LLVM e 880 do
 corpus de registradores foram reconciliadas por
@@ -14,7 +39,8 @@ exclusivamente na 3.2.4. O resumo histórico da retomada descrevia 506 REJECT
 (459 bitfield, 47 addsub_shift) e distribuição diferente das 9.176 rejeições;
 o corpus reproduzido aqui apresenta 504 REJECT (448 bitfield, 56 log_imm).
 Sem os artefatos originais, não é correto afirmar identidade entre os corpora.
-Fase 3.2.3 permanece aberta até reconciliar essa discrepância.
+Este registro descreve o bloqueio anterior à fixação da nova baseline; a
+discrepância permanece como lacuna histórica, sem bloquear a baseline atual.
 Não avançar para tradução semântica.
 
 # Fase 3.2.3: immediates Integer (2026-11-26)

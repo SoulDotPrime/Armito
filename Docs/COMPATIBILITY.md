@@ -1,3 +1,70 @@
+# Manifesto de validação da Fase 3.2.4 (2026-11-26)
+
+Fonte normativa: pacote oficial Arm `Build/arm-isa-2025-12.tar.gz`, SHA-256
+`845ed227a6692ddb6b602da2ecbbac776620195a9c001ec576ced3a9a53dc26b`,
+`ISA_A64_xml_A_profile-2025-12/shared_pseudocode.xml`, função `DecodeBitMasks`.
+LLVM MC 18.1.3 (`--disassemble --triple=aarch64`, recursos descritos abaixo)
+é comparação independente adicional, não autoridade para invalidade.
+
+`Tests/Decoder/AARCH64/bitmask_exhaustive.py` gera o relatório determinístico
+`Tests/Decoder/AARCH64/bitmask_exhaustive.csv`, SHA-256
+`ffbd31d7d7a6ad071602fc44b7b8fc776e0dc33cf62eaed80374f595ab4d8a3c`.
+O teste regenera em memória e exige igualdade byte a byte e hash fixado;
+não sobrescreve o CSV. Cobertura: 14 formas × N={0,1} × 64 immr × 64 imms =
+114.688 pares. Cada linha identifica operação, largura, codificação, campos,
+razão da classificação, len, levels, S, R, diff, esize, welem, telem, wmask,
+tmask e texto LLVM. Para logical immediate, por operação e por largura:
+3.648 válidos, 320 all-ones, 128 len inválido e 4.096 N/largura inválidos.
+Para cada operação bitfield em 32 bits: 1.024 válidos, 3.072 imm[5]
+inválidos e 4.096 N/largura inválidos; em 64 bits: 4.096 válidos e 4.096
+N/largura inválidos. Total: 60.672 válidos e 54.016 inválidos. Conferência
+por par dos 1.016 transferidos: 960 válidos, 40 all-ones e 16 len inválido.
+O CSV permanece permanente; cada mudança exige revisão explícita de hash.
+O alvo `operand-extraction-test` executa esse oráculo após as regressões 3.2.3.
+Validação desta execução: `make -B test`, `make test`, `make catalog-test` e
+EDK2 X64 GCC DEBUG/RELEASE, todos com código de saída zero. O inventário
+existente (3.099 padrões, 4.296 formas, 45.360 descritores) não foi editado.
+
+# Manifesto de reprodução da baseline 3.2.3 (2026-11-26)
+
+Raiz Git de introdução do corpus: `86cd1bb`; IDs de commit identificam a
+proveniência, SHA-256 abaixo identifica o **conteúdo**. Executar no diretório
+raiz: `make -B test`, `make test`, `make catalog-test`, nessa ordem. O alvo
+`operand-extraction-test` recompõe o corpus com os dados JSON, Python 3 e o
+probe C e exige igualdade byte a byte com os CSVs; não os regrava. Na workspace
+EDK2 (`/home/gui/edk2`, `ArmitoPkg` vinculado a esta árvore):
+`build -p ArmitoPkg/Armito.dsc -a X64 -t GCC -b DEBUG`, seguido de `RELEASE`.
+Nesta execução: os cinco comandos terminaram com código zero; 67 regressões
+históricas de registradores, 195/195 formas, 26.653 verificações positivas
+e 880 testemunhos de rejeição continuam executados. Ferramentas: Ubuntu LLVM
+MC 18.1.3, `--disassemble --triple=aarch64` com
+`--mattr=+crc,+pauth,+mte,+cssc,+flagm,+pauth-lr,+cpa`; Python 3.12.3,
+GCC Ubuntu 13.3.0-6ubuntu2~24.04.1, Git 2.43.0; compilação host
+`-std=gnu11 -Wall -Wextra -O2`, EDK2 X64/GCC DEBUG e RELEASE.
+
+SHA-256 (caminhos relativos à raiz, salvo o pacote Arm em `Build/`):
+
+| Artefato | SHA-256 |
+| --- | --- |
+| `Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv` | `ed292fcffc46970c987fddf22e2f73d7a7d7dd75831d5bb187f072b6b5e12fb9` |
+| `Tests/Decoder/AARCH64/integer_immediate_rejections.csv` | `d6545bbcd94cc1fbdb27958e96640f6c83ec5d75a24b136fcb8f4595d1403c20` |
+| `Tests/Decoder/AARCH64/integer_register_rejections.csv` | `3af651c064766b3d41778432e19134ab96e62d8e6e74decc0ccffd2f1bd94b32` |
+| `Tests/Decoder/AARCH64/integer_register_baseline.csv` | `739a129672c95570dddc8b256f2dc9bf9dae2957b470fa8c531130e3f2534015` |
+| `Tests/Decoder/AARCH64/integer_immediate_differential.py` | `700c201cdfe96c896849749b5dc1d1084790f782db9ce0cea79ddd3e39b8c9fc` |
+| `Tests/Decoder/AARCH64/integer_immediate_rejection_audit.py` | `16293dbf457e451b699c13c3887b98629f7ca539fb63e1731f1071ddb2d0b255` |
+| `Tests/Decoder/AARCH64/integer_form_differential.py` | `f6d0cb8bb89b6ee0db73147ef72185646ea46a9e882ee652347ffcfb7999e008` |
+| `Tests/Decoder/AARCH64/IntegerFormProbe.c` | `cc691b29faec94bcc86184490f98abb99e021fd5f69a90ded9488d210e60488c` |
+| `Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json` | `5ef585e94947a0e112b248f067b0b2165670f67473e2e3ca795abfbe9f04b6a1` |
+| `Build/arm-isa-2025-12.tar.gz` (local, não versionado) | `845ed227a6692ddb6b602da2ecbbac776620195a9c001ec576ced3a9a53dc26b` |
+
+O XML Arm A64 2025-12 fixa `Decode_UNDEF` para imm3 > 4 (addsub_ext), shift=3 ou
+imm6[5] em 32 bits (addsub_shift), imm6[5] em 32 bits (log_shift), e N/sf ou
+immr[5]/imms[5] em 32 bits (bitfield). Cada uma das 9.624 linhas inválidas
+na baseline atual tem regra específica, probe REJECT e LLVM-invalid no CSV;
+nenhuma rejeição foi contabilizada como comparação positiva. `SETF` usa
+`mask=1101` no XML e não possui operando de máscara impresso. A separação
+`log_imm`/`DecodeBitMasks` (960+56) foi transferida à 3.2.4, não executada.
+
 # Referência arquitetural para Fase 3.2.3.1 (2026-11-26)
 
 Pacote Arm oficial `ISA_A64_xml_A_profile-2025-12.tar.gz`, SHA256

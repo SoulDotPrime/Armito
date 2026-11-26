@@ -1,4 +1,31 @@
-# Fase 3.2.3.1 — imediatos, auditoria do corpus reproduzido (2026-11-26)
+# Fase 3.2.4 — máscaras auditadas na baseline atual (2026-11-26)
+
+As 14 formas AND/ORR/EOR/ANDS/SBFM/UBFM/BFM foram verificadas nas duas
+larguras aplicáveis, inclusive N alternativo, 64 valores de immr e 64 de
+imms: 114.688 verificações individuais. Um oráculo Python independente
+calcula len, levels, S, R, diff, esize, welem, telem, wmask e tmask por bits;
+os valores do extrator C e os parâmetros dos aliases LLVM 18.1.3 concordam.
+Dos 1.016 registros transferidos, 960 são válidos e os 56 REJECT são
+inválidos (40 S==levels e 16 len<1). A 3.2.3 e seus CSVs não foram alterados;
+a divergência de proveniência do corpus histórico permanece documentada.
+
+# Fase 3.2.3 — fechamento restrito à baseline atual (2026-11-26)
+
+Baseline oficial: commit `86cd1bb` introduziu o CSV completo de 62.851 pares
+únicos (forma, codificação). A auditoria atual compara a geração inteira com
+esse arquivo **byte a byte**, sem opção de sobrescrita; qualquer alteração
+da ordem, codificação, categoria, razão ou texto LLVM falha. Partição completa
+e mutuamente exclusiva: 52.209 `llvm-verified`, 9.624
+`architecturally-invalid`, 960 `deferred-bitmask`, 56
+`deferred-bitmask-reject`, dois `implicit-setf`. O relatório reduzido contém
+as 9.624 regras arquiteturais, os 56 casos transferidos e os dois SETF;
+as 52.209 verificações positivas permanecem no CSV completo e no diferencial
+LLVM por forma. `DecodeBitMasks` (todos os 1.016 casos) é responsabilidade
+exclusiva da 3.2.4, não executada nesta auditoria. Fase 3.2.3 encerrada **só
+para esta baseline e somente para immediates aplicáveis**. A fase 3.2 geral
+permanece aberta; a lacuna do corpus de 506 não foi resolvida por suposição.
+
+# Fase 3.2.3.1 — imediatos, auditoria do corpus reproduzido (registro anterior)
 
 Os 62.851 pedidos estão registrados individualmente em
 `Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv` e são
@@ -15,8 +42,8 @@ nos 9.624 inválidos (os 448 restantes já eram rejeitados pelo probe).
 Arquivos CSV preservam cada codificação. A cobertura de registradores permanece
 30.212 pedidos, 26.653 positivos em 195/195 formas e 880 inválidos nesse
 corpus, dos quais 15 pares (forma, codificação) coincidem com o corpus immediate.
-As 67 regressões históricas de registradores permanecem. Fase 3.2.3 ainda
-aberta para conciliação do corpus histórico; Fase 3.2.4 pendente.
+As 67 regressões históricas de registradores permanecem. A pendência de
+conciliação do corpus anterior não altera o fechamento **limitado** acima.
 
 # Fase 3.2.3 — immediates Integer (2026-11-26)
 
