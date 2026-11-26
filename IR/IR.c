@@ -1,6 +1,6 @@
 #include "Includes/IR.h"
 
-static volatile uint32_t ir_state = ARMITO_IR_UNINITIALIZED;
+static volatile uint32_t ir_module_state = ARMITO_IR_UNINITIALIZED;
 
 ArmitoIRStatus ArmitoIRReset(void)
 {
@@ -31,7 +31,7 @@ ArmitoIRStatus ArmitoIRReset(void)
     if (status != ARMITO_IR_SUCCESS)
         return status;
 
-    ir_state = ARMITO_IR_READY;
+    ir_module_state = ARMITO_IR_READY;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -45,24 +45,24 @@ ArmitoIRStatus ArmitoIRFinalize(void)
 {
     ArmitoIRStatus status;
 
-    if (ir_state != ARMITO_IR_READY && ir_state != ARMITO_IR_EMITTING)
+    if (ir_module_state != ARMITO_IR_READY && ir_module_state != ARMITO_IR_EMITTING)
         return ARMITO_IR_INVALID_STATE;
 
     status = ArmitoIRValidate();
 
     if (status != ARMITO_IR_SUCCESS) {
-        ir_state = ARMITO_IR_FAILED;
+        ir_module_state = ARMITO_IR_FAILED;
         return status;
     }
 
-    ir_state = ARMITO_IR_FINALIZED;
+    ir_module_state = ARMITO_IR_FINALIZED;
 
     return ARMITO_IR_SUCCESS;
 }
 
 ArmitoIRState ArmitoIRGetState(void)
 {
-    return (ArmitoIRState)ir_state;
+    return (ArmitoIRState)ir_module_state;
 }
 
 ArmitoIRStatus ArmitoIRValidate(void)
@@ -71,7 +71,7 @@ ArmitoIRStatus ArmitoIRValidate(void)
     uint32_t j;
     ArmitoIROperation operation;
 
-    if (ir_state == ARMITO_IR_UNINITIALIZED)
+    if (ir_module_state == ARMITO_IR_UNINITIALIZED)
         return ARMITO_IR_INVALID_STATE;
 
     for (i = 1; i <= ArmitoIROperationsCount(); i++) {

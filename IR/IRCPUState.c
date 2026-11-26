@@ -1,9 +1,9 @@
 #include "Includes/IRCPUState.h"
 
-static ArmitoIRCPURegister registers[ARMITO_IR_MAX_CPU_REGISTERS];
-static uint32_t register_count = 0;
+static ArmitoIRCPURegister ir_register_table[ARMITO_IR_MAX_CPU_REGISTERS];
+static uint32_t ir_register_total = 0;
 
-static void CopyName(char *dest, const char *src)
+static void IRCPUStateCopyName(char *dest, const char *src)
 {
     uint32_t i = 0;
 
@@ -28,14 +28,14 @@ ArmitoIRStatus ArmitoIRCPUStateReset(void)
     uint32_t i;
 
     for (i = 0; i < ARMITO_IR_MAX_CPU_REGISTERS; i++) {
-        registers[i].index = 0;
-        registers[i].reg_class = ARMITO_IR_REG_GPR;
-        registers[i].value = ARMITO_IR_VALUE_INVALID;
-        registers[i].bit_width = 0;
-        registers[i].source_name[0] = '\0';
+        ir_register_table[i].index = 0;
+        ir_register_table[i].reg_class = ARMITO_IR_REG_GPR;
+        ir_register_table[i].value = ARMITO_IR_VALUE_INVALID;
+        ir_register_table[i].bit_width = 0;
+        ir_register_table[i].source_name[0] = '\0';
     }
 
-    register_count = 0;
+    ir_register_total = 0;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -62,17 +62,17 @@ ArmitoIRStatus ArmitoIRCPUStateMap(
     if (ArmitoIRCPUStateLookup(reg_class, index, NULL) == ARMITO_IR_SUCCESS)
         return ARMITO_IR_INVALID_STATE;
 
-    if (register_count >= ARMITO_IR_MAX_CPU_REGISTERS)
+    if (ir_register_total >= ARMITO_IR_MAX_CPU_REGISTERS)
         return ARMITO_IR_OUT_OF_RESOURCES;
 
-    reg = &registers[register_count];
+    reg = &ir_register_table[ir_register_total];
     reg->index = index;
     reg->reg_class = reg_class;
     reg->value = value;
     reg->bit_width = bit_width;
-    CopyName(reg->source_name, source_name);
+    IRCPUStateCopyName(reg->source_name, source_name);
 
-    register_count++;
+    ir_register_total++;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -85,15 +85,15 @@ ArmitoIRStatus ArmitoIRCPUStateLookup(
 {
     uint32_t i;
 
-    for (i = 0; i < register_count; i++) {
-        if (registers[i].reg_class != reg_class)
+    for (i = 0; i < ir_register_total; i++) {
+        if (ir_register_table[i].reg_class != reg_class)
             continue;
 
-        if (registers[i].index != index)
+        if (ir_register_table[i].index != index)
             continue;
 
         if (value != NULL)
-            *value = registers[i].value;
+            *value = ir_register_table[i].value;
 
         return ARMITO_IR_SUCCESS;
     }
@@ -109,15 +109,15 @@ ArmitoIRStatus ArmitoIRCPUStateGet(uint8_t slot, ArmitoIRCPURegister *reg)
     if (reg == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (slot >= register_count)
+    if (slot >= ir_register_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    *reg = registers[slot];
+    *reg = ir_register_table[slot];
 
     return ARMITO_IR_SUCCESS;
 }
 
 uint32_t ArmitoIRCPUStateCount(void)
 {
-    return register_count;
+    return ir_register_total;
 }

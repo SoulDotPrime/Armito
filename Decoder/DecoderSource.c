@@ -1,7 +1,7 @@
 #include "Includes/DecoderSource.h"
 
-static ArmitoDecoderSource source;
-static uint8_t source_set = 0;
+static ArmitoDecoderSource decoder_source;
+static uint8_t decoder_source_set = 0;
 
 ArmitoDecoderStatus ArmitoDecoderSourceSet(
     const uint8_t *base,
@@ -17,24 +17,24 @@ ArmitoDecoderStatus ArmitoDecoderSourceSet(
     if (address % ARMITO_DECODER_ALIGNMENT != 0)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    source.base = base;
-    source.size = size;
-    source.address = address;
-    source.executable = executable ? 1 : 0;
-    source.readable = readable ? 1 : 0;
-    source_set = 1;
+    decoder_source.base = base;
+    decoder_source.size = size;
+    decoder_source.address = address;
+    decoder_source.executable = executable ? 1 : 0;
+    decoder_source.readable = readable ? 1 : 0;
+    decoder_source_set = 1;
 
     return ARMITO_DECODER_SUCCESS;
 }
 
 ArmitoDecoderStatus ArmitoDecoderSourceClear(void)
 {
-    source.base = NULL;
-    source.size = 0;
-    source.address = 0;
-    source.executable = 0;
-    source.readable = 0;
-    source_set = 0;
+    decoder_source.base = NULL;
+    decoder_source.size = 0;
+    decoder_source.address = 0;
+    decoder_source.executable = 0;
+    decoder_source.readable = 0;
+    decoder_source_set = 0;
 
     return ARMITO_DECODER_SUCCESS;
 }
@@ -44,10 +44,10 @@ ArmitoDecoderStatus ArmitoDecoderSourceGet(ArmitoDecoderSource *out)
     if (out == NULL)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    if (!source_set)
+    if (!decoder_source_set)
         return ARMITO_DECODER_INVALID_STATE;
 
-    *out = source;
+    *out = decoder_source;
 
     return ARMITO_DECODER_SUCCESS;
 }
@@ -63,22 +63,22 @@ ArmitoDecoderStatus ArmitoDecoderSourceFetch(
     if (instruction == NULL)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    if (!source_set)
+    if (!decoder_source_set)
         return ARMITO_DECODER_INVALID_STATE;
 
-    if (!source.executable)
+    if (!decoder_source.executable)
         return ARMITO_DECODER_INVALID_STATE;
 
     if (offset % ARMITO_DECODER_ALIGNMENT != 0)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    if (offset >= source.size)
+    if (offset >= decoder_source.size)
         return ARMITO_DECODER_OUT_OF_RANGE;
 
-    if (source.size - offset < ARMITO_DECODER_INSTRUCTION_SIZE)
+    if (decoder_source.size - offset < ARMITO_DECODER_INSTRUCTION_SIZE)
         return ARMITO_DECODER_TRUNCATED;
 
-    bytes = source.base + offset;
+    bytes = decoder_source.base + offset;
 
     encoding = (uint32_t)bytes[0] |
                ((uint32_t)bytes[1] << 8) |
@@ -86,7 +86,7 @@ ArmitoDecoderStatus ArmitoDecoderSourceFetch(
                ((uint32_t)bytes[3] << 24);
 
     instruction->offset = offset;
-    instruction->address = source.address + offset;
+    instruction->address = decoder_source.address + offset;
     instruction->encoding = encoding;
 
     return ARMITO_DECODER_SUCCESS;

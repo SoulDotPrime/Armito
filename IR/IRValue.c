@@ -1,10 +1,10 @@
 #include "Includes/IRValue.h"
 #include "Includes/IRTypeset.h"
 
-static ArmitoIRValue values[ARMITO_IR_MAX_VALUES];
-static uint32_t value_count = 0;
+static ArmitoIRValue ir_value_table[ARMITO_IR_MAX_VALUES];
+static uint32_t ir_value_total = 0;
 
-static void CopyName(char *dest, const char *src)
+static void IRValueCopyName(char *dest, const char *src)
 {
     uint32_t i = 0;
 
@@ -29,21 +29,21 @@ ArmitoIRStatus ArmitoIRValuesReset(void)
     uint32_t i;
 
     for (i = 0; i < ARMITO_IR_MAX_VALUES; i++) {
-        values[i].id = ARMITO_IR_VALUE_INVALID;
-        values[i].kind = ARMITO_IR_VALUE_VIRTUAL_REGISTER;
-        values[i].type_id = ARMITO_IR_TYPE_INVALID;
-        values[i].role = 0;
-        values[i].reg_index = 0;
-        values[i].flags_role = 0;
-        values[i].immediate = 0;
-        values[i].memory_kind = ARMITO_IR_MEM_NONE;
-        values[i].address = ARMITO_IR_VALUE_INVALID;
-        values[i].address_offset = 0;
-        values[i].displacement = 0;
-        values[i].source_name[0] = '\0';
+        ir_value_table[i].id = ARMITO_IR_VALUE_INVALID;
+        ir_value_table[i].kind = ARMITO_IR_VALUE_VIRTUAL_REGISTER;
+        ir_value_table[i].type_id = ARMITO_IR_TYPE_INVALID;
+        ir_value_table[i].role = 0;
+        ir_value_table[i].reg_index = 0;
+        ir_value_table[i].flags_role = 0;
+        ir_value_table[i].immediate = 0;
+        ir_value_table[i].memory_kind = ARMITO_IR_MEM_NONE;
+        ir_value_table[i].address = ARMITO_IR_VALUE_INVALID;
+        ir_value_table[i].address_offset = 0;
+        ir_value_table[i].displacement = 0;
+        ir_value_table[i].source_name[0] = '\0';
     }
 
-    value_count = 0;
+    ir_value_total = 0;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -62,19 +62,19 @@ ArmitoIRStatus ArmitoIRValuesDeclare(
 
     *value_id = ARMITO_IR_VALUE_INVALID;
 
-    if (value_count >= ARMITO_IR_MAX_VALUES)
+    if (ir_value_total >= ARMITO_IR_MAX_VALUES)
         return ARMITO_IR_OUT_OF_RESOURCES;
 
     if (type_id != ARMITO_IR_TYPE_INVALID && type_id > ArmitoIRTypesCount())
         return ARMITO_IR_OUT_OF_RANGE;
 
-    value = &values[value_count];
-    value->id = value_count + 1;
+    value = &ir_value_table[ir_value_total];
+    value->id = ir_value_total + 1;
     value->kind = kind;
     value->type_id = type_id;
-    CopyName(value->source_name, name);
+    IRValueCopyName(value->source_name, name);
 
-    value_count++;
+    ir_value_total++;
 
     *value_id = value->id;
 
@@ -86,10 +86,10 @@ ArmitoIRStatus ArmitoIRValuesGet(ArmitoIRValueID value_id, ArmitoIRValue *value)
     if (value == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (value_id == ARMITO_IR_VALUE_INVALID || value_id > value_count)
+    if (value_id == ARMITO_IR_VALUE_INVALID || value_id > ir_value_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    *value = values[value_id - 1];
+    *value = ir_value_table[value_id - 1];
 
     return ARMITO_IR_SUCCESS;
 }
@@ -99,13 +99,13 @@ ArmitoIRStatus ArmitoIRValuesSetImmediate(
     uint64_t immediate
 )
 {
-    if (value_id == ARMITO_IR_VALUE_INVALID || value_id > value_count)
+    if (value_id == ARMITO_IR_VALUE_INVALID || value_id > ir_value_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    if (values[value_id - 1].kind != ARMITO_IR_VALUE_IMMEDIATE)
+    if (ir_value_table[value_id - 1].kind != ARMITO_IR_VALUE_IMMEDIATE)
         return ARMITO_IR_INVALID_STATE;
 
-    values[value_id - 1].immediate = immediate;
+    ir_value_table[value_id - 1].immediate = immediate;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -119,16 +119,16 @@ ArmitoIRStatus ArmitoIRValuesSetMemory(
 {
     ArmitoIRValue *value;
 
-    if (value_id == ARMITO_IR_VALUE_INVALID || value_id > value_count)
+    if (value_id == ARMITO_IR_VALUE_INVALID || value_id > ir_value_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
     if (memory_kind == ARMITO_IR_MEM_NONE)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (address == ARMITO_IR_VALUE_INVALID || address > value_count)
+    if (address == ARMITO_IR_VALUE_INVALID || address > ir_value_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    value = &values[value_id - 1];
+    value = &ir_value_table[value_id - 1];
 
     if (value->kind != ARMITO_IR_VALUE_MEMORY)
         return ARMITO_IR_INVALID_STATE;
@@ -142,5 +142,5 @@ ArmitoIRStatus ArmitoIRValuesSetMemory(
 
 uint32_t ArmitoIRValuesCount(void)
 {
-    return value_count;
+    return ir_value_total;
 }

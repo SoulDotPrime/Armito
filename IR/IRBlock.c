@@ -1,10 +1,10 @@
 #include "Includes/IRBlock.h"
 
-static ArmitoIRBlock blocks[ARMITO_IR_MAX_BLOCKS];
-static uint32_t block_count = 0;
-static uint32_t open_block = ARMITO_IR_INDEX_INVALID;
+static ArmitoIRBlock ir_block_table[ARMITO_IR_MAX_BLOCKS];
+static uint32_t ir_block_total = 0;
+static uint32_t ir_open_block_index = ARMITO_IR_INDEX_INVALID;
 
-static void CopyName(char *dest, const char *src)
+static void IRBlockCopyName(char *dest, const char *src)
 {
     uint32_t i = 0;
 
@@ -29,16 +29,16 @@ ArmitoIRStatus ArmitoIRBlocksReset(void)
     uint32_t i;
 
     for (i = 0; i < ARMITO_IR_MAX_BLOCKS; i++) {
-        blocks[i].id = ARMITO_IR_LABEL_INVALID;
-        blocks[i].first_operation = 0;
-        blocks[i].operation_count = 0;
-        blocks[i].guest_address = 0;
-        blocks[i].terminated = 0;
-        blocks[i].name[0] = '\0';
+        ir_block_table[i].id = ARMITO_IR_LABEL_INVALID;
+        ir_block_table[i].first_operation = 0;
+        ir_block_table[i].operation_count = 0;
+        ir_block_table[i].guest_address = 0;
+        ir_block_table[i].terminated = 0;
+        ir_block_table[i].name[0] = '\0';
     }
 
-    block_count = 0;
-    open_block = ARMITO_IR_INDEX_INVALID;
+    ir_block_total = 0;
+    ir_open_block_index = ARMITO_IR_INDEX_INVALID;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -56,22 +56,22 @@ ArmitoIRStatus ArmitoIRBlockBegin(
 
     *block_id = ARMITO_IR_LABEL_INVALID;
 
-    if (open_block != ARMITO_IR_INDEX_INVALID)
+    if (ir_open_block_index != ARMITO_IR_INDEX_INVALID)
         return ARMITO_IR_INVALID_STATE;
 
-    if (block_count >= ARMITO_IR_MAX_BLOCKS)
+    if (ir_block_total >= ARMITO_IR_MAX_BLOCKS)
         return ARMITO_IR_OUT_OF_RESOURCES;
 
-    block = &blocks[block_count];
-    block->id = block_count + 1;
+    block = &ir_block_table[ir_block_total];
+    block->id = ir_block_total + 1;
     block->first_operation = ArmitoIROperationsCount();
     block->operation_count = 0;
     block->guest_address = guest_address;
     block->terminated = 0;
-    CopyName(block->name, name);
+    IRBlockCopyName(block->name, name);
 
-    open_block = block_count;
-    block_count++;
+    ir_open_block_index = ir_block_total;
+    ir_block_total++;
 
     *block_id = block->id;
 
@@ -82,13 +82,13 @@ ArmitoIRStatus ArmitoIRBlockEnd(void)
 {
     ArmitoIRBlock *block;
 
-    if (open_block == ARMITO_IR_INDEX_INVALID)
+    if (ir_open_block_index == ARMITO_IR_INDEX_INVALID)
         return ARMITO_IR_INVALID_STATE;
 
-    block = &blocks[open_block];
+    block = &ir_block_table[ir_open_block_index];
     block->operation_count = ArmitoIROperationsCount() - block->first_operation;
 
-    open_block = ARMITO_IR_INDEX_INVALID;
+    ir_open_block_index = ARMITO_IR_INDEX_INVALID;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -98,12 +98,12 @@ ArmitoIRStatus ArmitoIRBlockGet(ArmitoIRLabelID block_id, ArmitoIRBlock *block)
     if (block == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (block_id == ARMITO_IR_LABEL_INVALID || block_id > block_count)
+    if (block_id == ARMITO_IR_LABEL_INVALID || block_id > ir_block_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    *block = blocks[block_id - 1];
+    *block = ir_block_table[block_id - 1];
 
-    if (open_block != ARMITO_IR_INDEX_INVALID && block_id == open_block + 1)
+    if (ir_open_block_index != ARMITO_IR_INDEX_INVALID && block_id == ir_open_block_index + 1)
         block->operation_count =
             ArmitoIROperationsCount() - block->first_operation;
 
@@ -112,7 +112,7 @@ ArmitoIRStatus ArmitoIRBlockGet(ArmitoIRLabelID block_id, ArmitoIRBlock *block)
 
 uint32_t ArmitoIRBlocksCount(void)
 {
-    return block_count;
+    return ir_block_total;
 }
 
 uint32_t ArmitoIRBlockOperationCount(ArmitoIRLabelID block_id)

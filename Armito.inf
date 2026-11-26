@@ -1,7 +1,7 @@
 [Defines]
     INF_VERSION     =   0x0001001B
     BASE_NAME       =   Armito
-    FILE_GUID       =   3A9F72C1-5E84-4D60B713-2C8E91A645F0
+    FILE_GUID       =   3A9F72C1-5E84-4D60-B713-2C8E91A645F0
     MODULE_TYPE     =   UEFI_APPLICATION
     VERSION_STRING  =   0.0.1
     ENTRY_POINT     =   UefiMain
@@ -43,7 +43,7 @@
 
 [Packages]
     MdePkg/MdePkg.dec
-    ArmitoPkg/Armito.dec
+    Armito.dec
 
 [LibraryClasses]
     UefiApplicationEntryPoint

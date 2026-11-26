@@ -2,10 +2,10 @@
 #include "Includes/IRValue.h"
 #include "Includes/IRTypeset.h"
 
-static ArmitoIROperation operations[ARMITO_IR_MAX_OPERATIONS];
-static uint32_t operation_count = 0;
+static ArmitoIROperation ir_operation_table[ARMITO_IR_MAX_OPERATIONS];
+static uint32_t ir_operation_total = 0;
 
-static const char *const operation_names[] = {
+static const char *const ir_operation_name_table[] = {
     "nop",
     "move",
     "select",
@@ -61,25 +61,25 @@ ArmitoIRStatus ArmitoIROperationsReset(void)
     uint32_t j;
 
     for (i = 0; i < ARMITO_IR_MAX_OPERATIONS; i++) {
-        operations[i].id = 0;
-        operations[i].kind = ARMITO_IR_OP_NOP;
-        operations[i].result_type = ARMITO_IR_TYPE_INVALID;
-        operations[i].result = ARMITO_IR_VALUE_INVALID;
+        ir_operation_table[i].id = 0;
+        ir_operation_table[i].kind = ARMITO_IR_OP_NOP;
+        ir_operation_table[i].result_type = ARMITO_IR_TYPE_INVALID;
+        ir_operation_table[i].result = ARMITO_IR_VALUE_INVALID;
 
         for (j = 0; j < ARMITO_IR_MAX_INPUTS; j++)
-            operations[i].inputs[j] = ARMITO_IR_VALUE_INVALID;
+            ir_operation_table[i].inputs[j] = ARMITO_IR_VALUE_INVALID;
 
-        operations[i].input_count = 0;
-        operations[i].flag_mask = 0;
-        operations[i].target = ARMITO_IR_LABEL_INVALID;
-        operations[i].target_false = ARMITO_IR_LABEL_INVALID;
-        operations[i].source_offset = 0;
-        operations[i].source_encoding = 0;
-        operations[i].source_length = 0;
-        operations[i].aux = 0;
+        ir_operation_table[i].input_count = 0;
+        ir_operation_table[i].flag_mask = 0;
+        ir_operation_table[i].target = ARMITO_IR_LABEL_INVALID;
+        ir_operation_table[i].target_false = ARMITO_IR_LABEL_INVALID;
+        ir_operation_table[i].source_offset = 0;
+        ir_operation_table[i].source_encoding = 0;
+        ir_operation_table[i].source_length = 0;
+        ir_operation_table[i].aux = 0;
     }
 
-    operation_count = 0;
+    ir_operation_total = 0;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -110,7 +110,7 @@ ArmitoIRStatus ArmitoIROperationEmit(
     if (input_count > 0 && inputs == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (operation_count >= ARMITO_IR_MAX_OPERATIONS)
+    if (ir_operation_total >= ARMITO_IR_MAX_OPERATIONS)
         return ARMITO_IR_OUT_OF_RESOURCES;
 
     if (result != ARMITO_IR_VALUE_INVALID && result > ArmitoIRValuesCount())
@@ -126,8 +126,8 @@ ArmitoIRStatus ArmitoIROperationEmit(
             return ARMITO_IR_OUT_OF_RANGE;
     }
 
-    operation = &operations[operation_count];
-    operation->id = operation_count + 1;
+    operation = &ir_operation_table[ir_operation_total];
+    operation->id = ir_operation_total + 1;
     operation->kind = kind;
     operation->result_type = result_type;
     operation->result = result;
@@ -136,7 +136,7 @@ ArmitoIRStatus ArmitoIROperationEmit(
     for (i = 0; i < input_count; i++)
         operation->inputs[i] = inputs[i];
 
-    operation_count++;
+    ir_operation_total++;
 
     *operation_id = operation->id;
 
@@ -148,13 +148,13 @@ ArmitoIRStatus ArmitoIROperationSetFlags(
     uint8_t flag_mask
 )
 {
-    if (operation_id == 0 || operation_id > operation_count)
+    if (operation_id == 0 || operation_id > ir_operation_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
     if ((flag_mask & ~(uint8_t)0x0F) != 0)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    operations[operation_id - 1].flag_mask = flag_mask;
+    ir_operation_table[operation_id - 1].flag_mask = flag_mask;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -165,11 +165,11 @@ ArmitoIRStatus ArmitoIROperationSetTarget(
     ArmitoIRLabelID target_false
 )
 {
-    if (operation_id == 0 || operation_id > operation_count)
+    if (operation_id == 0 || operation_id > ir_operation_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    operations[operation_id - 1].target = target;
-    operations[operation_id - 1].target_false = target_false;
+    ir_operation_table[operation_id - 1].target = target;
+    ir_operation_table[operation_id - 1].target_false = target_false;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -181,15 +181,15 @@ ArmitoIRStatus ArmitoIROperationSetSource(
     uint32_t source_length
 )
 {
-    if (operation_id == 0 || operation_id > operation_count)
+    if (operation_id == 0 || operation_id > ir_operation_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
     if (source_length > ARMITO_IR_MAX_SOURCE_BYTES)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    operations[operation_id - 1].source_offset = source_offset;
-    operations[operation_id - 1].source_encoding = source_encoding;
-    operations[operation_id - 1].source_length = source_length;
+    ir_operation_table[operation_id - 1].source_offset = source_offset;
+    ir_operation_table[operation_id - 1].source_encoding = source_encoding;
+    ir_operation_table[operation_id - 1].source_length = source_length;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -199,10 +199,10 @@ ArmitoIRStatus ArmitoIROperationSetAux(
     uint16_t aux
 )
 {
-    if (operation_id == 0 || operation_id > operation_count)
+    if (operation_id == 0 || operation_id > ir_operation_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    operations[operation_id - 1].aux = aux;
+    ir_operation_table[operation_id - 1].aux = aux;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -215,17 +215,17 @@ ArmitoIRStatus ArmitoIROperationGet(
     if (operation == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (operation_id == 0 || operation_id > operation_count)
+    if (operation_id == 0 || operation_id > ir_operation_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    *operation = operations[operation_id - 1];
+    *operation = ir_operation_table[operation_id - 1];
 
     return ARMITO_IR_SUCCESS;
 }
 
 uint32_t ArmitoIROperationsCount(void)
 {
-    return operation_count;
+    return ir_operation_total;
 }
 
 const char *ArmitoIROperationName(ArmitoIROperationKind kind)
@@ -233,5 +233,5 @@ const char *ArmitoIROperationName(ArmitoIROperationKind kind)
     if (kind > ARMITO_IR_OP_UNSUPPORTED)
         return "invalid";
 
-    return operation_names[kind];
+    return ir_operation_name_table[kind];
 }

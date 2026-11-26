@@ -1,9 +1,9 @@
 #include "Includes/IRTypeset.h"
 
-static ArmitoIRType types[ARMITO_IR_MAX_TYPES];
-static uint32_t type_count = 0;
+static ArmitoIRType ir_type_table[ARMITO_IR_MAX_TYPES];
+static uint32_t ir_type_total = 0;
 
-static void CopyName(char *dest, const char *src)
+static void IRTypesetCopyName(char *dest, const char *src)
 {
     uint32_t i = 0;
 
@@ -28,16 +28,16 @@ ArmitoIRStatus ArmitoIRTypesReset(void)
     uint32_t i;
 
     for (i = 0; i < ARMITO_IR_MAX_TYPES; i++) {
-        types[i].id = ARMITO_IR_TYPE_INVALID;
-        types[i].type_class = ARMITO_IR_CLASS_VOID;
-        types[i].bit_width = 0;
-        types[i].lane_count = 0;
-        types[i].is_signed = 0;
-        types[i].is_pointer = 0;
-        types[i].name[0] = '\0';
+        ir_type_table[i].id = ARMITO_IR_TYPE_INVALID;
+        ir_type_table[i].type_class = ARMITO_IR_CLASS_VOID;
+        ir_type_table[i].bit_width = 0;
+        ir_type_table[i].lane_count = 0;
+        ir_type_table[i].is_signed = 0;
+        ir_type_table[i].is_pointer = 0;
+        ir_type_table[i].name[0] = '\0';
     }
 
-    type_count = 0;
+    ir_type_total = 0;
 
     return ARMITO_IR_SUCCESS;
 }
@@ -59,7 +59,7 @@ ArmitoIRStatus ArmitoIRTypesRegister(
 
     *type_id = ARMITO_IR_TYPE_INVALID;
 
-    if (type_count >= ARMITO_IR_MAX_TYPES)
+    if (ir_type_total >= ARMITO_IR_MAX_TYPES)
         return ARMITO_IR_OUT_OF_RESOURCES;
 
     if (type_class == ARMITO_IR_CLASS_VOID && bit_width != 0)
@@ -74,16 +74,16 @@ ArmitoIRStatus ArmitoIRTypesRegister(
     if (type_class != ARMITO_IR_CLASS_VECTOR && lane_count > 1)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    type = &types[type_count];
-    type->id = type_count + 1;
+    type = &ir_type_table[ir_type_total];
+    type->id = ir_type_total + 1;
     type->type_class = type_class;
     type->bit_width = bit_width;
     type->lane_count = (lane_count == 0) ? 1 : lane_count;
     type->is_signed = is_signed;
     type->is_pointer = is_pointer;
-    CopyName(type->name, name);
+    IRTypesetCopyName(type->name, name);
 
-    type_count++;
+    ir_type_total++;
 
     *type_id = type->id;
 
@@ -95,10 +95,10 @@ ArmitoIRStatus ArmitoIRTypesGet(ArmitoIRTypeID type_id, ArmitoIRType *type)
     if (type == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    if (type_id == ARMITO_IR_TYPE_INVALID || type_id > type_count)
+    if (type_id == ARMITO_IR_TYPE_INVALID || type_id > ir_type_total)
         return ARMITO_IR_OUT_OF_RANGE;
 
-    *type = types[type_id - 1];
+    *type = ir_type_table[type_id - 1];
 
     return ARMITO_IR_SUCCESS;
 }
@@ -117,20 +117,20 @@ ArmitoIRStatus ArmitoIRTypesLookup(
     if (type_id == NULL)
         return ARMITO_IR_INVALID_ARGUMENT;
 
-    for (i = 0; i < type_count; i++) {
-        if (types[i].type_class != type_class)
+    for (i = 0; i < ir_type_total; i++) {
+        if (ir_type_table[i].type_class != type_class)
             continue;
 
-        if (types[i].bit_width != bit_width)
+        if (ir_type_table[i].bit_width != bit_width)
             continue;
 
-        if (types[i].lane_count != lanes)
+        if (ir_type_table[i].lane_count != lanes)
             continue;
 
-        if (types[i].is_signed != is_signed)
+        if (ir_type_table[i].is_signed != is_signed)
             continue;
 
-        *type_id = types[i].id;
+        *type_id = ir_type_table[i].id;
 
         return ARMITO_IR_SUCCESS;
     }
@@ -168,5 +168,5 @@ ArmitoIRStatus ArmitoIRTypesSize(ArmitoIRTypeID type_id, uint32_t *size_bytes)
 
 uint32_t ArmitoIRTypesCount(void)
 {
-    return type_count;
+    return ir_type_total;
 }

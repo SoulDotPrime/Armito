@@ -3,28 +3,28 @@
 
 #include "Includes/IR.h"
 
-static ArmitoDecoderConfig decoder_config;
-static ArmitoDecoderState decoder_state = ARMITO_DECODER_UNINITIALIZED;
-static ArmitoIRTypeID type_u32 = ARMITO_IR_TYPE_INVALID;
-static ArmitoIRTypeID type_u64 = ARMITO_IR_TYPE_INVALID;
-static ArmitoIRTypeID type_flags = ARMITO_IR_TYPE_INVALID;
-static ArmitoIRValueID register_values[ARMITO_DECODER_GPR_COUNT + 1];
-static uint8_t registers_mapped = 0;
+static ArmitoDecoderConfig armito_decoder_config;
+static ArmitoDecoderState armito_decoder_state = ARMITO_DECODER_UNINITIALIZED;
+static ArmitoIRTypeID armito_type_u32 = ARMITO_IR_TYPE_INVALID;
+static ArmitoIRTypeID armito_type_u64 = ARMITO_IR_TYPE_INVALID;
+static ArmitoIRTypeID armito_type_flags = ARMITO_IR_TYPE_INVALID;
+static ArmitoIRValueID armito_register_values[ARMITO_DECODER_GPR_COUNT + 1];
+static uint8_t armito_registers_mapped = 0;
 
-static ArmitoDecoderStatus MapRegisters(void)
+static ArmitoDecoderStatus ArmitoMapRegisters(void)
 {
     uint8_t i;
     ArmitoIRStatus ir_status;
 
-    if (registers_mapped)
+    if (armito_registers_mapped)
         return ARMITO_DECODER_SUCCESS;
 
     for (i = 0; i < ARMITO_DECODER_GPR_COUNT; i++) {
         ir_status = ArmitoIRValuesDeclare(
             ARMITO_IR_VALUE_VIRTUAL_REGISTER,
-            type_u64,
+            armito_type_u64,
             ArmitoDecoderRegisterName((ArmitoDecoderGPR)i),
-            &register_values[i]
+            &armito_register_values[i]
         );
 
         if (ir_status != ARMITO_IR_SUCCESS)
@@ -33,9 +33,9 @@ static ArmitoDecoderStatus MapRegisters(void)
 
     ir_status = ArmitoIRValuesDeclare(
         ARMITO_IR_VALUE_VIRTUAL_REGISTER,
-        type_u64,
+        armito_type_u64,
         "sp",
-        &register_values[ARMITO_DECODER_GPR_COUNT]
+        &armito_register_values[ARMITO_DECODER_GPR_COUNT]
     );
 
     if (ir_status != ARMITO_IR_SUCCESS)
@@ -47,7 +47,7 @@ static ArmitoDecoderStatus MapRegisters(void)
             i,
             64,
             ArmitoDecoderRegisterName((ArmitoDecoderGPR)i),
-            register_values[i]
+            armito_register_values[i]
         );
 
         if (ir_status != ARMITO_IR_SUCCESS)
@@ -59,13 +59,13 @@ static ArmitoDecoderStatus MapRegisters(void)
         31,
         64,
         "sp",
-        register_values[ARMITO_DECODER_GPR_COUNT]
+        armito_register_values[ARMITO_DECODER_GPR_COUNT]
     );
 
     if (ir_status != ARMITO_IR_SUCCESS)
         return ARMITO_DECODER_ERROR;
 
-    registers_mapped = 1;
+    armito_registers_mapped = 1;
 
     return ARMITO_DECODER_SUCCESS;
 }
@@ -83,9 +83,9 @@ ArmitoDecoderStatus ArmitoDecoderInitialize(const ArmitoDecoderConfig *config)
     if (config->max_instructions == 0)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    decoder_config = *config;
-    decoder_config.stop_at_branch = config->stop_at_branch ? 1 : 0;
-    decoder_config.record_unsupported = config->record_unsupported ? 1 : 0;
+    armito_decoder_config = *config;
+    armito_decoder_config.stop_at_branch = config->stop_at_branch ? 1 : 0;
+    armito_decoder_config.record_unsupported = config->record_unsupported ? 1 : 0;
 
     ir_status = ArmitoIRReset();
 
@@ -93,55 +93,55 @@ ArmitoDecoderStatus ArmitoDecoderInitialize(const ArmitoDecoderConfig *config)
         return ARMITO_DECODER_IR_ERROR;
 
     ir_status = ArmitoIRTypesRegister(
-        ARMITO_IR_CLASS_INT, 32, 1, 0, 0, "u32", &type_u32
+        ARMITO_IR_CLASS_INT, 32, 1, 0, 0, "u32", &armito_type_u32
     );
 
     if (ir_status != ARMITO_IR_SUCCESS)
         return ARMITO_DECODER_IR_ERROR;
 
     ir_status = ArmitoIRTypesRegister(
-        ARMITO_IR_CLASS_INT, 64, 1, 0, 0, "u64", &type_u64
+        ARMITO_IR_CLASS_INT, 64, 1, 0, 0, "u64", &armito_type_u64
     );
 
     if (ir_status != ARMITO_IR_SUCCESS)
         return ARMITO_DECODER_IR_ERROR;
 
     ir_status = ArmitoIRTypesRegister(
-        ARMITO_IR_CLASS_FLAGS, 4, 1, 0, 0, "flags", &type_flags
+        ARMITO_IR_CLASS_FLAGS, 4, 1, 0, 0, "flags", &armito_type_flags
     );
 
     if (ir_status != ARMITO_IR_SUCCESS)
         return ARMITO_DECODER_IR_ERROR;
 
-    registers_mapped = 0;
+    armito_registers_mapped = 0;
 
-    if (MapRegisters() != ARMITO_DECODER_SUCCESS)
+    if (ArmitoMapRegisters() != ARMITO_DECODER_SUCCESS)
         return ARMITO_DECODER_IR_ERROR;
 
     ArmitoDecoderStatsReset();
     ArmitoDecoderSourceClear();
 
-    decoder_state = ARMITO_DECODER_READY;
+    armito_decoder_state = ARMITO_DECODER_READY;
 
     return ARMITO_DECODER_SUCCESS;
 }
 
 ArmitoDecoderStatus ArmitoDecoderReset(void)
 {
-    if (decoder_state == ARMITO_DECODER_UNINITIALIZED)
+    if (armito_decoder_state == ARMITO_DECODER_UNINITIALIZED)
         return ARMITO_DECODER_INVALID_STATE;
 
-    decoder_state = ARMITO_DECODER_READY;
+    armito_decoder_state = ARMITO_DECODER_READY;
     ArmitoDecoderStatsReset();
     ArmitoDecoderSourceClear();
-    registers_mapped = 0;
+    armito_registers_mapped = 0;
 
     return ARMITO_DECODER_SUCCESS;
 }
 
 ArmitoDecoderState ArmitoDecoderGetState(void)
 {
-    return decoder_state;
+    return armito_decoder_state;
 }
 
 ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
@@ -156,8 +156,8 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
     if (instruction == NULL || result == NULL)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    if (decoder_state != ARMITO_DECODER_READY &&
-        decoder_state != ARMITO_DECODER_DECODING)
+    if (armito_decoder_state != ARMITO_DECODER_READY &&
+        armito_decoder_state != ARMITO_DECODER_DECODING)
         return ARMITO_DECODER_INVALID_STATE;
 
     *result = ARMITO_DECODE_INVALID;
@@ -210,8 +210,8 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
     if (summary == NULL)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
-    if (decoder_state != ARMITO_DECODER_READY &&
-        decoder_state != ARMITO_DECODER_DECODING)
+    if (armito_decoder_state != ARMITO_DECODER_READY &&
+        armito_decoder_state != ARMITO_DECODER_DECODING)
         return ARMITO_DECODER_INVALID_STATE;
 
     status = ArmitoDecoderSourceGet(&src);
@@ -237,18 +237,18 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
     local.next_address = guest_address;
     local.last_result = ARMITO_DECODE_OK;
 
-    decoder_state = ARMITO_DECODER_DECODING;
+    armito_decoder_state = ARMITO_DECODER_DECODING;
 
     ir_status = ArmitoIRBlockBegin(guest_address, "block", &block_id);
 
     if (ir_status != ARMITO_IR_SUCCESS) {
-        decoder_state = ARMITO_DECODER_READY;
+        armito_decoder_state = ARMITO_DECODER_READY;
         return ARMITO_DECODER_IR_ERROR;
     }
 
     local.blocks_emitted = 1;
 
-    while (decoded < decoder_config.max_instructions) {
+    while (decoded < armito_decoder_config.max_instructions) {
         status = ArmitoDecoderSourceFetch(offset, &instruction);
 
         if (status != ARMITO_DECODER_SUCCESS) {
@@ -278,7 +278,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
         if (status == ARMITO_DECODER_SUCCESS) {
             AARCH64Classify(instruction.encoding, &opcode);
 
-            if (decoder_config.stop_at_branch &&
+            if (armito_decoder_config.stop_at_branch &&
                 (opcode == AARCH64_OPCODE_BR ||
                  opcode == AARCH64_OPCODE_BL ||
                  opcode == AARCH64_OPCODE_B_COND ||
@@ -297,7 +297,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
     ir_status = ArmitoIRBlockEnd();
 
     if (ir_status != ARMITO_IR_SUCCESS) {
-        decoder_state = ARMITO_DECODER_FAILED;
+        armito_decoder_state = ARMITO_DECODER_FAILED;
         return ARMITO_DECODER_IR_ERROR;
     }
 
@@ -310,7 +310,7 @@ ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
 
     *summary = local;
 
-    decoder_state = ARMITO_DECODER_FINISHED;
+    armito_decoder_state = ARMITO_DECODER_FINISHED;
 
     return ARMITO_DECODER_SUCCESS;
 }
@@ -322,7 +322,7 @@ ArmitoDecoderStatus ArmitoDecoderGetStats(ArmitoDecoderStats *stats)
 
 ArmitoISA ArmitoDecoderGetISA(void)
 {
-    return decoder_config.isa;
+    return armito_decoder_config.isa;
 }
 
 const char *ArmitoDecoderStatusName(ArmitoDecoderStatus status)
