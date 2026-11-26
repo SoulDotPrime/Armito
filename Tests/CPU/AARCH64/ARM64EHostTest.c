@@ -2,12 +2,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "Includes/AARCH64CPUState.h"
-#include "Includes/AARCH64PointerAuth.h"
-#include "Includes/AARCH64MachO.h"
+#include "AARCH64/Includes/AARCH64CPUState.h"
+#include "AARCH64/Includes/AARCH64PointerAuth.h"
+#include "AARCH64/Includes/AARCH64MachO.h"
 #include "Decoder/AARCH64/Includes/AARCH64.h"
 #include "Decoder/Includes/Decoder.h"
-#include "../../IR/Includes/IR.h"
+#include "Includes/IR.h"
 
 static uint32_t tests_run;
 static uint32_t tests_failed;

@@ -143,3 +143,28 @@ estejam implementados.
 
 **Consequência:** parsing de relocations autenticadas, loader, backend e
 runtime devem ser etapas explícitas e testadas separadamente.
+
+## D-024 --- Catálogo AArch64 versionado e rastreável
+
+**Decisão:** o inventário de instruções AArch64 é gerado do Arm AARCHMRS
+A-profile v9Ap6-A (2024-12), com commit, hash da fonte e licença
+registrados. Formas, aliases, IDs de operação e padrões de máscara/valor
+são métricas separadas.
+
+**Consequência:** atualizações do catálogo exigem uma nova versão de fonte,
+regeneração verificável e revisão dos totais. AARCHMRS não representa
+instruções proprietárias privadas da Apple. A presença de uma entrada não
+declara implementação nem suporte.
+
+## D-025 --- Despacho modular e ambiguidade explícita
+
+**Decisão:** os decoders por família compartilham uma interface central.
+Padrões idênticos são deduplicados; a prioridade de um padrão é o número
+de bits fixos em sua máscara. Condições de extensão e de operandos fazem
+parte da decisão, não são descartadas pelo match da máscara.
+
+**Consequência:** padrões mais específicos precedem padrões mais gerais.
+Qualquer empate que não seja resolvido por uma regra semântica explícita
+é reportado como ambíguo e não pode gerar IR. Catálogo, classificação,
+extração de operandos, tradução para IR e suporte de backend permanecem
+estados distintos.

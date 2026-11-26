@@ -1,5 +1,7 @@
 #include "Includes/Decoder.h"
 #include "AARCH64/Includes/AARCH64.h"
+#include "AARCH64/Catalog/AARCH64Catalog.h"
+#include "AARCH64/Includes/AARCH64Operands.h"
 
 #include "Includes/IR.h"
 
@@ -10,6 +12,7 @@ static ArmitoIRTypeID armito_type_u64 = ARMITO_IR_TYPE_INVALID;
 static ArmitoIRTypeID armito_type_flags = ARMITO_IR_TYPE_INVALID;
 static ArmitoIRValueID armito_register_values[ARMITO_DECODER_GPR_COUNT + 1];
 static uint8_t armito_registers_mapped = 0;
+static AARCH64OperandExtractorFunction volatile armito_operand_extractor;
 
 static ArmitoDecoderStatus ArmitoEmitUnsupported(
     const ArmitoDecoderInstruction *instruction,
@@ -119,6 +122,9 @@ ArmitoDecoderStatus ArmitoDecoderInitialize(const ArmitoDecoderConfig *config)
     if (config->max_instructions == 0)
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
+    if (!AARCH64CatalogInitialize())
+        return ARMITO_DECODER_ERROR;
+
     armito_decoder_config = *config;
     armito_decoder_config.stop_at_branch = config->stop_at_branch ? 1 : 0;
     armito_decoder_config.record_unsupported = config->record_unsupported ? 1 : 0;
@@ -154,6 +160,10 @@ ArmitoDecoderStatus ArmitoDecoderInitialize(const ArmitoDecoderConfig *config)
     if (ArmitoMapRegisters() != ARMITO_DECODER_SUCCESS)
         return ARMITO_DECODER_IR_ERROR;
 
+    armito_operand_extractor = AARCH64OperandsExtractWithProfile;
+    if (armito_operand_extractor == NULL)
+        return ARMITO_DECODER_ERROR;
+
     ArmitoDecoderStatsReset();
     ArmitoDecoderSourceClear();
 
@@ -175,9 +185,33 @@ ArmitoDecoderStatus ArmitoDecoderReset(void)
     return ARMITO_DECODER_SUCCESS;
 }
 
+ArmitoDecoderStatus ArmitoDecoderShutdown(void)
+{
+    if (armito_decoder_state == ARMITO_DECODER_UNINITIALIZED)
+        return ARMITO_DECODER_SUCCESS;
+
+    armito_decoder_state = ARMITO_DECODER_UNINITIALIZED;
+    armito_type_u32 = ARMITO_IR_TYPE_INVALID;
+    armito_type_u64 = ARMITO_IR_TYPE_INVALID;
+    armito_type_flags = ARMITO_IR_TYPE_INVALID;
+    armito_registers_mapped = 0;
+    armito_operand_extractor = NULL;
+    ArmitoDecoderStatsReset();
+    ArmitoDecoderSourceClear();
+
+    return ARMITO_DECODER_SUCCESS;
+}
+
 ArmitoDecoderState ArmitoDecoderGetState(void)
 {
     return armito_decoder_state;
+}
+
+AARCH64OperandExtractorFunction ArmitoDecoderGetOperandExtractor(void)
+{
+    if (armito_decoder_state == ARMITO_DECODER_UNINITIALIZED)
+        return NULL;
+    return armito_operand_extractor;
 }
 
 ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(

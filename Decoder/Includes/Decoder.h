@@ -5,6 +5,7 @@
 #include "Includes/DecoderSource.h"
 #include "Includes/DecoderRegister.h"
 #include "Includes/DecoderStats.h"
+#include "AARCH64/Includes/AARCH64Operands.h"
 
 typedef struct {
     ArmitoISA isa;
@@ -28,7 +29,9 @@ typedef struct {
 
 ArmitoDecoderStatus ArmitoDecoderInitialize(const ArmitoDecoderConfig *config);
 ArmitoDecoderStatus ArmitoDecoderReset(void);
+ArmitoDecoderStatus ArmitoDecoderShutdown(void);
 ArmitoDecoderState ArmitoDecoderGetState(void);
+AARCH64OperandExtractorFunction ArmitoDecoderGetOperandExtractor(void);
 
 ArmitoDecoderStatus ArmitoDecoderDecodeBlock(
     uint64_t guest_address,

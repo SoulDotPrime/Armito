@@ -10,6 +10,7 @@
 #include "IPC/Includes/CoreIPC.h"
 #include "Shutdown/Includes/CoreShutdown.h"
 #include "Dependency/Includes/CoreDependency.h"
+#include "../Decoder/Includes/Decoder.h"
 
 static volatile uint32_t core_state = ARMITO_CORE_UNINITIALIZED;
 static ArmitoCoreConfig active_config;
@@ -101,6 +102,28 @@ ArmitoCoreStatus ArmitoCoreInitialize(void)
         ArmitoCoreRegistryReset();
         ArmitoCoreConfigShutdown();
         return status;
+    }
+
+    {
+        ArmitoDecoderConfig decoder_config = {
+            ARMITO_ISA_AARCH64,
+            0,
+            UINT64_MAX,
+            0,
+            0
+        };
+        ArmitoDecoderStatus decoder_status =
+            ArmitoDecoderInitialize(&decoder_config);
+
+        if (decoder_status != ARMITO_DECODER_SUCCESS) {
+            ArmitoCoreShutdownManagerReset();
+            ArmitoCoreTopologyReset();
+            ArmitoCoreDispatchReset();
+            ArmitoCoreDependencyReset();
+            ArmitoCoreRegistryReset();
+            ArmitoCoreConfigShutdown();
+            return ARMITO_CORE_INITIALIZATION_FAILED;
+        }
     }
 
     core_state = ARMITO_CORE_READY;

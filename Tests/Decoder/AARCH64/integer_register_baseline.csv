@@ -1,0 +1,68 @@
+encoding,form,operation,canonical,alias,armito,llvm_text,llvm_registers,cause
+1200001F,AND_32_log_imm,AND_log_imm,and,-,"wzr,w0","and	wsp, w0, #0x1","wsp,w0",logical-immediate-destination-sp
+121D905F,AND_32_log_imm,AND_log_imm,and,-,"wzr,w2","and	wsp, w2, #0xf800f8","wsp,w2",logical-immediate-destination-sp
+9200001F,AND_64_log_imm,AND_log_imm,and,-,"xzr,x0","and	sp, x0, #0x100000001","sp,x0",logical-immediate-destination-sp
+DAC11BE0,AUTDA_64P_dp_1src,AUTDA,autda,-,"x0,xzr","autda	x0, sp","x0,sp",special-register-field
+DAC11BEA,AUTDA_64P_dp_1src,AUTDA,autda,-,"x10,xzr","autda	x10, sp","x10,sp",special-register-field
+DAC11FE0,AUTDB_64P_dp_1src,AUTDB,autdb,-,"x0,xzr","autdb	x0, sp","x0,sp",special-register-field
+DAC11FE1,AUTDB_64P_dp_1src,AUTDB,autdb,-,"x1,xzr","autdb	x1, sp","x1,sp",special-register-field
+DAC11FE7,AUTDB_64P_dp_1src,AUTDB,autdb,-,"x7,xzr","autdb	x7, sp","x7,sp",special-register-field
+DAC11FFD,AUTDB_64P_dp_1src,AUTDB,autdb,-,"x29,xzr","autdb	x29, sp","x29,sp",special-register-field
+DAC11FFB,AUTDB_64P_dp_1src,AUTDB,autdb,-,"x27,xzr","autdb	x27, sp","x27,sp",special-register-field
+DAC11FE2,AUTDB_64P_dp_1src,AUTDB,autdb,-,"x2,xzr","autdb	x2, sp","x2,sp",special-register-field
+DAC113E0,AUTIA_64P_dp_1src,AUTIA,autia,-,"x0,xzr","autia	x0, sp","x0,sp",special-register-field
+DAC117E0,AUTIB_64P_dp_1src,AUTIB,autib,-,"x0,xzr","autib	x0, sp","x0,sp",special-register-field
+DAC117E2,AUTIB_64P_dp_1src,AUTIB,autib,-,"x2,xzr","autib	x2, sp","x2,sp",special-register-field
+5200001F,EOR_32_log_imm,EOR_log_imm,eor,-,"wzr,w0","eor	wsp, w0, #0x1","wsp,w0",logical-immediate-destination-sp
+52362E3F,EOR_32_log_imm,EOR_log_imm,eor,-,"wzr,w17","eor	wsp, w17, #0x3ffc00","wsp,w17",logical-immediate-destination-sp
+5234097F,EOR_32_log_imm,EOR_log_imm,eor,-,"wzr,w11","eor	wsp, w11, #0x7000","wsp,w11",logical-immediate-destination-sp
+D200001F,EOR_64_log_imm,EOR_log_imm,eor,-,"xzr,x0","eor	sp, x0, #0x100000001","sp,x0",logical-immediate-destination-sp
+D22980BF,EOR_64_log_imm,EOR_log_imm,eor,-,"xzr,x5","eor	sp, x5, #0x80008000800080","sp,x5",logical-immediate-destination-sp
+9AC017E0,GMI_64G_dp_2src,GMI,gmi,-,"x0,xzr,x0","gmi	x0, sp, x0","x0,sp,x0",special-register-field
+9AC617FE,GMI_64G_dp_2src,GMI,gmi,-,"x30,xzr,x6","gmi	x30, sp, x6","x30,sp,x6",special-register-field
+9ACE17F2,GMI_64G_dp_2src,GMI,gmi,-,"x18,xzr,x14","gmi	x18, sp, x14","x18,sp,x14",special-register-field
+9AC017F3,GMI_64G_dp_2src,GMI,gmi,-,"x19,xzr,x0","gmi	x19, sp, x0","x19,sp,x0",special-register-field
+9AC617FC,GMI_64G_dp_2src,GMI,gmi,-,"x28,xzr,x6","gmi	x28, sp, x6","x28,sp,x6",special-register-field
+9ADA17F5,GMI_64G_dp_2src,GMI,gmi,-,"x21,xzr,x26","gmi	x21, sp, x26","x21,sp,x26",special-register-field
+9AC817E7,GMI_64G_dp_2src,GMI,gmi,-,"x7,xzr,x8","gmi	x7, sp, x8","x7,sp,x8",special-register-field
+9ADF17FF,GMI_64G_dp_2src,GMI,gmi,-,"xzr,xzr,xzr","gmi	xzr, sp, xzr","xzr,sp,xzr",special-register-field
+9AC0101F,IRG_64I_dp_2src,IRG,irg,-,"xzr,x0,x0","irg	sp, x0, x0","sp,x0,x0",special-register-field
+9AC013E0,IRG_64I_dp_2src,IRG,irg,-,"x0,xzr,x0","irg	x0, sp, x0","x0,sp,x0",special-register-field
+9AD5107F,IRG_64I_dp_2src,IRG,irg,-,"xzr,x3,x21","irg	sp, x3, x21","sp,x3,x21",special-register-field
+9ADC13F6,IRG_64I_dp_2src,IRG,irg,-,"x22,xzr,x28","irg	x22, sp, x28","x22,sp,x28",special-register-field
+9AD613F6,IRG_64I_dp_2src,IRG,irg,-,"x22,xzr,x22","irg	x22, sp, x22","x22,sp,x22",special-register-field
+9AD213F3,IRG_64I_dp_2src,IRG,irg,-,"x19,xzr,x18","irg	x19, sp, x18","x19,sp,x18",special-register-field
+9AD713F5,IRG_64I_dp_2src,IRG,irg,-,"x21,xzr,x23","irg	x21, sp, x23","x21,sp,x23",special-register-field
+9AD7125F,IRG_64I_dp_2src,IRG,irg,-,"xzr,x18,x23","irg	sp, x18, x23","sp,x18,x23",special-register-field
+9AC413F1,IRG_64I_dp_2src,IRG,irg,-,"x17,xzr,x4","irg	x17, sp, x4","x17,sp,x4",special-register-field
+9AD0111F,IRG_64I_dp_2src,IRG,irg,-,"xzr,x8,x16","irg	sp, x8, x16","sp,x8,x16",special-register-field
+3200001F,ORR_32_log_imm,ORR_log_imm,orr,-,"wzr,w0","orr	wsp, w0, #0x1","wsp,w0",logical-immediate-destination-sp
+3226E77F,ORR_32_log_imm,ORR_log_imm,orr,-,"wzr,w27","orr	wsp, w27, #0xcccccccc","wsp,w27",logical-immediate-destination-sp
+B200001F,ORR_64_log_imm,ORR_log_imm,orr,-,"xzr,x0","orr	sp, x0, #0x100000001","sp,x0",logical-immediate-destination-sp
+B21C4A7F,ORR_64_log_imm,ORR_log_imm,orr,-,"xzr,x19","orr	sp, x19, #0x7ffff0007ffff0","sp,x19",logical-immediate-destination-sp
+B25CEE3F,ORR_64_log_imm,ORR_log_imm,orr,-,"xzr,x17","orr	sp, x17, #0xfffffff0ffffffff","sp,x17",logical-immediate-destination-sp
+DAC10BE0,PACDA_64P_dp_1src,PACDA,pacda,-,"x0,xzr","pacda	x0, sp","x0,sp",special-register-field
+DAC10BF9,PACDA_64P_dp_1src,PACDA,pacda,-,"x25,xzr","pacda	x25, sp","x25,sp",special-register-field
+DAC10BE2,PACDA_64P_dp_1src,PACDA,pacda,-,"x2,xzr","pacda	x2, sp","x2,sp",special-register-field
+DAC10FE0,PACDB_64P_dp_1src,PACDB,pacdb,-,"x0,xzr","pacdb	x0, sp","x0,sp",special-register-field
+9ADF3000,PACGA_64P_dp_2src,PACGA,pacga,-,"x0,x0,xzr","pacga	x0, x0, sp","x0,x0,sp",special-register-field
+9ADF3298,PACGA_64P_dp_2src,PACGA,pacga,-,"x24,x20,xzr","pacga	x24, x20, sp","x24,x20,sp",special-register-field
+DAC103E0,PACIA_64P_dp_1src,PACIA,pacia,-,"x0,xzr","pacia	x0, sp","x0,sp",special-register-field
+DAC103E5,PACIA_64P_dp_1src,PACIA,pacia,-,"x5,xzr","pacia	x5, sp","x5,sp",special-register-field
+DAC107E0,PACIB_64P_dp_1src,PACIB,pacib,-,"x0,xzr","pacib	x0, sp","x0,sp",special-register-field
+DAC107E5,PACIB_64P_dp_1src,PACIB,pacib,-,"x5,xzr","pacib	x5, sp","x5,sp",special-register-field
+93403C00,SBFM_64M_bitfield,SBFM,sbfm,sxth,"x0,x0","sxth	x0, w0","x0,w0",alias-width
+93407C00,SBFM_64M_bitfield,SBFM,sbfm,sxtw,"x0,x0","sxtw	x0, w0","x0,w0",alias-width
+BAC003E0,SUBPS_64S_dp_2src,SUBPS,subps,-,"x0,xzr,x0","subps	x0, sp, x0","x0,sp,x0",special-register-field
+BADF0000,SUBPS_64S_dp_2src,SUBPS,subps,-,"x0,x0,xzr","subps	x0, x0, sp","x0,x0,sp",special-register-field
+BADF01A3,SUBPS_64S_dp_2src,SUBPS,subps,-,"x3,x13,xzr","subps	x3, x13, sp","x3,x13,sp",special-register-field
+BAC303E1,SUBPS_64S_dp_2src,SUBPS,subps,-,"x1,xzr,x3","subps	x1, sp, x3","x1,sp,x3",special-register-field
+BAC403EE,SUBPS_64S_dp_2src,SUBPS,subps,-,"x14,xzr,x4","subps	x14, sp, x4","x14,sp,x4",special-register-field
+BAC903EF,SUBPS_64S_dp_2src,SUBPS,subps,-,"x15,xzr,x9","subps	x15, sp, x9","x15,sp,x9",special-register-field
+BADF001A,SUBPS_64S_dp_2src,SUBPS,subps,-,"x26,x0,xzr","subps	x26, x0, sp","x26,x0,sp",special-register-field
+BAC503E2,SUBPS_64S_dp_2src,SUBPS,subps,-,"x2,xzr,x5","subps	x2, sp, x5","x2,sp,x5",special-register-field
+9AC003E0,SUBP_64S_dp_2src,SUBP,subp,-,"x0,xzr,x0","subp	x0, sp, x0","x0,sp,x0",special-register-field
+9ADF0000,SUBP_64S_dp_2src,SUBP,subp,-,"x0,x0,xzr","subp	x0, x0, sp","x0,x0,sp",special-register-field
+9ADB03FD,SUBP_64S_dp_2src,SUBP,subp,-,"x29,xzr,x27","subp	x29, sp, x27","x29,sp,x27",special-register-field
+9AC003F4,SUBP_64S_dp_2src,SUBP,subp,-,"x20,xzr,x0","subp	x20, sp, x0","x20,sp,x0",special-register-field
+9AD003E0,SUBP_64S_dp_2src,SUBP,subp,-,"x0,xzr,x16","subp	x0, sp, x16","x0,sp,x16",special-register-field

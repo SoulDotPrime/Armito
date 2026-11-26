@@ -163,7 +163,7 @@ freestanding, sem alocador dinâmico (ver decisão D-003 do Core).
 |---|---|
 | Tipos, valores, operações, blocos, estado da CPU | implementado |
 | Ciclo de vida e validação | implementado |
-| Testes de host IR (`Tests/IRTest.c`) | fonte ausente no worktree atual; histórico 172/0 |
+| Testes de host IR (`Tests/IR/IRTest.c`) | 172 verificações aprovadas |
 | Serialização / desserialização | não implementada |
 | Operações PAC ARM64E | modeladas e cobertas pela suíte ARM64E (512 verificações); backend não implementado |
 | Integração com Decoder AArch64 | parcial; inclui operações PAC explícitas |

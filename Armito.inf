@@ -43,11 +43,13 @@
     Decoder/DecoderSource.c
     Decoder/DecoderRegister.c
     Decoder/DecoderStats.c
+    Decoder/AARCH64/Catalog/AARCH64Catalog.c
+    Decoder/AARCH64/Operands/AARCH64Operands.c
     Decoder/AARCH64/AARCH64.c
 
 [Packages]
     MdePkg/MdePkg.dec
-    Armito.dec
+    ArmitoPkg/Armito.dec
 
 [LibraryClasses]
     UefiApplicationEntryPoint

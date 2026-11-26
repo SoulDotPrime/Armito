@@ -9,6 +9,7 @@
 #include "../Dependency/Includes/CoreDependency.h"
 #include "../Registry/Includes/CoreRegistry.h"
 #include "../Config/Includes/CoreConfig.h"
+#include "../../Decoder/Includes/Decoder.h"
 
 static uint8_t initialized = 0;
 static uint8_t requested = 0;
@@ -52,6 +53,8 @@ ArmitoCoreStatus ArmitoCoreShutdownManagerExecute(void)
 
     ArmitoCoreInitShutdown();
 
+    if (ArmitoDecoderShutdown() != ARMITO_DECODER_SUCCESS)
+        return ARMITO_CORE_ERROR;
     ArmitoCoreSchedulerReset();
     ArmitoCoreIPCReset();
     ArmitoCoreDispatchReset();

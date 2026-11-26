@@ -1,3 +1,52 @@
+# Fase 3.2.3.1: auditoria reproduzível Integer immediate (2026-11-26)
+
+No corpus reproduzido nesta árvore, 9.176 rejeições pelo LLVM e 880 do
+corpus de registradores foram reconciliadas por
+codificação contra as regras Decode_UNDEF do pacote oficial Arm ISA A64
+2025-12 (hash SHA256 `845ed227a6692ddb6b602da2ecbbac776620195a9c001ec576ced3a9a53dc26b`).
+Não houve limitação de feature LLVM entre elas: `imm3 > 4`, shifts proibidos
+de 32 bits e `immr/imms[5]` de bitfield de 32 bits são invalidade da ISA.
+O catálogo passa a rejeitá-las; 62.851 candidatos e 30.212 candidatos de
+registradores continuam gerados, sem contabilizar rejeições como verificações.
+Immediates não-bitmask aplicáveis neste corpus têm comparação LLVM e validação
+das restrições Arm; 960 casos DecodeBitMasks aceitos e 56 rejeitados permanecem
+exclusivamente na 3.2.4. O resumo histórico da retomada descrevia 506 REJECT
+(459 bitfield, 47 addsub_shift) e distribuição diferente das 9.176 rejeições;
+o corpus reproduzido aqui apresenta 504 REJECT (448 bitfield, 56 log_imm).
+Sem os artefatos originais, não é correto afirmar identidade entre os corpora.
+Fase 3.2.3 permanece aberta até reconciliar essa discrepância.
+Não avançar para tradução semântica.
+
+# Fase 3.2.3: immediates Integer (2026-11-26)
+
+O diferencial por forma cobre os campos immediate de 89 formas Integer/Data
+Processing, com valores brutos e efetivos separados. Testa campos de 3 a 12 bits
+exaustivamente quando o LLVM aceita a codificação; combinações `immr/imms`
+bitfield são exaustivas. A extensão de sinal de SMAX/SMIN e as escalas de
+ADDG/SUBG e PAuth-LR foram corrigidas. `DecodeBitMasks` de logical-immediate
+permanece reservada à 3.2.4, assim como os efeitos implícitos e as condições.
+Dos 62.851 pedidos, 52.209 comparações são positivas; 9.176 foram rejeitados
+pelo LLVM, 960 máscaras lógicas adiadas e 2 máscaras fixas implícitas SETF
+sem operando impresso. Os bloqueios de validade e SETF são resolvidos na 3.2.3.1.
+
+# Fase 3.2.2: registradores Integer (2026-11-26)
+
+Concluída a verificação independente dos registradores aplicáveis às 195
+formas: LLVM MC 18.1.3, 67 regressões históricas reproduzidas e resolvidas,
+26.653 comparações válidas e cobertura exaustiva de cada valor de campo GPR
+livre. COMPLETE continua sendo estado do extrator, separado dessa evidência.
+A Fase 3.2 integral permanece aberta para demais operandos e restrições;
+não avançar para tradução semântica.
+
+# Auditoria independente Integer (histórico anterior, 2026-11-26)
+
+A Fase 3.2 permanece aberta: 195 COMPLETE representam testemunhos, não 195
+formas independentemente verificadas. O diferencial automatizado por forma
+em `Tests/Decoder/AARCH64/integer_form_differential.py` encontra divergências
+arquiteturais de registrador ainda não resolvidas. Não iniciar 3.3 até
+comparar immediates, máscaras, aliases, implícitos e inválidos de todas as
+formas, inclusive as não suportadas pelo LLVM MC instalado.
+
 # Armito Roadmap
 
 ## Objetivo final
@@ -14,26 +63,26 @@ atendidos.
 
 -   [x] 01.01 --- Revisão inicial de tipos e estados (`CoreTypes`)
 -   [ ] 01.02 --- Consolidar Config
-    -   [x] 01.02.01 --- Estrutura de configuração
-    -   [x] 01.02.02 --- Valores padrão
-    -   [x] 01.02.03 --- Inicialização
-    -   [x] 01.02.04 --- Alteração de configuração
-    -   [x] 01.02.05 --- Consulta de configuração
-    -   [x] 01.02.06 --- Validação
-    -   [x] 01.02.07 --- Limites dos subsistemas
-    -   [x] 01.02.08 --- Controle de bloqueio
-    -   [x] 01.02.09 --- Integração com Registry
-    -   [x] 01.02.10 --- Aplicação da configuração no Core
-    -   [x] 01.02.11 --- Consulta de funcionalidades
-    -   [x] 01.02.12 --- Implementação da consulta
-    -   [x] 01.02.13 --- Correção do momento de aplicação
-    -   [x] 01.02.14 --- Proteção do Scheduler
-    -   [x] 01.02.15 --- Proteção do IPC
-    -   [x] 01.02.16 --- Proteção do Monitor
-    -   [x] 01.02.17 --- Proteção do Diagnostics
-    -   [x] 01.02.18 --- Declaração de encerramento
-    -   [x] 01.02.19 --- Implementação de encerramento
-    -   [ ] 01.02.20 --- Integrar Config ao gerenciador de shutdown
+-   [x] 01.02.01 --- Estrutura de configuração
+-   [x] 01.02.02 --- Valores padrão
+-   [x] 01.02.03 --- Inicialização
+-   [x] 01.02.04 --- Alteração de configuração
+-   [x] 01.02.05 --- Consulta de configuração
+-   [x] 01.02.06 --- Validação
+-   [x] 01.02.07 --- Limites dos subsistemas
+-   [x] 01.02.08 --- Controle de bloqueio
+-   [x] 01.02.09 --- Integração com Registry
+-   [x] 01.02.10 --- Aplicação da configuração no Core
+-   [x] 01.02.11 --- Consulta de funcionalidades
+-   [x] 01.02.12 --- Implementação da consulta
+-   [x] 01.02.13 --- Correção do momento de aplicação
+-   [x] 01.02.14 --- Proteção do Scheduler
+-   [x] 01.02.15 --- Proteção do IPC
+-   [x] 01.02.16 --- Proteção do Monitor
+-   [x] 01.02.17 --- Proteção do Diagnostics
+-   [x] 01.02.18 --- Declaração de encerramento
+-   [x] 01.02.19 --- Implementação de encerramento
+-   [ ] 01.02.20 --- Integrar Config ao gerenciador de shutdown
 -   [ ] 01.03 --- Auditoria do Init
 -   [ ] 01.04 --- Auditoria do Registry
 -   [ ] 01.05 --- Auditoria do Dependency
@@ -87,6 +136,87 @@ atendidos.
 -   [ ] 05.07 --- Tratar instruções inválidas e não suportadas
 -   [ ] 05.08 --- Criar testes de decodificação
 
+## Fase 05A --- Expansão do Decoder AArch64, Fase 1
+
+-   [x] 05A.01 --- Auditar Decoder, IR, CPU State, testes e documentação
+-   [x] 05A.02 --- Fixar uma fonte estruturada e reproduzível para o catálogo
+-   [x] 05A.03 --- Catalogar operações, formas, aliases e padrões de codificação
+-   [x] 05A.04 --- Preservar campos, condições, extensões e famílias da fonte
+-   [x] 05A.05 --- Definir prioridade e política explícita para sobreposições
+-   [x] 05A.06 --- Validar IDs, referências, campos e composição hierárquica
+-   [x] 05A.07 --- Medir cobertura representativa do Decoder existente
+-   [ ] 05A.08 --- Implementar os módulos de decode da Fase 2
+
+O catálogo descreve a especificação AArch64 A-profile v9Ap6-A de
+2024-12; sua existência não marca nenhuma forma como suportada. Consulte
+`Decoder/AARCH64/Catalog/` para os dados, ferramenta de validação e
+atribuição de licença.
+
+## Fase 05B --- Expansão do Decoder AArch64, Fase 2
+
+-   [x] 05B.01 --- Gerar tabelas C estáticas reproduzíveis do catálogo
+-   [x] 05B.02 --- Implementar busca por índice de bits e prioridade
+-   [x] 05B.03 --- Validar restrições fixas e conflitos de prioridade
+-   [x] 05B.04 --- Comparar busca indexada com matcher linear host
+-   [x] 05B.05 --- Integrar resultado catalog-only sem declarar suporte
+-   [x] 05B.06 --- Integrar compilação EDK2 X64 DEBUG/RELEASE
+-   [x] 05B.07 --- Avaliar AST conditions e requisitos de features
+-   [x] 05B.08 --- Classificar integralmente válido, inválido, reservado e indisponível
+-   [x] 05B.09 --- Validar amostras arquiteturais e diferenciais por padrão
+-   [ ] 05B.10 --- Extrair operandos e decodificar formas por família
+-   [ ] 05B.11 --- Integrar semântica à IR e backend sem degradar operações
+-   [ ] 05B.12 --- Exercitar o Decoder no caminho de runtime/firmware
+
+As condições AST de guards são compiladas para bytecode C e avaliadas com
+capabilities explícitas do guest. `BFXPreferred`, `MoveWidePreferred` e
+`SVEMoveMaskPreferred` também são avaliadas para seleção de aliases. As 599
+conditions catalogadas e as 288 entradas de alias são avaliadas em runtime
+sem interpretar JSON ou strings; nenhuma condition permanece não suportada.
+Amostras positivas/negativas cobrem os 3.099 padrões e 33 casos diferenciam
+AARCHMRS contra LLVM MC. O Core/ArmitoBoot inicializa o catálogo e registra
+a API de operandos sem decodificar durante o boot. Reconhecer, validar ou
+extrair operandos não declara suporte semântico, tradução IR, backend ou
+execução.
+
+## Fase 05C --- Expansão do Decoder AArch64, Fase 3: Universal Operand Extraction
+
+### Fase 3.2 --- Integer/Data Processing
+
+- [x] Inventariar 195 formas (`dpimm` 44, `dpreg` 151) e 112 IDs de operação.
+- [x] Separar seletores de codificação dos operandos e medir estados por forma.
+- [x] Validar larguras mistas GPR e seis diferenças de registradores/modificadores com LLVM MC.
+- [x] Extrair máscaras de escrita e de topo para bitfields de 32/64 bits.
+- [ ] Validar todos os operandos efetivos, aliases, restrições e extremos de cada forma por referência independente.
+
+Uma palavra positiva por forma produziu 195 estados COMPLETE, mas os seis
+casos diferenciais não demonstram correção integral das 195 formas. Não
+declarar a Fase 3.2 concluída nem iniciar tradução semântica.
+
+-   [x] 05C.01 --- Gerar descritores tipados estáticos para as 4.296 formas
+-   [x] 05C.02 --- Definir operandos universais com estados raw/parcial/interpretado/não suportado
+-   [x] 05C.03 --- Extrair subconjuntos GPR, immediates, branches, memória e system registers
+-   [x] 05C.04 --- Preservar campos PAC e contexto de autenticação
+-   [x] 05C.05 --- Avaliar condições de aliases preferenciais em C
+-   [x] 05C.06 --- Integrar a inicialização estrutural e registrar o extrator sem decodificar no boot
+-   [x] 05C.07 --- Verificar descritores de todas as formas e amostras representativas
+-   [ ] 05C.08 --- Completar extração de operandos SIMD/NEON, SVE e SME por forma
+-   [ ] 05C.09 --- Completar listas, lanes, registradores de sistema e modos de endereçamento
+-   [ ] 05C.10 --- Expandir diferencial LLVM MC para comparar operandos e aliases
+-   [ ] 05C.11 --- Cobrir todas as formas aplicáveis com casos positivos e negativos
+
+A validação atual encontra descritores para 4.296/4.296 formas (45.360
+descritores) e extrai 3.093/3.099 amostras representativas de padrões; essas
+amostras aceitas, inclusive parciais/raw, alcançam 3.026 formas e
+1.478/2.095 IDs de operação. Os casos SIMD/SVE/SME, listas, lanes e alguns
+modos de endereçamento ainda podem resultar em extração parcial ou não
+suportada. Essas métricas não provam cobertura semântica integral por forma.
+
+Auditoria host de 2026-11-26: a busca determinística de até 96 candidatos
+por forma alcançou 4.288/4.296 formas (0 completas, 4.255 parciais, 33 raw,
+0 não suportadas, 8 não alcançadas). Não é prova exaustiva de alcançabilidade
+ou validade de todos os operandos. O estado da Fase 05C permanece aberto;
+não iniciar a fase seguinte com base nessas métricas.
+
 ## Fase 06 --- Universal IR
 
 -   [x] 06.01 --- Definir modelo de tipos e larguras
@@ -97,12 +227,11 @@ atendidos.
 -   [x] 06.06 --- Definir blocos básicos e fluxo de controle
 -   [x] 06.07 --- Definir chamadas, retornos e efeitos colaterais
 -   [ ] 06.08 --- Definir validação e serialização, se necessária
-    -   [x] 06.08.01 --- Validação estrutural e semântica
-    -   [ ] 06.08.02 --- Serialização / desserialização
+-   [x] 06.08.01 --- Validação estrutural e semântica
+-   [ ] 06.08.02 --- Serialização / desserialização
 -   [ ] 06.09 --- Criar testes semânticos da IR
-    -   [x] 06.09.01 --- Testes de contrato (`Tests/IRTest.c`, 172
-        verificações)
-    -   [ ] 06.09.02 --- Testes semânticos com instruções AArch64 reais
+-   [x] 06.09.01 --- Testes de contrato (`Tests/IR/IRTest.c`, 172 verificações)
+-   [ ] 06.09.02 --- Testes semânticos com instruções AArch64 reais
 -   [ ] 06.10 --- Phi / merge de valores em blocos
 -   [ ] 06.11 --- Integrar a IR ao ciclo do Core como módulo
 
@@ -175,5 +304,7 @@ registradas.
 
 ## Próxima etapa
 
-**05.01 --- Definir a API pública e o contrato de entrada do Decoder
-AArch64**, consumindo a IR já definida em `IR/` (ver `Docs/IR.md`).
+**05C.08 --- Completar a extração por família e forma**. Manter as
+operações sem extração completa ou backend explicitamente identificadas
+como parciais/não suportadas; não avançar para tradução semântica antes de
+fechar e medir as lacunas da extração.

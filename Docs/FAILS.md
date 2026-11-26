@@ -1,3 +1,69 @@
+# Fase 3.2.3.1 — resolução de rejeições (2026-11-26)
+
+Registro completo em `Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv`
+(62.851 candidatos); relatórios de rejeições e exceções em
+`Tests/Decoder/AARCH64/integer_immediate_rejections.csv`
+(9.682 linhas: 9.624 inválidas, 56 bitmasks com validade pendente na 3.2.4,
+2 SETF) e
+`Tests/Decoder/AARCH64/integer_register_rejections.csv` (880 inválidas).
+As 9.176 rejeições LLVM antigas são inválidas pela regra Arm: 24 `imm3>4`,
+384 shifts de 32 bits e 8.768 combinações bitfield de 32 bits. Nas 880
+históricas: 203 `imm3>4`, 398 shifts de 32 bits, 140 shifts reservados e
+139 bitfields de 32 bits. Quinze pares (forma, codificação) são compartilhados
+entre corpora; 9.609 são exclusivos do corpus imediato e 865 do de
+registradores. Os 448 bitfield `REJECT` antigos e os 56 bitmasks `REJECT`
+explicam os 504 casos ausentes da contagem de aceitos **neste corpus**; os 2
+SETF são `COMPLETE`, mas não têm comparação numérica de operando LLVM.
+Todos os 9.176 invalidamente aceitos agora são rejeitados pelo catálogo.
+Nenhuma rejeição passa a contar como validação positiva de operandos.
+Os 56 bitmasks não foram considerados `Decode_UNDEF` nesta fase: a regra
+`N/sf` é verificável diretamente, mas o diagnóstico de `DecodeBitMasks`
+depende da Fase 3.2.4.
+**Bloqueio remanescente:** o resumo histórico relatava 506 rejeições do
+probe (459 bitfield e 47 addsub_shift), e 9.176 rejeições LLVM distribuídas
+em 904 addsub_ext, 264 addsub_shift, 2.312 log_shift e 5.696 bitfield.
+O corpus regenerado aqui produz 504 rejeições do probe (448 bitfield e 56
+log_imm) e 9.176 LLVM-invalid aceitos antes da correção distribuídos em
+24 addsub_ext, 128 addsub_shift, 256 log_shift e 8.768 bitfield. Os logs
+originais não foram encontrados; números globais iguais não identificam
+codificações iguais. Portanto não declarar Fase 3.2.3 concluída.
+
+# Fase 3.2.3 — classificação de rejeições immediate (2026-11-26)
+
+Das 880 rejeições LLVM do corpus de registradores, 203 são `addsub_ext`
+(por exemplo `2B227D57`, `imm3=7`), 246 `addsub_shift` (`2B00FC00`,
+`imm6=63` com `sf=0`), 292 `log_shift` (`6A00FC00`, `imm6=63` com `sf=0`)
+e 139 `bitfield` (`333F0000`, `immr=63` com `sf=0`). Essas codificações não
+foram contadas como evidência positiva do LLVM. Restrições sobre extensão
+(`imm3 > 4`), limite de shift de 32 bits e `immr/imms` de 32 bits precisam
+de auditoria de validade do catálogo separada da comparação de operandos.
+No corpus novo de immediates, 9.176 codificações aceitas foram rejeitadas
+pelo LLVM (incluindo combinações inválidas de `immr/imms` de 32 bits).
+`DecodeBitMasks` de logical-immediate pertence à Fase 3.2.4. A classificação
+LLVM-invalid NÃO é prova de que Armito esteja arquiteturalmente correto nem
+uma desculpa para ampliar artificialmente o conjunto verificado.
+
+# Fase 3.2.2 — encerramento do bloqueio de registradores (2026-11-26)
+
+As 67 divergências anteriores foram preservadas no relatório CSV e agora
+passam como regressões. Das 28 formas sem comparação positiva, 24 envolviam
+campos implícitos/aliases e 4 exigiam `+cpa` no LLVM MC 18.1.3; as 195 agora
+têm verificação positiva de registradores explícitos. Há 880 codificações
+aceitas pelo catálogo e rejeitadas pelo LLVM neste corpus: não são contadas
+como validadas pelo LLVM, nem prova geral de invalidade do catálogo. Não
+existem divergências de registrador injustificadas no corpus verificado.
+Fase 3.2 integral permanece bloqueada por classes de operandos não testadas.
+
+# Pendências do diferencial Integer (histórico anterior, 2026-11-26)
+
+`make -B test` e `make test` falham no novo teste por forma: 67 divergências
+de registradores em codificações aceitas pelo catálogo; 28 formas sem
+comparação positiva de registradores LLVM. O teste distingue estas categorias
+e retorna falha, sem normalizar diferenças SP/XZR ou WSP/WZR. Os 195 COMPLETE
+da auditoria anterior NÃO estão independentemente validados. Comparações
+de immediates, máscaras, aliases, implícitos e codificações inválidas ainda
+faltam. `make catalog-test` e builds EDK2 GCC X64 DEBUG/RELEASE passaram.
+
 # Failure Model
 
 ## 1. Autoridade única
@@ -133,3 +199,82 @@ exceção no estado AArch64. Falhas de configuração, chave indisponível ou
 provedor são retornadas como erros da API, não convertidas silenciosamente
 em sucesso. Ainda não há executor que encaminhe essas exceções ao
 `fail.c` ou implemente a política de trap de um runtime.
+
+## 11. Limites do catálogo e Decoder AArch64
+
+O catálogo fixado fornece padrões de bits, campos, grupos e AST conditions;
+ele não é por si só um decoder semântico completo. A implementação C usa
+índice estático de 64 buckets, precedência por especificidade e avalia
+`should_be_mask`. `PATTERN_MATCHED_UNVALIDATED` é uma correspondência de
+bits, não uma afirmação de instrução válida.
+
+As AST conditions aplicáveis a guards são compiladas para bytecode C
+estático e avaliadas sem interpretar JSON ou strings. As 599 conditions
+são avaliáveis, incluindo `BFXPreferred`, `MoveWidePreferred` e
+`SVEMoveMaskPreferred` para seleção de aliases. O perfil é o da CPU guest
+e não deriva capacidades da CPU hospedeira. Quando uma expressão
+necessária não pode ser avaliada, o resultado permanece
+`PATTERN_MATCHED_UNVALIDATED`. Os estados de match bruto, válido,
+reservado, inválido e extensão indisponível são separados.
+
+Os testes verificam amostras positivas e negativas para os 3.099 padrões,
+bit flips e variações determinísticas, comparando lookup indexado com
+matcher linear: 59.103 lookups e 104.702 checks sem divergências. O
+conjunto diferencial independente inclui 33 codificações LLVM MC, incluindo
+PAC e LSE, mas não valida todas as codificações ou extensões opcionais. As
+177 sobreposições potenciais são ordenadas por especificidade, condições
+avaliáveis e features; testes estruturais não percorrem todo o produto
+cartesiano dos campos nem provam a semântica de execução.
+
+Core inicializa as tabelas e registra o extrator; ArmitoBoot inicializa
+Core sem decodificar bytes no boot. Os builds EDK2 DEBUG/RELEASE incluem
+as tabelas e o extrator no EFI, mas não houve execução do catálogo em
+firmware real. Isso permanece um limite para declarar validação runtime
+no caminho UEFI.
+
+## 12. Extração universal de operandos
+
+Fase 3.2: o conjunto Integer/Data Processing (195 formas/112 operações)
+retorna COMPLETE para um testemunho validado por forma. A cobertura
+diferencial independente compara só seis palavras e registradores/modificadores;
+não abrange todos os immediates, bitfields, flags NZCV, aliases e operandos
+implícitos. Não usar a contagem 195/195 como prova de que a implementação
+atende ao critério de conclusão: formas com campos dependentes de estado
+ou múltiplos valores ainda exigem validação independente sistemática.
+Foram adicionados testes de máscaras de bitfield para casos representativos,
+mas não uma comparação independente das 195 formas em seus extremos.
+
+Os 4.296 forms têm descritores estruturais (45.360 no total), mas a
+extração semântica permanece incompleta: 3.093/3.099 amostras
+representativas de padrões foram extraídas, alcançando 3.026 forms e
+1.478/2.095 IDs de operação; os resultados podem ser parciais/raw. O teste
+estrutural não prova que todos os valores e combinações de operandos de
+cada forma sejam interpretados.
+
+SIMD/NEON, SVE, SME, lanes, listas de registradores e parte dos modos de
+endereçamento e operandos de sistema permanecem parciais ou não suportados.
+Os diferenciais LLVM MC existentes comparam 33 codificações e mnemonics,
+não operandos de todas as formas. Operações sem extração completa devem
+permanecer marcadas como parciais/não suportadas; isso não pode ser
+convertido em suporte semântico ou em instrução NOP.
+
+Auditoria de 2026-11-26: as seis amostras de padrões sem extração são
+`0x2F00FC00` (FCVTZU: `immh == 0`, vedado pelo guard), `0x0420C000`,
+`0x0420C800`, `0x0430C000`, `0x0430C400` (formas SVE INC/DEC: `size == 0`,
+enquanto as variantes exigem valores específicos) e `0x00000000` (UDF,
+classificado como padrão reservado). A rejeição dessas palavras não é falha
+do extrator: os cinco primeiros resultados são INVALID_ENCODING e o último
+RESERVED_PATTERN. Gerar palavras por máscara de padrão isoladamente não
+seleciona uma forma válida.
+
+Das 1.270 formas não alcançadas anteriormente, a auditoria limitada a 96
+candidatos alcançou 1.262 adicionais. Restam sete formas de branch/return
+autenticado ou comum sob os padrões 565/566 (`BLRAAZ`, `BLRABZ`, `BLR`,
+`BRAAZ`, `BRABZ`, `RETAA`, `RETAB`) cuja seleção por lookup é obscurecida
+por prioridade/sobreposição e a forma reservada UDF sob o padrão 2598.
+Não se concluiu que as sete sejam impossíveis: faltam testemunhas
+selecionadas por forma ou validação independente. Estados medidos: 0 formas
+completas, 4.255 parciais, 33 raw, 0 não suportadas, 8 não alcançadas.
+`AARCH64_OPERAND_EXTRACTION_COMPLETE` não foi atribuído a resultados
+parciais; GPR sem largura, campos de sistema raw e operandos vetoriais
+requerem interpretação arquitetural adicional. A Fase 3 permanece aberta.

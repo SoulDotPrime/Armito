@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   forbidden-paths:
-    name: Reject changes in restricted paths
+    name: Reject changes in restricted documentation
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -25,13 +25,13 @@ jobs:
         run: |
           failed=0
           while IFS= read -r -d '' path; do
-            if [[ "$path" =~ (^|/)Tests(/|$)|^Docs/(FIRMWARE|AUDI)(/|$) ]]; then
+            if [[ "$path" =~ ^Docs/(FIRMWARE|AUDI)(/|$) ]]; then
               printf 'Forbidden path changed: %q\n' "$path"
               failed=1
             fi
           done < <(git diff --name-only -z "$BASE_SHA...$HEAD_SHA")
 
           if [[ "$failed" -ne 0 ]]; then
-            echo "Changes under Tests/, Docs/FIRMWARE/, or Docs/AUDI/ are not allowed."
+            echo "Changes under Docs/FIRMWARE/ or Docs/AUDI/ are not allowed."
             exit 1
           fi

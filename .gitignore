@@ -1,6 +1,66 @@
-Tests/
+# Artefatos locais e dados restritos (nao enviar ao repositorio principal).
 /Docs/FIRMWARE/
 /Docs/AUDI/
-.vscode/
-Build/
-Makefile
+/Firmware/
+
+# Builds host e EDK2; arquivos intermediarios fora de Build/.
+/Build/
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.exe
+*.efi
+*.elf
+*.map
+*.d
+*.obj.deps
+*.gcda
+*.gcno
+*.gcov
+*.profraw
+*.profdata
+
+# Resultados temporarios e arquivos de edicao.
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Caches e ambientes Python.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+
+# Configuracao de maquina e credenciais locais.
+/.vscode/
+/.idea/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Makefile, workflows, fontes, fixtures e corpora CSV sao versionaveis.
+# .gitignore nao remove artefatos ja rastreados do indice do Git.

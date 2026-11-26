@@ -1,5 +1,6 @@
 #include "Includes/AARCH64.h"
 
+#include "Catalog/AARCH64Catalog.h"
 #include "Includes/IR.h"
 
 static int64_t AARCH64SignExtend(uint32_t value, uint8_t width)
@@ -205,6 +206,26 @@ ArmitoDecoderStatus AARCH64Classify(uint32_t encoding, AARCH64Opcode *opcode)
                 ? AARCH64_OPCODE_ADDS_SHIFTED
                 : AARCH64_OPCODE_ADD_SHIFTED;
         return ARMITO_DECODER_SUCCESS;
+    }
+
+    {
+        AARCH64CatalogMatch catalog_match;
+        AARCH64CatalogResult catalog_result =
+            AARCH64CatalogLookup(encoding, &catalog_match);
+
+        if (catalog_result == AARCH64_CATALOG_VALID_ENCODING ||
+            catalog_result == AARCH64_CATALOG_PATTERN_MATCHED_UNVALIDATED ||
+            catalog_result == AARCH64_CATALOG_EXTENSION_UNAVAILABLE) {
+            *opcode = AARCH64_OPCODE_CATALOG_ONLY;
+            return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+        }
+
+        if (catalog_result == AARCH64_CATALOG_RESERVED_PATTERN ||
+            catalog_result == AARCH64_CATALOG_INVALID_ENCODING ||
+            catalog_result == AARCH64_CATALOG_AMBIGUOUS) {
+            *opcode = AARCH64_OPCODE_INVALID;
+            return ARMITO_DECODER_INVALID_INSTRUCTION;
+        }
     }
 
     return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
@@ -947,6 +968,7 @@ const char *AARCH64OpcodeName(AARCH64Opcode opcode)
     case AARCH64_OPCODE_UNKNOWN: return "unknown";
     case AARCH64_OPCODE_INVALID:
     case AARCH64_OPCODE_INVALID_ENCODING: return "invalid";
+    case AARCH64_OPCODE_CATALOG_ONLY: return "catalog-only";
     case AARCH64_OPCODE_NOP: return "nop";
     case AARCH64_OPCODE_HINT: return "hint";
     case AARCH64_OPCODE_B: return "b";

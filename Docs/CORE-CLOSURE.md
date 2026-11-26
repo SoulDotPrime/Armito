@@ -32,7 +32,7 @@
 ### D-014 — Build de host obrigatório
 
 Todo o `Core/` compila e roda em Linux/macOS com `make`, sem EDK2.
-A suíte `Tests/CoreTest.c` é a autoridade de regressão do Core.
+A suíte `Tests/Core/CoreTest.c` é a autoridade de regressão do Core.
 O alvo EDK2 continua separado (`Armito.inf`), ainda sem o Core na lista.
 
 ### D-015 — Máquina de estados explícita do Core

@@ -60,6 +60,7 @@ static void TestLifecycle(void)
     current_test = "ciclo de vida do decoder";
 
     CHECK(ArmitoDecoderGetState() == ARMITO_DECODER_UNINITIALIZED);
+    CHECK(ArmitoDecoderGetOperandExtractor() == NULL);
 
     CHECK_DEC(ArmitoDecoderInitialize(NULL), ARMITO_DECODER_INVALID_ARGUMENT);
 
@@ -74,6 +75,10 @@ static void TestLifecycle(void)
     CHECK_DEC(ArmitoDecoderInitialize(&config), ARMITO_DECODER_SUCCESS);
     CHECK(ArmitoDecoderGetState() == ARMITO_DECODER_READY);
     CHECK(ArmitoDecoderGetISA() == ARMITO_ISA_AARCH64);
+    CHECK(
+        ArmitoDecoderGetOperandExtractor() ==
+        AARCH64OperandsExtractWithProfile
+    );
 
     CHECK_DEC(ArmitoDecoderReset(), ARMITO_DECODER_SUCCESS);
     CHECK(ArmitoDecoderGetState() == ARMITO_DECODER_READY);
