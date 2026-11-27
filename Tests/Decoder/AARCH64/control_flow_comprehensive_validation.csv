@@ -1,0 +1,634 @@
+record_type,id,operation,group,status,seed,cases,complete,fixed_rejected,feature_rejected,sibling_valid,llvm_verified,operand_coverage,dependencies,restrictions,features,detail
+form,BC_only_condbranch,BC_cond,condbranch,COMPLETE,54000010,33,23,9,1,0,23,cond:k7:r5:w0:s0:f0 imm19:k6:r4:w0:s0:f17 o0:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,"NZCV,PC","alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_HBC,Arm/public
+form,BLRAAZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F081F,51,33,17,1,0,33,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k0:r0:w64:f128 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IA,PC","feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BLRAA_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0801,83,65,17,1,0,65,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k1:r2:w64:f0 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IA,PC","feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BLRABZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F0C1F,51,33,17,1,0,33,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k0:r0:w64:f128 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IB,PC","feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BLRAB_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0C01,83,65,17,1,0,65,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k1:r2:w64:f0 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IB,PC","feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BLR_64_branch_reg,BLR,branch_reg,COMPLETE,D63F0000,50,33,17,0,0,5,A:k0:r0:w0:s0:f128 M:k0:r0:w0:s0:f128 Rm:k0:r0:w64:s0:f128 Rn:k1:r2:w64:s0:f0 Z:k0:r0:w0:s0:f128 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 op3:k0:r0:w0:s0:f128 op4:k0:r0:w0:s0:f128 opc:k0:r0:w0:s0:f128,"LR,PC",fixed-bits,-,Arm/public
+form,BL_only_branch_imm,BL,branch_imm,COMPLETE,94000000,13,7,6,0,0,7,imm26:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,"LR,PC","alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,BRAAZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F081F,51,33,17,1,0,33,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k0:r0:w64:f128 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,PAC_IA,"feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BRAA_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0801,83,65,17,1,0,65,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k1:r2:w64:f0 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,PAC_IA,"feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BRABZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F0C1F,51,33,17,1,0,33,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k0:r0:w64:f128 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,PAC_IB,"feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BRAB_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0C01,83,65,17,1,0,65,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k1:r2:w64:f0 Rn:k1:r2:w64:f0 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,PAC_IB,"feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,BRK_EX_exception,BRK,exception,COMPLETE,D4200000,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PC,PSTATE,SPSR","current-EL-unknown,fixed-bits",-,Arm/public
+form,BR_64_branch_reg,BR,branch_reg,COMPLETE,D61F0000,50,33,17,0,0,5,A:k0:r0:w0:s0:f128 M:k0:r0:w0:s0:f128 Rm:k0:r0:w64:s0:f128 Rn:k1:r2:w64:s0:f0 Z:k0:r0:w0:s0:f128 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 op3:k0:r0:w0:s0:f128 op4:k0:r0:w0:s0:f128 opc:k0:r0:w0:s0:f128,-,fixed-bits,-,Arm/public
+form,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,14000000,13,7,6,0,0,7,imm26:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,B_only_condbranch,B_cond,condbranch,COMPLETE,54000000,32,23,9,0,0,23,cond:k7:r5:w0:s0:f0 imm19:k6:r4:w0:s0:f17 o0:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,"NZCV,PC","alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C08000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74208000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74008000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74408000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74608000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E08000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C00000,622,609,12,1,0,16,Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C00000,591,577,13,1,0,14,Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C00000,622,609,12,1,0,16,Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C00000,591,577,13,1,0,14,Rm:k1:r2:w64:s0:f0 Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74200000,591,577,13,1,0,14,Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4200000,591,577,13,1,0,14,Rm:k1:r2:w64:s0:f0 Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75000000,622,609,12,1,0,16,Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74000000,591,577,13,1,0,14,Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5000000,622,609,12,1,0,16,Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4000000,591,577,13,1,0,14,Rm:k1:r2:w64:s0:f0 Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0C000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420C000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400C000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440C000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460C000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75400000,622,609,12,1,0,16,Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74400000,591,577,13,1,0,14,Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5400000,622,609,12,1,0,16,Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4400000,591,577,13,1,0,14,Rm:k1:r2:w64:s0:f0 Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0C000,591,577,13,1,0,14,H:k0:r0:w0:s0:f128 Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74600000,591,577,13,1,0,14,Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4600000,591,577,13,1,0,14,Rm:k1:r2:w64:s0:f0 Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75600000,622,609,12,1,0,16,Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5600000,622,609,12,1,0,16,Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75200000,622,609,12,1,0,16,Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5200000,622,609,12,1,0,16,Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E00000,622,609,12,1,0,16,Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E00000,591,577,13,1,0,14,Rm:k1:r2:w32:s0:f0 Rt:k1:r2:w32:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E00000,622,609,12,1,0,16,Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm6:k6:r2:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,compare-imm6,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E00000,591,577,13,1,0,14,Rm:k1:r2:w64:s0:f0 Rt:k1:r2:w64:s0:f0 cc:k7:r5:w0:s0:f0 imm9:k6:r4:w0:s0:f17 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,feature-gate,fixed-bits,signed-offset",FEAT_CMPBR,Arm/public
+form,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,35000000,47,39,8,0,0,11,Rt:k1:r2:w32:s0:f0 imm19:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B5000000,47,39,8,0,0,11,Rt:k1:r2:w64:s0:f0 imm19:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,34000000,47,39,8,0,0,11,Rt:k1:r2:w32:s0:f0 imm19:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B4000000,47,39,8,0,0,11,Rt:k1:r2:w64:s0:f0 imm19:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 sf:k0:r0:w0:s0:f128,PC,"alignment-4,fixed-bits,signed-offset",-,Arm/public
+form,DCPS1_DC_exception,DCPS1,exception,COMPLETE,D4A00001,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,PSTATE,"current-EL-unknown,fixed-bits",-,Arm/public
+form,DCPS2_DC_exception,DCPS2,exception,COMPLETE,D4A00002,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,PSTATE,"current-EL-unknown,fixed-bits",-,Arm/public
+form,DCPS3_DC_exception,DCPS3,exception,COMPLETE,D4A00003,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,PSTATE,"EL3-required,current-EL-unknown,fixed-bits",-,Arm/public
+form,DRPS_64E_branch_reg,DRPS,branch_reg,COMPLETE,D6BF03E0,33,1,32,0,0,1,Rn:k0:r0:w64:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"DEBUG_LINK,DEBUG_STATUS,PSTATE","current-EL-unknown,fixed-bits",-,Arm/public
+form,ERETAA_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0BFF,32,1,30,1,0,1,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rn:k0:r0:w64:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PAC_IA,PSTATE,SP,SPSR","current-EL-unknown,feature-gate,fixed-bits,min-EL1",FEAT_PAuth,Arm/public
+form,ERETAB_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0FFF,32,1,30,1,0,1,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rn:k0:r0:w64:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PAC_IB,PSTATE,SP,SPSR","current-EL-unknown,feature-gate,fixed-bits,min-EL1",FEAT_PAuth,Arm/public
+form,ERET_64E_branch_reg,ERET,branch_reg,COMPLETE,D69F03E0,31,1,30,0,0,1,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rn:k0:r0:w64:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PSTATE,SPSR","current-EL-unknown,fixed-bits,min-EL1",-,Arm/public
+form,HLT_EX_exception,HLT,exception,COMPLETE,D4400000,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PC,PSTATE,SPSR","current-EL-unknown,fixed-bits",-,Arm/public
+form,HVC_EX_exception,HVC,exception,COMPLETE,D4000002,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PC,PSTATE,SPSR","EL2-required,current-EL-unknown,fixed-bits,min-EL1",-,Arm/public
+form,RETAASPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0BE0,60,32,26,1,1,32,M:k0:r0:w0:f128 Rm:k1:r2:w64:f0 Rn:k0:r0:w64:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IA,PC,SP","feature-gate,fixed-bits,valid-sibling-overlap",FEAT_PAuth_LR,Arm/public
+form,RETAASPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5500001F,24,7,16,1,0,7,imm16:k6:r2:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IA,PC,SP","feature-gate,fixed-bits",FEAT_PAuth_LR,Arm/public
+form,RETAA_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0BFF,24,1,22,1,0,1,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k0:r0:w64:f128 Rn:k0:r0:w64:f128 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IA,SP","feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,RETABSPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0FE0,60,32,26,1,1,32,M:k0:r0:w0:f128 Rm:k1:r2:w64:f0 Rn:k0:r0:w64:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IB,PC,SP","feature-gate,fixed-bits,valid-sibling-overlap",FEAT_PAuth_LR,Arm/public
+form,RETABSPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5520001F,24,7,16,1,0,7,imm16:k6:r2:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IB,PC,SP","feature-gate,fixed-bits",FEAT_PAuth_LR,Arm/public
+form,RETAB_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0FFF,24,1,22,1,0,1,A:k0:r0:w0:f128 M:k0:r0:w0:f128 Rm:k0:r0:w64:f128 Rn:k0:r0:w64:f128 Z:k0:r0:w0:f128 op:k0:r0:w0:f128 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 op3:k0:r0:w0:f128 op4:k0:r0:w0:f128 opc:k0:r0:w0:f128,"LR,PAC_IB,SP","feature-gate,fixed-bits",FEAT_PAuth,Arm/public
+form,RET_64R_branch_reg,RET,branch_reg,COMPLETE,D65F03C0,50,33,17,0,0,5,A:k0:r0:w0:s0:f128 M:k0:r0:w0:s0:f128 Rm:k0:r0:w64:s0:f128 Rn:k1:r2:w64:s0:f0 Z:k0:r0:w0:s0:f128 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128 op3:k0:r0:w0:s0:f128 op4:k0:r0:w0:s0:f128 opc:k0:r0:w0:s0:f128,LR,fixed-bits,-,Arm/public
+form,SMC_EX_exception,SMC,exception,COMPLETE,D4000003,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PC,PSTATE,SPSR","EL3-required,current-EL-unknown,fixed-bits,min-EL1",-,Arm/public
+form,SVC_EX_exception,SVC,exception,COMPLETE,D4000001,23,7,16,0,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,"ELR,PC,PSTATE,SPSR","current-EL-unknown,fixed-bits",-,Arm/public
+form,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,37000000,110,103,7,0,0,75,Rt:k1:r2:w32:s0:f0 b40:k0:r0:w0:s0:f128 b5:k0:r0:w0:s0:f128 bit_index:k6:r2:w0:s0:f2 imm14:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,bit-index,fixed-bits,signed-offset",-,Arm/public
+form,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,36000000,110,103,7,0,0,75,Rt:k1:r2:w32:s0:f0 b40:k0:r0:w0:s0:f128 b5:k0:r0:w0:s0:f128 bit_index:k6:r2:w0:s0:f2 imm14:k6:r4:w0:s0:f17 op:k0:r0:w0:s0:f128 op0:k0:r0:w0:s0:f128 op1:k0:r0:w0:s0:f128 op2:k0:r0:w0:s0:f128,PC,"alignment-4,bit-index,fixed-bits,signed-offset",-,Arm/public
+form,TCANCEL_EX_exception,TCANCEL,exception,COMPLETE,D4600000,24,7,16,1,0,7,LL:k0:r0:w0:f128 imm16:k6:r5:w0:f0 op0:k0:r0:w0:f128 op1:k0:r0:w0:f128 op2:k0:r0:w0:f128 opc:k0:r0:w0:f128,-,"current-EL-unknown,feature-gate,fixed-bits",FEAT_TME,Arm/public
+phase-3.6,AUTIA1716_HI_hints,AUTIA,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,AUTIASP_HI_hints,AUTIA,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,AUTIAZ_HI_hints,AUTIA,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,AUTIB1716_HI_hints,AUTIB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,AUTIBSP_HI_hints,AUTIB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,AUTIBZ_HI_hints,AUTIB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,AXFLAG_M_pstate,AXFLAG,pstate,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_FlagM2,hints/barriers/PSTATE/system
+phase-3.6,BTI_HB_hints,BTI,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_BTI,hints/barriers/PSTATE/system
+phase-3.6,CFINV_M_pstate,CFINV,pstate,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_FlagM,hints/barriers/PSTATE/system
+phase-3.6,CHKFEAT_HF_hints,CHKFEAT,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_CHK,hints/barriers/PSTATE/system
+phase-3.6,CLRBHB_HI_hints,CLRBHB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_CLRBHB,hints/barriers/PSTATE/system
+phase-3.6,CLREX_BN_barriers,CLREX,barriers,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,CSDB_HI_hints,CSDB,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,DGH_HI_hints,DGH,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_DGH,hints/barriers/PSTATE/system
+phase-3.6,DMB_BO_barriers,DMB,barriers,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,DSB_BO_barriers,DSB,barriers,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,DSB_BOn_barriers,DSB,barriers,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_XS,hints/barriers/PSTATE/system
+phase-3.6,ESB_HI_hints,ESB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_RAS,hints/barriers/PSTATE/system
+phase-3.6,GCSB_HD_hints,GCSB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_GCS,hints/barriers/PSTATE/system
+phase-3.6,HINT_HM_hints,HINT,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,ISB_BI_barriers,ISB,barriers,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,MRRS_RS_systemmovepr,MRRS,systemmovepr,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_SYSREG128,hints/barriers/PSTATE/system
+phase-3.6,MRS_RS_systemmove,MRS,systemmove,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,MSRR_SR_systemmovepr,MSRR,systemmovepr,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_SYSREG128,hints/barriers/PSTATE/system
+phase-3.6,MSR_SI_pstate,MSR_imm,pstate,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,MSR_SR_systemmove,MSR_reg,systemmove,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,NOP_HI_hints,NOP,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,PACIA1716_HI_hints,PACIA,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,PACIASP_HI_hints,PACIA,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,PACIAZ_HI_hints,PACIA,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,PACIB1716_HI_hints,PACIB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,PACIBSP_HI_hints,PACIB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,PACIBZ_HI_hints,PACIB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,PACM_HI_hints,PACM,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth_LR,hints/barriers/PSTATE/system
+phase-3.6,PSB_HC_hints,PSB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_SPE,hints/barriers/PSTATE/system
+phase-3.6,SB_only_barriers,SB,barriers,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_SB,hints/barriers/PSTATE/system
+phase-3.6,SEVL_HI_hints,SEVL,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,SEV_HI_hints,SEV,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,STSHH_HI_hints,STSHH,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PCDPHINT,hints/barriers/PSTATE/system
+phase-3.6,SYSL_RC_systeminstrs,SYSL,systeminstrs,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,SYSP_CR_syspairinstrs,SYSP,syspairinstrs,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_SYSINSTR128,hints/barriers/PSTATE/system
+phase-3.6,SYS_CR_systeminstrs,SYS,systeminstrs,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,TCOMMIT_only_barriers,TCOMMIT,barriers,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_TME,hints/barriers/PSTATE/system
+phase-3.6,TSB_HC_hints,TSB,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_TRF,hints/barriers/PSTATE/system
+phase-3.6,TSTART_BR_systemresult,TSTART,systemresult,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_TME,hints/barriers/PSTATE/system
+phase-3.6,TTEST_BR_systemresult,TTEST,systemresult,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_TME,hints/barriers/PSTATE/system
+phase-3.6,WFET_only_systeminstrswithreg,WFET,systeminstrswithreg,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_WFxT,hints/barriers/PSTATE/system
+phase-3.6,WFE_HI_hints,WFE,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,WFIT_only_systeminstrswithreg,WFIT,systeminstrswithreg,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_WFxT,hints/barriers/PSTATE/system
+phase-3.6,WFI_HI_hints,WFI,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+phase-3.6,XAFLAG_M_pstate,XAFLAG,pstate,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_FlagM2,hints/barriers/PSTATE/system
+phase-3.6,XPACLRI_HI_hints,XPAC,hints,deferred,-,0,0,0,0,0,0,-,-,-,FEAT_PAuth,hints/barriers/PSTATE/system
+phase-3.6,YIELD_HI_hints,YIELD,hints,deferred,-,0,0,0,0,0,0,-,-,-,-,hints/barriers/PSTATE/system
+operation,BC_cond,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,BC_only_condbranch
+operation,BL,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,BL_only_branch_imm
+operation,BLR,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,BLR_64_branch_reg
+operation,BLRA,-,-,covered,-,4,0,0,0,0,0,-,-,-,-,"BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BLRABZ_64_branch_reg,BLRAB_64P_branch_reg"
+operation,BR,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,BR_64_branch_reg
+operation,BRA,-,-,covered,-,4,0,0,0,0,0,-,-,-,-,"BRAAZ_64_branch_reg,BRAA_64P_branch_reg,BRABZ_64_branch_reg,BRAB_64P_branch_reg"
+operation,BRK,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,BRK_EX_exception
+operation,B_cond,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,B_only_condbranch
+operation,B_uncond,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,B_only_branch_imm
+operation,CBBcc_regs,-,-,covered,-,6,0,0,0,0,0,-,-,-,-,"CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs"
+operation,CBHcc_regs,-,-,covered,-,6,0,0,0,0,0,-,-,-,-,"CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHNE_16_regs"
+operation,CBNZ,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"CBNZ_32_compbranch,CBNZ_64_compbranch"
+operation,CBZ,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"CBZ_32_compbranch,CBZ_64_compbranch"
+operation,CBcc_imm,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,"CBEQ_32_imm,CBEQ_64_imm,CBGT_32_imm,CBGT_64_imm,CBHI_32_imm,CBHI_64_imm,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_64_imm"
+operation,CBcc_regs,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,"CBEQ_32_regs,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_regs,CBGT_64_regs,CBHI_32_regs,CBHI_64_regs,CBHS_32_regs,CBHS_64_regs,CBNE_32_regs,CBNE_64_regs"
+operation,DCPS1,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,DCPS1_DC_exception
+operation,DCPS2,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,DCPS2_DC_exception
+operation,DCPS3,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,DCPS3_DC_exception
+operation,DRPS,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,DRPS_64E_branch_reg
+operation,ERET,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,ERET_64E_branch_reg
+operation,ERETA,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"ERETAA_64E_branch_reg,ERETAB_64E_branch_reg"
+operation,HLT,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,HLT_EX_exception
+operation,HVC,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,HVC_EX_exception
+operation,RET,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,RET_64R_branch_reg
+operation,RETA,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"RETAA_64E_branch_reg,RETAB_64E_branch_reg"
+operation,RETASPPCR_reg,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"RETAASPPCR_64M_branch_reg,RETABSPPCR_64M_branch_reg"
+operation,RETASPPC_imm,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"RETAASPPC_only_miscbranch,RETABSPPC_only_miscbranch"
+operation,SMC,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,SMC_EX_exception
+operation,SVC,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,SVC_EX_exception
+operation,TBNZ,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,TBNZ_only_testbranch
+operation,TBZ,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,TBZ_only_testbranch
+operation,TCANCEL,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,TCANCEL_EX_exception
+feature,FEAT_CMPBR,-,-,covered,-,36,0,0,0,0,0,-,-,-,-,"CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs,CBEQ_32_imm,CBEQ_32_regs,CBEQ_64_imm,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_imm,CBGT_32_regs,CBGT_64_imm,CBGT_64_regs,CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHI_32_imm,CBHI_32_regs,CBHI_64_imm,CBHI_64_regs,CBHNE_16_regs,CBHS_32_regs,CBHS_64_regs,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_32_regs,CBNE_64_imm,CBNE_64_regs"
+feature,FEAT_HBC,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,BC_only_condbranch
+feature,FEAT_PAuth,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,"BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BLRABZ_64_branch_reg,BLRAB_64P_branch_reg,BRAAZ_64_branch_reg,BRAA_64P_branch_reg,BRABZ_64_branch_reg,BRAB_64P_branch_reg,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,RETAA_64E_branch_reg,RETAB_64E_branch_reg"
+feature,FEAT_PAuth_LR,-,-,covered,-,4,0,0,0,0,0,-,-,-,-,"RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch"
+feature,FEAT_TME,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,TCANCEL_EX_exception
+dependency,DEBUG_LINK,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,DRPS_64E_branch_reg
+dependency,DEBUG_STATUS,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,DRPS_64E_branch_reg
+dependency,ELR,-,-,covered,-,8,0,0,0,0,0,-,-,-,-,"BRK_EX_exception,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,ERET_64E_branch_reg,HLT_EX_exception,HVC_EX_exception,SMC_EX_exception,SVC_EX_exception"
+dependency,LR,-,-,covered,-,13,0,0,0,0,0,-,-,-,-,"BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BLRABZ_64_branch_reg,BLRAB_64P_branch_reg,BLR_64_branch_reg,BL_only_branch_imm,RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETAA_64E_branch_reg,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch,RETAB_64E_branch_reg,RET_64R_branch_reg"
+dependency,NZCV,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"BC_only_condbranch,B_only_condbranch"
+dependency,PAC_IA,-,-,covered,-,8,0,0,0,0,0,-,-,-,-,"BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BRAAZ_64_branch_reg,BRAA_64P_branch_reg,ERETAA_64E_branch_reg,RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETAA_64E_branch_reg"
+dependency,PAC_IB,-,-,covered,-,8,0,0,0,0,0,-,-,-,-,"BLRABZ_64_branch_reg,BLRAB_64P_branch_reg,BRABZ_64_branch_reg,BRAB_64P_branch_reg,ERETAB_64E_branch_reg,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch,RETAB_64E_branch_reg"
+dependency,PC,-,-,covered,-,60,0,0,0,0,0,-,-,-,-,"BC_only_condbranch,BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BLRABZ_64_branch_reg,BLRAB_64P_branch_reg,BLR_64_branch_reg,BL_only_branch_imm,BRK_EX_exception,B_only_branch_imm,B_only_condbranch,CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs,CBEQ_32_imm,CBEQ_32_regs,CBEQ_64_imm,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_imm,CBGT_32_regs,CBGT_64_imm,CBGT_64_regs,CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHI_32_imm,CBHI_32_regs,CBHI_64_imm,CBHI_64_regs,CBHNE_16_regs,CBHS_32_regs,CBHS_64_regs,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_32_regs,CBNE_64_imm,CBNE_64_regs,CBNZ_32_compbranch,CBNZ_64_compbranch,CBZ_32_compbranch,CBZ_64_compbranch,HLT_EX_exception,HVC_EX_exception,RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch,SMC_EX_exception,SVC_EX_exception,TBNZ_only_testbranch,TBZ_only_testbranch"
+dependency,PSTATE,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,"BRK_EX_exception,DCPS1_DC_exception,DCPS2_DC_exception,DCPS3_DC_exception,DRPS_64E_branch_reg,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,ERET_64E_branch_reg,HLT_EX_exception,HVC_EX_exception,SMC_EX_exception,SVC_EX_exception"
+dependency,SP,-,-,covered,-,8,0,0,0,0,0,-,-,-,-,"ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETAA_64E_branch_reg,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch,RETAB_64E_branch_reg"
+dependency,SPSR,-,-,covered,-,8,0,0,0,0,0,-,-,-,-,"BRK_EX_exception,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,ERET_64E_branch_reg,HLT_EX_exception,HVC_EX_exception,SMC_EX_exception,SVC_EX_exception"
+restriction,EL2-required,-,-,covered,-,1,0,0,0,0,0,-,-,-,-,HVC_EX_exception
+restriction,EL3-required,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"DCPS3_DC_exception,SMC_EX_exception"
+restriction,alignment-4,-,-,covered,-,46,0,0,0,0,0,-,-,-,-,"BC_only_condbranch,BL_only_branch_imm,B_only_branch_imm,B_only_condbranch,CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs,CBEQ_32_imm,CBEQ_32_regs,CBEQ_64_imm,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_imm,CBGT_32_regs,CBGT_64_imm,CBGT_64_regs,CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHI_32_imm,CBHI_32_regs,CBHI_64_imm,CBHI_64_regs,CBHNE_16_regs,CBHS_32_regs,CBHS_64_regs,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_32_regs,CBNE_64_imm,CBNE_64_regs,CBNZ_32_compbranch,CBNZ_64_compbranch,CBZ_32_compbranch,CBZ_64_compbranch,TBNZ_only_testbranch,TBZ_only_testbranch"
+restriction,bit-index,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"TBNZ_only_testbranch,TBZ_only_testbranch"
+restriction,compare-imm6,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,"CBEQ_32_imm,CBEQ_64_imm,CBGT_32_imm,CBGT_64_imm,CBHI_32_imm,CBHI_64_imm,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_64_imm"
+restriction,current-EL-unknown,-,-,covered,-,13,0,0,0,0,0,-,-,-,-,"BRK_EX_exception,DCPS1_DC_exception,DCPS2_DC_exception,DCPS3_DC_exception,DRPS_64E_branch_reg,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,ERET_64E_branch_reg,HLT_EX_exception,HVC_EX_exception,SMC_EX_exception,SVC_EX_exception,TCANCEL_EX_exception"
+restriction,feature-gate,-,-,covered,-,54,0,0,0,0,0,-,-,-,-,"BC_only_condbranch,BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BLRABZ_64_branch_reg,BLRAB_64P_branch_reg,BRAAZ_64_branch_reg,BRAA_64P_branch_reg,BRABZ_64_branch_reg,BRAB_64P_branch_reg,CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs,CBEQ_32_imm,CBEQ_32_regs,CBEQ_64_imm,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_imm,CBGT_32_regs,CBGT_64_imm,CBGT_64_regs,CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHI_32_imm,CBHI_32_regs,CBHI_64_imm,CBHI_64_regs,CBHNE_16_regs,CBHS_32_regs,CBHS_64_regs,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_32_regs,CBNE_64_imm,CBNE_64_regs,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETAA_64E_branch_reg,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch,RETAB_64E_branch_reg,TCANCEL_EX_exception"
+restriction,fixed-bits,-,-,covered,-,76,0,0,0,0,0,-,-,-,-,"BC_only_condbranch,BLRAAZ_64_branch_reg,BLRAA_64P_branch_reg,BLRABZ_64_branch_reg,BLRAB_64P_branch_reg,BLR_64_branch_reg,BL_only_branch_imm,BRAAZ_64_branch_reg,BRAA_64P_branch_reg,BRABZ_64_branch_reg,BRAB_64P_branch_reg,BRK_EX_exception,BR_64_branch_reg,B_only_branch_imm,B_only_condbranch,CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs,CBEQ_32_imm,CBEQ_32_regs,CBEQ_64_imm,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_imm,CBGT_32_regs,CBGT_64_imm,CBGT_64_regs,CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHI_32_imm,CBHI_32_regs,CBHI_64_imm,CBHI_64_regs,CBHNE_16_regs,CBHS_32_regs,CBHS_64_regs,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_32_regs,CBNE_64_imm,CBNE_64_regs,CBNZ_32_compbranch,CBNZ_64_compbranch,CBZ_32_compbranch,CBZ_64_compbranch,DCPS1_DC_exception,DCPS2_DC_exception,DCPS3_DC_exception,DRPS_64E_branch_reg,ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,ERET_64E_branch_reg,HLT_EX_exception,HVC_EX_exception,RETAASPPCR_64M_branch_reg,RETAASPPC_only_miscbranch,RETAA_64E_branch_reg,RETABSPPCR_64M_branch_reg,RETABSPPC_only_miscbranch,RETAB_64E_branch_reg,RET_64R_branch_reg,SMC_EX_exception,SVC_EX_exception,TBNZ_only_testbranch,TBZ_only_testbranch,TCANCEL_EX_exception"
+restriction,min-EL1,-,-,covered,-,5,0,0,0,0,0,-,-,-,-,"ERETAA_64E_branch_reg,ERETAB_64E_branch_reg,ERET_64E_branch_reg,HVC_EX_exception,SMC_EX_exception"
+restriction,signed-offset,-,-,covered,-,46,0,0,0,0,0,-,-,-,-,"BC_only_condbranch,BL_only_branch_imm,B_only_branch_imm,B_only_condbranch,CBBEQ_8_regs,CBBGE_8_regs,CBBGT_8_regs,CBBHI_8_regs,CBBHS_8_regs,CBBNE_8_regs,CBEQ_32_imm,CBEQ_32_regs,CBEQ_64_imm,CBEQ_64_regs,CBGE_32_regs,CBGE_64_regs,CBGT_32_imm,CBGT_32_regs,CBGT_64_imm,CBGT_64_regs,CBHEQ_16_regs,CBHGE_16_regs,CBHGT_16_regs,CBHHI_16_regs,CBHHS_16_regs,CBHI_32_imm,CBHI_32_regs,CBHI_64_imm,CBHI_64_regs,CBHNE_16_regs,CBHS_32_regs,CBHS_64_regs,CBLO_32_imm,CBLO_64_imm,CBLT_32_imm,CBLT_64_imm,CBNE_32_imm,CBNE_32_regs,CBNE_64_imm,CBNE_64_regs,CBNZ_32_compbranch,CBNZ_64_compbranch,CBZ_32_compbranch,CBZ_64_compbranch,TBNZ_only_testbranch,TBZ_only_testbranch"
+restriction,valid-sibling-overlap,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,"RETAASPPCR_64M_branch_reg,RETABSPPCR_64M_branch_reg"
+operand,A,-,-,covered,-,16,0,0,0,0,0,-,-,-,-,-
+operand,H,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,-
+operand,LL,-,-,covered,-,9,0,0,0,0,0,-,-,-,-,-
+operand,M,-,-,covered,-,18,0,0,0,0,0,-,-,-,-,-
+operand,Rm,-,-,covered,-,39,0,0,0,0,0,-,-,-,-,-
+operand,Rn,-,-,covered,-,19,0,0,0,0,0,-,-,-,-,-
+operand,Rt,-,-,covered,-,42,0,0,0,0,0,-,-,-,-,-
+operand,Z,-,-,covered,-,13,0,0,0,0,0,-,-,-,-,-
+operand,b40,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,b5,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,bit_index,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,cc,-,-,covered,-,36,0,0,0,0,0,-,-,-,-,-
+operand,cond,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,imm14,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,imm16,-,-,covered,-,11,0,0,0,0,0,-,-,-,-,-
+operand,imm19,-,-,covered,-,6,0,0,0,0,0,-,-,-,-,-
+operand,imm26,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,imm6,-,-,covered,-,12,0,0,0,0,0,-,-,-,-,-
+operand,imm9,-,-,covered,-,36,0,0,0,0,0,-,-,-,-,-
+operand,o0,-,-,covered,-,2,0,0,0,0,0,-,-,-,-,-
+operand,op,-,-,covered,-,21,0,0,0,0,0,-,-,-,-,-
+operand,op0,-,-,covered,-,76,0,0,0,0,0,-,-,-,-,-
+operand,op1,-,-,covered,-,76,0,0,0,0,0,-,-,-,-,-
+operand,op2,-,-,covered,-,76,0,0,0,0,0,-,-,-,-,-
+operand,op3,-,-,covered,-,19,0,0,0,0,0,-,-,-,-,-
+operand,op4,-,-,covered,-,19,0,0,0,0,0,-,-,-,-,-
+operand,opc,-,-,covered,-,30,0,0,0,0,0,-,-,-,-,-
+operand,sf,-,-,covered,-,28,0,0,0,0,0,-,-,-,-,-
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,54000010,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,54000010,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,54000010,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,54800010,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,54800010,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,547FFFF0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,BC_only_condbranch,BC_cond,condbranch,COMPLETE,547FFFF0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BLRAAZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F081F,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BLRAAZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F081F,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BLRAAZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F081F,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BLRAA_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0801,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BLRAA_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0801,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BLRAA_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0801,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BLRABZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F0C1F,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BLRABZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F0C1F,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BLRABZ_64_branch_reg,BLRA,branch_reg,COMPLETE,D63F0C1F,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BLRAB_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0C01,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BLRAB_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0C01,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BLRAB_64P_branch_reg,BLRA,branch_reg,COMPLETE,D73F0C01,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BLR_64_branch_reg,BLR,branch_reg,COMPLETE,D63F0000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BLR_64_branch_reg,BLR,branch_reg,COMPLETE,D63F0000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BLR_64_branch_reg,BLR,branch_reg,COMPLETE,D63F0000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,94000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,94000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,94000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,96000000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,96000000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,95FFFFFF,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,BL_only_branch_imm,BL,branch_imm,COMPLETE,95FFFFFF,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BRAAZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F081F,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BRAAZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F081F,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BRAAZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F081F,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BRAA_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0801,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BRAA_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0801,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BRAA_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0801,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BRABZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F0C1F,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BRABZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F0C1F,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BRABZ_64_branch_reg,BRA,branch_reg,COMPLETE,D61F0C1F,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BRAB_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0C01,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BRAB_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0C01,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BRAB_64P_branch_reg,BRA,branch_reg,COMPLETE,D71F0C01,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BRK_EX_exception,BRK,exception,COMPLETE,D4200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BRK_EX_exception,BRK,exception,COMPLETE,D4200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BRK_EX_exception,BRK,exception,COMPLETE,D4200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,BR_64_branch_reg,BR,branch_reg,COMPLETE,D61F0000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,BR_64_branch_reg,BR,branch_reg,COMPLETE,D61F0000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,BR_64_branch_reg,BR,branch_reg,COMPLETE,D61F0000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,14000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,14000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,14000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,16000000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,16000000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,15FFFFFF,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,B_only_branch_imm,B_uncond,branch_imm,COMPLETE,15FFFFFF,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,54000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,54000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,54000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,54800000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,54800000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,547FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,B_only_condbranch,B_cond,condbranch,COMPLETE,547FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C08000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C08000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C08000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C0A000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C0A000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C09FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBBEQ_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74C09FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74208000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74208000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74208000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7420A000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7420A000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74209FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBBGE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74209FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74008000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74008000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74008000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7400A000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7400A000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74009FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBBGT_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74009FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74408000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74408000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74408000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7440A000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7440A000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74409FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBBHI_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74409FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74608000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74608000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74608000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7460A000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,7460A000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74609FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBBHS_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74609FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E08000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E08000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E08000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E0A000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E0A000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E09FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBBNE_8_regs,CBBcc_regs,compbranch_regs2,COMPLETE,74E09FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBEQ_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBEQ_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBEQ_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBEQ_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4C01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74202000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74202000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBGE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4202000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4202000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBGE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75002000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75002000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBGT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74002000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74002000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBGT_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5002000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5002000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBGT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4002000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4002000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBGT_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4001FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0E000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0E000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHEQ_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74C0DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420E000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420E000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHGE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7420DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400E000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400E000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHGT_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7400DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440E000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440E000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHHI_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7440DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460E000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460E000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHHS_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,7460DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75402000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75402000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHI_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74402000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74402000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHI_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5402000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5402000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHI_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4402000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4402000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHI_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4401FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0C000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0E000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0E000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHNE_16_regs,CBHcc_regs,compbranch_regs2,COMPLETE,74E0DFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74602000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74602000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHS_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4602000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4602000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBHS_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75602000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75602000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBLO_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5602000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5602000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBLO_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5601FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75202000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75202000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBLT_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5200000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5202000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5202000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBLT_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5201FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBNE_32_imm,CBcc_imm,compbranch_imm,COMPLETE,75E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBNE_32_regs,CBcc_regs,compbranch_regs,COMPLETE,74E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBNE_64_imm,CBcc_imm,compbranch_imm,COMPLETE,F5E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E00000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E02000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBNE_64_regs,CBcc_regs,compbranch_regs,COMPLETE,F4E01FE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,35000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,35000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,35000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,35800000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,35800000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,357FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBNZ_32_compbranch,CBNZ,compbranch,COMPLETE,357FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B5000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B5000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B5000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B5800000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B5800000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B57FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBNZ_64_compbranch,CBNZ,compbranch,COMPLETE,B57FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,34000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,34000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,34000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,34800000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,34800000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,347FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBZ_32_compbranch,CBZ,compbranch,COMPLETE,347FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B4000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B4000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B4000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B4800000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B4800000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B47FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,CBZ_64_compbranch,CBZ,compbranch,COMPLETE,B47FFFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,DCPS1_DC_exception,DCPS1,exception,COMPLETE,D4A00001,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,DCPS1_DC_exception,DCPS1,exception,COMPLETE,D4A00001,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,DCPS1_DC_exception,DCPS1,exception,COMPLETE,D4A00001,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,DCPS2_DC_exception,DCPS2,exception,COMPLETE,D4A00002,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,DCPS2_DC_exception,DCPS2,exception,COMPLETE,D4A00002,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,DCPS2_DC_exception,DCPS2,exception,COMPLETE,D4A00002,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,DCPS3_DC_exception,DCPS3,exception,COMPLETE,D4A00003,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,DCPS3_DC_exception,DCPS3,exception,COMPLETE,D4A00003,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,DCPS3_DC_exception,DCPS3,exception,COMPLETE,D4A00003,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,DRPS_64E_branch_reg,DRPS,branch_reg,COMPLETE,D6BF03E0,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,DRPS_64E_branch_reg,DRPS,branch_reg,COMPLETE,D6BF03E0,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,DRPS_64E_branch_reg,DRPS,branch_reg,COMPLETE,D6BF03E0,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,ERETAA_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0BFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,ERETAA_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0BFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,ERETAA_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0BFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,ERETAB_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0FFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,ERETAB_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0FFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,ERETAB_64E_branch_reg,ERETA,branch_reg,COMPLETE,D69F0FFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,ERET_64E_branch_reg,ERET,branch_reg,COMPLETE,D69F03E0,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,ERET_64E_branch_reg,ERET,branch_reg,COMPLETE,D69F03E0,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,ERET_64E_branch_reg,ERET,branch_reg,COMPLETE,D69F03E0,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,HLT_EX_exception,HLT,exception,COMPLETE,D4400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,HLT_EX_exception,HLT,exception,COMPLETE,D4400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,HLT_EX_exception,HLT,exception,COMPLETE,D4400000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,HVC_EX_exception,HVC,exception,COMPLETE,D4000002,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,HVC_EX_exception,HVC,exception,COMPLETE,D4000002,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,HVC_EX_exception,HVC,exception,COMPLETE,D4000002,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RETAASPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0BE0,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RETAASPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0BE0,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RETAASPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0BE0,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RETAASPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5500001F,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RETAASPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5500001F,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RETAASPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5500001F,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RETAA_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0BFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RETAA_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0BFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RETAA_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0BFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RETABSPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0FE0,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RETABSPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0FE0,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RETABSPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0FE0,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RETABSPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5520001F,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RETABSPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5520001F,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RETABSPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5520001F,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RETAB_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0FFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RETAB_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0FFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RETAB_64E_branch_reg,RETA,branch_reg,COMPLETE,D65F0FFF,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,RET_64R_branch_reg,RET,branch_reg,COMPLETE,D65F03C0,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,RET_64R_branch_reg,RET,branch_reg,COMPLETE,D65F03C0,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,RET_64R_branch_reg,RET,branch_reg,COMPLETE,D65F03C0,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,SMC_EX_exception,SMC,exception,COMPLETE,D4000003,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,SMC_EX_exception,SMC,exception,COMPLETE,D4000003,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,SMC_EX_exception,SMC,exception,COMPLETE,D4000003,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,SVC_EX_exception,SVC,exception,COMPLETE,D4000001,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,SVC_EX_exception,SVC,exception,COMPLETE,D4000001,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,SVC_EX_exception,SVC,exception,COMPLETE,D4000001,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,37000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,37000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,37000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,37040000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,37040000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,3703FFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,TBNZ_only_testbranch,TBNZ,testbranch,COMPLETE,3703FFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,36000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,36000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,36000000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,36040000,1,1,0,0,0,0,-,PC,-,-,min:PC=0000000000000000
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,36040000,1,1,0,0,0,0,-,PC,-,-,min:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,3603FFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=0000000000000000
+PC-boundary,TBZ_only_testbranch,TBZ,testbranch,COMPLETE,3603FFE0,1,1,0,0,0,0,-,PC,-,-,max:PC=FFFFFFFFFFFFFFFC
+PC-boundary,TCANCEL_EX_exception,TCANCEL,exception,COMPLETE,D4600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=1000000000004000
+PC-boundary,TCANCEL_EX_exception,TCANCEL,exception,COMPLETE,D4600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=0000000000000000
+PC-boundary,TCANCEL_EX_exception,TCANCEL,exception,COMPLETE,D4600000,1,1,0,0,0,0,-,PC,-,-,seed:PC=FFFFFFFFFFFFFFFC
+combined-feature-profile,RETAASPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0BE0,1,1,0,0,0,1,-,"SP,PC,LR",FEAT_PAuth_LR,FEAT_PAuth_LR,FEAT_PAuth disabled; LLVM verified
+combined-feature-profile,RETAASPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5500001F,1,1,0,0,0,1,-,"SP,PC,LR",FEAT_PAuth_LR,FEAT_PAuth_LR,FEAT_PAuth disabled; LLVM verified
+combined-feature-profile,RETABSPPCR_64M_branch_reg,RETASPPCR_reg,branch_reg,COMPLETE,D65F0FE0,1,1,0,0,0,1,-,"SP,PC,LR",FEAT_PAuth_LR,FEAT_PAuth_LR,FEAT_PAuth disabled; LLVM verified
+combined-feature-profile,RETABSPPC_only_miscbranch,RETASPPC_imm,miscbranch,COMPLETE,5520001F,1,1,0,0,0,1,-,"SP,PC,LR",FEAT_PAuth_LR,FEAT_PAuth_LR,FEAT_PAuth disabled; LLVM verified
+total,phase-3.3,-,-,COMPLETE,-,23385,22216,1113,54,2,1336,28,11,11,5,76 forms;53 to 3.6;412 PC-boundary;4 PAuth-LR-only;679 LLVM-unavailable;434 LLVM-other

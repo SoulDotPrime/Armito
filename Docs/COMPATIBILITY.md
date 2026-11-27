@@ -1,3 +1,145 @@
+# Compatibilidade final de controle — 3.3.3 (2026-11-26)
+
+`control_flow_comprehensive_validation.py`/`.csv`: 634 linhas, SHA-256
+`5a96fa23d0351af1660a1ffe46f2c0b0959368296882da5286503568c72dd62e`.
+76 formas COMPLETE, 23.385 casos herdados reconciliados, 412 rebases PC
+e 4 perfis PAuth_LR-only; 1.336 confrontos positivos LLVM MC 21.1.8
+qualificado e 1.113 flips classificados separadamente por forma/global.
+O wrapper LLVM 18.1.8 preserva baselines de 3.2; MC 21.1.8 cobre
+`+cmpbr,+hbc,+pauth,+pauth-lr,+tme,+el3` para controles novos.
+13 hashes anteriores, 290.770 ocorrências, 3.099/4.296/45.360 e 506
+REJECT preservados. `Armito.dsc`/`Armito.inf` preexistentes não tocados.
+`make -B test`, `make test`, `make catalog-test`, EDK2 DEBUG/RELEASE EXIT 0.
+Proveniência pública Arm não implica PAC proprietário Apple: provider
+`compatibility_only`, Mac14_3 sem backend, CPUState sem EL/ELR/SPSR
+completos e sem execução semântica. As 53 formas de controle restantes
+foram encaminhadas à Fase 3.6, não iniciada.
+
+# Autenticação/exceções — 3.3.2 (2026-11-26)
+
+Oráculo `authenticated_control_flow_validation.py`, CSV de 1.142 linhas,
+SHA-256 `acebf7ec98c12d14000310c15cc65ef86dd5ba4b2dfed38b3e9541f07ca6e982`.
+27 sementes distintas COMPLETE, 539 referências LLVM MC 21.1.8 com
+`+pauth,+pauth-lr,+tme,+el3`, 530 negativas pela forma e 17 features
+desabilitadas; 2 palavras globalmente válidas são atribuídas a RETAA/
+RETAB em vez de RET*SPPCR. SMC/DCPS3 falham na referência sem EL3.
+Preservados os 12 relatórios anteriores, 289.682 ocorrências, 3.099/
+4.296/45.360 e 506 REJECT. Testes sequenciais e builds EDK2 X64 GCC
+DEBUG/RELEASE EXIT 0. O teste valida instruções públicas Arm, não PAC
+proprietário Apple ARM64E ou execução nativa Mac14_3; o provider de
+PointerAuth é `compatibility_only` e CPUToCPU/Apple/Mac14_3 está vazio.
+
+# Compatibilidade de desvios — 3.3.1 (2026-11-26)
+
+`control_flow_validation.py` + `control_flow_validation.csv` auditam as 129
+formas de controle (49 convencionais COMPLETE, 80 não abrangidas) com 22.297
+casos e 797 comparações LLVM. SHA-256 fixado:
+`edddbdeab51b3491df3189d94445dbd19254a8e8e9443765adf0a1a61db4a4ff`.
+O LLVM MC 21.1.8 qualificado (`llvm-mc-21` ou `LLVM_MC_CONTROL`) é necessário
+para `+cmpbr,+hbc`; o wrapper 18.1.8 qualificado continua reproduzindo os
+11 relatórios 3.2. A suíte exige concordância de forma, mnemonic, target,
+displacement e metadados nos casos verificados; flips de bits fixos verificam
+rejeição *pela forma*, não prova de palavra indefinida globalmente.
+`make -B test`, `make test`, `make catalog-test` e EDK2 X64 GCC DEBUG/RELEASE
+passaram. Nenhuma mudança em Armito.dsc/Armito.inf preexistentes, catálogo
+ou 11 relatórios 3.2; 267.385 ocorrências históricas e 506 REJECT preservados.
+
+# Validação abrangente Integer — 3.2.8 (2026-11-26)
+
+Novo oráculo `Tests/Decoder/AARCH64/integer_comprehensive_validation.py` +
+`integer_comprehensive_validation.csv` (289 linhas, SHA-256
+`3f24c847e36c8df3cfa51db23146c11bcb903dbb6414afccedb21e06fcec2b49`), ligado ao
+`operand-extraction-test`. Prova 195/195 formas COMPLETE (semente distintiva por
+forma, perfil completo de features, LLVM MC qualificada), 93/93 aliases (92
+selecionados + REV64 negativo-only) e 112 operações, com cobertura por
+forma/operação/alias/operando/dependência/restrição/feature. As 38 formas
+`runtime-partial` da 3.2.7 eram falso-positivo do oráculo de codificações inválidas
+(semente ambígua pelo `value` bruto; bits de opcode [11:10] wildcard colidem com a
+forma irmã); o runtime já extraía COMPLETE cada forma. `integer_invalid_encodings`
+re-fixado em `550ba37f…` (alteração justificada; os outros 9 hashes preservados).
+3.099/4.296/45.360 e 267.385 ocorrências preservados; 506 REJECT mantidos.
+`make -B test`/`make test`/`make catalog-test` EXIT 0 (LLVM 18.1.8 qualificada,
+`LLVM_MC` apontando para o wrapper); EDK2 X64 GCC DEBUG/RELEASE EXIT 0. Semântica
+em execução requisito futuro. Reprodução: `make test`.
+
+# Codificações inválidas Integer — 3.2.7 (2026-11-26)
+
+`Tests/Decoder/AARCH64/integer_invalid_encodings.py` classifica as codificações
+das 195 formas: undefined (bits fixos), runtime-partial (válida, limitação do
+runtime), feature-gated (CSSC/MTE/CPA/PAuth/PAuth_LR/CRC32/FlagM). 3.173 casos,
+195 formas, 0 undue-accept, 38 runtime-partial (ASRV/LSRV/RORV/SDIV/REV/CLS/
+CSINC/CSNEG/UMADDL/UMULH etc. — válidas, PARTIAL por campos RAW). LLVM MC
+complementar. Relatório `integer_invalid_encodings.csv` (SHA-256
+`977a632043e5553f8ff99371017320ca6373fd384e5696f2f5fed9af10e4e387`), ligado ao
+`operand-extraction-test`. 9 hashes e 264.212 ocorrências preservados;
+3.099/4.296/45.360. `make -B test`/`make test`/`make catalog-test` EXIT 0 (LLVM
+21.1.8); EDK2 X64 GCC DEBUG/RELEASE EXIT 0 (2.502.656 bytes). 506 REJECT
+mantidos; semântica em execução requisito futuro. Reprodução: `make test`.
+
+# Operandos implícitos Integer — 3.2.6 (2026-11-26)
+
+Novo oráculo independente `Tests/Decoder/AARCH64/integer_implicit_operands.py`
+classifica as 195 formas Integer/Data Processing segundo a especificação Arm:
+explícitos, implícitos (merge), derivados, constantes; leituras/escritas; NZCV
+(CCMP/CCMN; ADDS/SUBS/ANDS/BICS/ADCS/SBCS/SETF/RMIF); carry (ADC/SBC/ADCS/SBCS);
+condicionais (CSEL/CSINC/CSINV/CSNEG/CCMP/CCMN); SP/ZR/WSP/XZR; MOVK/BFM; larguras
+e parciais. 1.800 casos (0/1/30/31 por registrador), 195 formas, 0 divergências.
+Relatório `integer_implicit_operands.csv` (1.484 linhas, SHA-256
+`6df6ade821c168b50a1f3846743be99700c66b0889375dca05ee86ac7e4734c0`), ligado ao
+`operand-extraction-test`. A flag C `IMPLICIT_REGISTER` não foi alterada (reservada
+ao contexto SP; baseline de registradores `739a1296…` intacta); o contrato de
+leitura implícita é metadado do oráculo. Preservados os 8 hashes e 262.412
+ocorrências; 3.099/4.296/45.360. `make -B test`/`make test`/`make catalog-test`
+EXIT 0 (LLVM 21.1.8 qualificada); EDK2 X64 GCC DEBUG/RELEASE EXIT 0 (2.502.656
+bytes). Equivalência semântica em execução segue requisito futuro; 506 REJECT
+mantidos. Reprodução: `make test`.
+
+# Compatibilidade de toolchain LLVM — 3.2.5.2 (2026-11-26)
+
+Os gates literais `LLVM MC 18.1.3` foram substituídos por política explícita de
+toolchains verificadas em `Tests/Decoder/AARCH64/llvm_toolchain.py`. Seleção do
+executável por `LLVM_MC` (padrão `llvm-mc`); registro `QUALIFIED` com 18.1.3
+(referência histórica), 18.1.8 e 21.1.8; `require_qualified` rejeita outras
+versões com diagnóstico claro. Qualificação empírica por reprodução integral de
+TODAS as baselines fixadas (registrador 30.212, immediate 62.851, bitmask
+114.688, condição 6.656, alias 48.005, rejeições), não por um único corpus.
+Resultados desta execução (todos EXIT 0): `operand-extraction-test` qualificou
+18.1.8 e 21.1.8; `make -B test`, `make test` e `make catalog-test` passam com o
+padrão 21.1.8; EDK2 X64 GCC DEBUG e RELEASE passam (EFIs de 2.502.656 bytes).
+Preservados: 93 aliases (68 variáveis, 25 constantes-verdadeiros), 48.005 pares,
+142.731 linhas, 262.412 ocorrências acumuladas, 3.099/4.296/45.360 e os 8 hashes
+fixados (alias `e9f412f7…`, cobertura `05e1d7d7…`, immediate `ed292fcf…`,
+registrador `739a1296…`, bitmask `ffbd31d7…`, condição `49b7cf96…`, rejeições
+`d6545bbc…`/`3af651c0…`). Runtime C não modificado; equivalência semântica em
+execução permanece requisito das fases semânticas futuras; lacuna dos 506 REJECT
+mantida. Reprodução: `make test`; `LLVM_MC=/caminho/llvm-mc make
+operand-extraction-test`.
+
+# Campanha 3.2.5.1 — fechamento de predicados (2026-11-26)
+
+Retomada da campanha de aliases Integer sem alterar o relatório fixado
+`integer_alias_predicates.csv` (SHA-256 `e9f412f7…`), que continua reproduzindo
+byte a byte. Classificação independente dos 93 predicados: 68 variáveis com
+polaridade positiva e negativa, 25 constantes-verdadeiros apenas com caso
+positivo, 0 constantes-falsos; REV64 (`preferred=false`) nunca selecionado. A
+asserção de classificação foi incorporada a `integer_alias_predicates.py` sem
+mudar o CSV. Novo relatório determinístico
+`Tests/Decoder/AARCH64/integer_alias_coverage.csv` (93 linhas, SHA-256
+`05e1d7d7df3dde2c8aa1542d5a46a9e93ae0b62b9cee2b94a73b63d4bd0e5433`) e
+`integer_alias_coverage.py`, ligado ao alvo `operand-extraction-test`.
+As 106 sobreposições LSL/UBFIZ (LSL pref `immr==imms+1`, UBFIZ pref
+`imms<immr`) e as 170 diferenças BFC/BFI (BFC `Rn==ZR`, BFI `Rn!=ZR`, BFXIL
+`imms>=immr`) são preferências textuais da mesma operação canônica UBFM/BFM;
+LLVM MC imprime LSL/BFI, o runtime escolhe UBFIZ/BFC, sem divergência
+arquitetural. Os hashes das 214.407 ocorrências anteriores permanecem iguais.
+Nesta execução: `make catalog-test` passou; `make -B test` e `make test` falham
+apenas no gate de versão de `integer_form_differential.py` e
+`integer_immediate_differential.py` (exigem LLVM MC 18.1.3; o ambiente oferece
+21.1.8 por padrão e 18.1.8 extraído localmente, ambos reproduzindo os hashes
+fixados byte a byte); EDK2 X64 GCC DEBUG e RELEASE passaram (EFIs de 2.502.656
+bytes). A equivalência semântica em execução (NZCV, SP/ZR, larguras) depende das
+fases semânticas futuras. 3.2.5.1 não declarada encerrada; 3.2.6 não iniciada.
+
 # Campanha 3.2.5.1 — aliases Integer (2026-11-26)
 
 Fonte normativa: pacote Arm `Build/arm-isa-2025-12.tar.gz` (SHA-256 abaixo),
@@ -374,3 +516,11 @@ Nunca se deve emitir código aproximado sem preservar a semântica.
   Outros pares de ISA       Expansão         Futuro
 
 Atualize esta matriz somente com base em testes reproduzíveis.
+# Fase 3.4.1
+
+91 formas convencionais GPR foram validadas independentemente com LLVM MC
+21.1.8 e sementes distintivas: 91 seeds, 91 boundary-zero e 1.084 flips fixos
+rejeitados pela forma. 905 formas foram classificadas como especializadas e não
+constituem cobertura da fase; LSUI/MTE e variantes não-GPR/feature-gated ficam
+para 3.4.2. 3.099 padrões, 4.296 formas e 45.360 descritores preservados.
+

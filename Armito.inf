@@ -49,7 +49,7 @@
 
 [Packages]
     MdePkg/MdePkg.dec
-    ArmitoPkg/Armito.dec
+    Armito/Armito.dec
 
 [LibraryClasses]
     UefiApplicationEntryPoint

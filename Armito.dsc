@@ -22,4 +22,4 @@
     StackCheckLib|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
 
 [Components]
-    ArmitoPkg/Armito.inf
+    Armito/Armito.inf

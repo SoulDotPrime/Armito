@@ -5,6 +5,8 @@ import re
 import subprocess
 import sys
 
+import llvm_toolchain
+
 
 CATALOG = "Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json"
 LLVM_FEATURES = "+crc,+pauth,+mte,+cssc,+flagm,+pauth-lr,+cpa"
@@ -124,7 +126,7 @@ def llvm_disassemble(words):
         for word in words
     ) + "\n"
     process = subprocess.run(
-        ["llvm-mc", "--disassemble", "--triple=aarch64",
+        [llvm_toolchain.executable(), "--disassemble", "--triple=aarch64",
          "--mattr=" + LLVM_FEATURES],
         input=source, text=True, capture_output=True, check=True,
     )
@@ -238,10 +240,8 @@ def verify_baseline(probe_path, form_map):
 
 
 def main(probe_path):
-    version = subprocess.run(["llvm-mc", "--version"], capture_output=True,
-                             text=True, check=True).stdout
-    if not re.search(r"\bLLVM version 18\.1\.3\b", version):
-        raise RuntimeError("reference version mismatch: expected LLVM MC 18.1.3")
+    exe, ver = llvm_toolchain.require_qualified()
+    print(f"LLVM MC toolchain: {exe} version {ver}")
     with open(CATALOG, encoding="utf-8") as stream:
         catalog = json.load(stream)
     forms = catalog["instruction_forms"]

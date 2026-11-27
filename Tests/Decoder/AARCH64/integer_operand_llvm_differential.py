@@ -2,6 +2,8 @@ import re
 import subprocess
 import sys
 
+import llvm_toolchain
+
 
 CASES = {
     0x91000420: ("x0", "x1", "-", "-"),
@@ -24,7 +26,8 @@ def main():
     for word, expected in CASES.items():
         source = ", ".join(f"0x{(word >> (8 * i)) & 255:02x}" for i in range(4))
         result = subprocess.run(
-            ["llvm-mc", "--disassemble", "--triple=aarch64", "--mattr=+crc"],
+            [llvm_toolchain.executable(), "--disassemble", "--triple=aarch64",
+             "--mattr=+crc"],
             input=source + "\n", text=True, capture_output=True, check=True,
         )
         text = result.stdout.lower()

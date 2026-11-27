@@ -61,6 +61,10 @@ INTEGER_OPERANDS_REFERENCE := $(HOST_BUILD_DIR)/aarch64integerreference
 INTEGER_OPERANDS_REFERENCE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/IntegerOperandReferenceTest.o
 INTEGER_FORM_PROBE := $(HOST_BUILD_DIR)/aarch64integerformprobe
 INTEGER_FORM_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/IntegerFormProbe.o
+CONTROL_FLOW_PROBE := $(HOST_BUILD_DIR)/aarch64controlflowprobe
+CONTROL_FLOW_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/ControlFlowProbe.o
+MEMORY_PROBE := $(HOST_BUILD_DIR)/aarch64memoryprobe
+MEMORY_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/MemoryProbe.o
 AARCH64_CATALOG_DIR := Decoder/AARCH64/Catalog
 AARCH64_TEST_DIR := Tests/Decoder/AARCH64
 AARCH64_FIXTURE_DIR := Tests/Fixtures/AARCH64
@@ -137,6 +141,12 @@ $(INTEGER_OPERANDS_REFERENCE): $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64
 $(INTEGER_FORM_PROBE): $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o $(INTEGER_FORM_PROBE_OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(INTEGER_FORM_PROBE_OBJ) $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o -o $@
 
+$(CONTROL_FLOW_PROBE): $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o $(CONTROL_FLOW_PROBE_OBJ)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(CONTROL_FLOW_PROBE_OBJ) $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o -o $@
+
+$(MEMORY_PROBE): $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o $(MEMORY_PROBE_OBJ)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(MEMORY_PROBE_OBJ) $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o -o $@
+
 $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o: Decoder/AARCH64/Catalog/AARCH64Catalog.h Decoder/AARCH64/Catalog/AARCH64CatalogData.inc
 $(HOST_BUILD_DIR)/Decoder/AARCH64/AARCH64.o: Decoder/AARCH64/Catalog/AARCH64Catalog.h
 
@@ -176,7 +186,7 @@ catalog-coverage-test: $(AARCH64_CATALOG_TEST)
 catalog-test: catalog-structure-test catalog-coverage-test catalog-index-test \
 	catalog-differential-test
 
-operand-extraction-test: $(AARCH64_OPERANDS_TEST) $(INTEGER_OPERANDS_REFERENCE) $(INTEGER_FORM_PROBE)
+operand-extraction-test: $(AARCH64_OPERANDS_TEST) $(INTEGER_OPERANDS_REFERENCE) $(INTEGER_FORM_PROBE) $(CONTROL_FLOW_PROBE) $(MEMORY_PROBE)
 	./$(AARCH64_OPERANDS_TEST)
 	python3 $(AARCH64_TEST_DIR)/integer_operand_llvm_differential.py ./$(INTEGER_OPERANDS_REFERENCE)
 	python3 $(AARCH64_TEST_DIR)/integer_form_differential.py ./$(INTEGER_FORM_PROBE)
@@ -185,6 +195,15 @@ operand-extraction-test: $(AARCH64_OPERANDS_TEST) $(INTEGER_OPERANDS_REFERENCE) 
 	python3 $(AARCH64_TEST_DIR)/bitmask_exhaustive.py ./$(INTEGER_FORM_PROBE)
 	python3 $(AARCH64_TEST_DIR)/integer_condition_audit.py ./$(INTEGER_FORM_PROBE)
 	python3 $(AARCH64_TEST_DIR)/integer_alias_predicates.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/integer_alias_coverage.py
+	python3 $(AARCH64_TEST_DIR)/integer_implicit_operands.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/integer_invalid_encodings.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/integer_comprehensive_validation.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/control_flow_validation.py ./$(CONTROL_FLOW_PROBE)
+	python3 $(AARCH64_TEST_DIR)/authenticated_control_flow_validation.py ./$(CONTROL_FLOW_PROBE)
+	python3 $(AARCH64_TEST_DIR)/control_flow_comprehensive_validation.py ./$(CONTROL_FLOW_PROBE)
+	python3 $(AARCH64_TEST_DIR)/memory_operand_validation.py ./$(MEMORY_PROBE)
+	python3 $(AARCH64_TEST_DIR)/specialized_memory_validation.py ./$(MEMORY_PROBE)
 
 test: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST) $(ARM64E_TEST) catalog-test operand-extraction-test
 	./$(CORE_TEST)

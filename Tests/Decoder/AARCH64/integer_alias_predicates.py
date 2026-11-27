@@ -53,6 +53,14 @@ def preferred_movewide(sf, n, s, r):
     return False
 
 
+def is_constant_true(node):
+    return node["_type"] == "AST.Bool" and node["value"] is True
+
+
+def is_constant_false(node):
+    return node["_type"] == "AST.Bool" and node["value"] is False
+
+
 def interpret(node, fields):
     kind = node["_type"]
     if kind == "AST.Bool":
@@ -265,6 +273,18 @@ def main(probe):
                         any(key[0] == 1 and key[1] == 1 for key in evidence[alias["id"]])}
     if len(selected_aliases) != 92 or set(aliases[index]["id"] for index in range(len(aliases))) - selected_aliases != {"REV_64_dp_1src::alias::REV64"}:
         raise RuntimeError("alias positive coverage changed")
+    constant_true = {alias["id"] for alias in aliases
+                     if is_constant_true(conditions[alias["condition_id"]])}
+    constant_false = {alias["id"] for alias in aliases
+                      if is_constant_false(conditions[alias["condition_id"]])}
+    if set(missing) != constant_true:
+        raise RuntimeError(f"predicate polarity classification changed: "
+                           f"missing={sorted(missing)} constant_true={sorted(constant_true)}")
+    if constant_false:
+        raise RuntimeError("constant-false alias predicate requires a negative-only proof")
+    for alias in aliases:
+        if is_constant_false(conditions[alias["preferred_condition_id"]]) and alias["id"] in selected_aliases:
+            raise RuntimeError(f"preferred=false alias selected: {alias['id']}")
     if sum(overlaps.values()) != 106 or set(overlaps) != {
             ("UBFM_32M_bitfield", ("LSL", "UBFIZ"), "ubfiz"),
             ("UBFM_64M_bitfield", ("LSL", "UBFIZ"), "ubfiz")}:

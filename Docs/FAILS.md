@@ -1,3 +1,113 @@
+# Limites após a Fase 3.3.3 (2026-11-26)
+
+Nenhuma lacuna de extração nas 76 formas-alvo: 76/76 COMPLETE, zero
+divergências injustificadas nas campanhas e EXIT 0 em testes/builds.
+1.113 flips de bits fixos demonstram rejeição pela forma, não invalidade
+global: LLVM classifica 679 como não disponíveis na referência e 434 como
+codificações globalmente válidas sob o perfil de features usado; 2
+sobreposições RET*SPPCR/RETAA-B são intencionais. Perfil de catálogo não
+contém EL corrente, CPUState não expõe bancos ELR/SPSR nem EL corrente,
+e o backend Mac14_3 está vazio: os metadados não são autorização de
+executar exceções, PAC ou tradução nativa. Algoritmo Apple ARM64E não
+documentado permanece fora de escopo. As 53 formas hints/barreiras/
+PSTATE/sistema foram encaminhadas à Fase 3.6 (não iniciada). A lacuna
+histórica de 506 REJECT permanece; Fase 3.4 não iniciada.
+
+# Limites da Fase 3.3.2 (2026-11-26)
+
+Nenhuma lacuna de extração nas 27 formas alvo: 27/27 COMPLETE e zero
+divergências injustificadas nos 1.088 casos. Os 530 flips fixos rejeitam a
+*forma solicitada*, não provam invalidade global; 2 sobreposições com
+RETAA/RETAB são válidas e explícitas. EL corrente, routing/ESR, síndrome,
+permissões de exceção e efeitos de CPUState dependem de estado dinâmico que
+o perfil do catálogo não traz; EL2/EL3 e mínimo EL1 são requisitos
+descritivos, não autorização de execução. PAC de hardware Apple, convenções
+ARM64E não publicadas e tradução CPUToCPU/Apple/Mac14_3 não foram validadas.
+53 formas de hints/barreiras/PSTATE/sistema seguem para a futura 3.3.3,
+sem iniciar a fase. A lacuna histórica de 506 REJECT permanece.
+
+# Limites da Fase 3.3.1 (2026-11-26)
+
+Nenhuma lacuna de extração nas 49 formas convencionais: 49/49 COMPLETE,
+0 divergências detectadas em 22.297 casos, 0 aceitação indevida de bit fixo
+ou feature desabilitada e EXIT 0 em testes e builds. As 80 restantes não
+foram declaradas completas: 16 formas de desvio autenticado, 11 relacionadas
+a retorno de exceção/exceções e 53 controles sem desvio (hints, barreiras,
+estado e sistema). Tratamento autenticado e de exceção reservado à 3.3.2,
+sem execução semântica aqui; hints e sistemas continuam fora do escopo de
+desvio convencional. Flips de bits fixos rejeitam a *forma solicitada*, não
+certificam invalidade global da palavra. A lacuna histórica dos 506 REJECT
+permanece irrecuperada e não foi misturada à campanha nova.
+
+# Fase 3.2.8 — pendências (2026-11-26)
+
+Nenhum bloqueio: 195/195 formas COMPLETE, 93/93 aliases, 0 runtime-partial, 0
+undue-accept, `make -B test`/`make test`/`make catalog-test` EXIT 0, EDK2
+DEBUG/RELEASE EXIT 0. As 38 formas `runtime-partial` da 3.2.7 eram falso-positivo
+do oráculo `integer_invalid_encodings.py` (semente = `value` bruto do padrão,
+ambígua por wildcard nos bits de opcode [11:10]); o runtime sempre extraiu COMPLETE
+cada forma com a semente correta. Corrigido no oráculo (semente distintiva por
+forma); `integer_invalid_encodings.csv` re-fixado em `550ba37f…` (os outros 9
+hashes preservados). Lacuna histórica dos 506 REJECT irrecuperada. Equivalência
+semântica em execução (NZCV/SP/ZR/larguras no tradutor/IR) segue requisito das
+fases semânticas futuras. 3.3 não iniciada.
+
+# Fase 3.2.7 — pendências (2026-11-26)
+
+Nenhum bloqueio: 195 formas classificadas, 0 undue-accept, `make -B test`/`make
+test`/`make catalog-test` EXIT 0, EDK2 DEBUG/RELEASE EXIT 0. As 38 formas
+`runtime-partial` (ASRV, LSRV, RORV, SDIV, REV, REV16, REV32, CLS, CSINC, CSNEG,
+UMADDL, UMSUBL, UMULH, CRC32*, AUT*Z, PACDZ/PACIZ/XPACD) são arquiteturalmente
+válidas; o probe as rejeita por rebaixamento COMPLETE→PARTIAL (campos de opcode
+RAW), o que é limitação de completude do runtime, não invalidade arquitetural —
+registrado como `runtime-partial`, não corrigido no C para preservar baselines.
+Pendências: equivalência semântica em execução (NZCV/SP/ZR/larguras no
+tradutor/IR) segue requisito das fases semânticas futuras; lacuna histórica dos
+506 REJECT irrecuperada. 3.2.8 não iniciada.
+
+# Fase 3.2.6 — pendências (2026-11-26)
+
+Nenhum bloqueio: 195 formas classificadas, 0 divergências, `make -B test`/`make
+test`/`make catalog-test` EXIT 0, EDK2 DEBUG/RELEASE EXIT 0. A flag C
+`IMPLICIT_REGISTER` permanece reservada ao contexto SP (baseline de registradores
+preservada); o contrato de leitura implícita (MOVK/BFM, NZCV, carry, cond) é
+metadado arquitetural do oráculo, não altera o runtime. 48 formas cujo probe
+retorna REJECT (ex.: ASRV, AUTIASPPC) são classificadas pelo contrato e marcadas
+`rejected`/`contract-only` — lacuna de suporte do runtime, não divergência
+arquitetural. Pendências: equivalência semântica em execução (NZCV/SP/ZR/larguras
+no tradutor/IR) segue requisito das fases semânticas futuras; lacuna histórica dos
+506 REJECT irrecuperada. 3.2.7 não iniciada.
+
+# Fase 3.2.5.2 — pendências (2026-11-26)
+
+Nenhum bloqueio de toolchain permanece: 18.1.8 e 21.1.8 estão qualificadas por
+reprodução integral e `make -B test`/`make test`/`make catalog-test` passam com
+EXIT 0 (padrão 21.1.8). Rejeição de toolchain não qualificada é explícita e com
+diagnóstico claro (versão fora de `QUALIFIED`). Pendências remanescentes, não
+bloqueios desta fase: equivalência semântica em execução (NZCV, SP/ZR, larguras,
+extensões no tradutor/IR) segue requisito explícito das fases semânticas futuras;
+a lacuna histórica dos 506 REJECT continua irrecuperada. 3.2.6 não iniciada.
+
+# Fase 3.2.5.1 — pendências e bloqueios (2026-11-26)
+
+Bloqueio de toolchain: `integer_form_differential.py` e
+`integer_immediate_differential.py` exigem literalmente LLVM MC 18.1.3; o
+ambiente atual não o possui (sem sudo; sem binário pré-compilado x86_64 do
+18.1.3; apt oferece 18.1.8; padrão 21.1.8). Por isso `make -B test` e `make test`
+falham no alvo `operand-extraction-test` nesse gate, não por divergência de
+dados. Evidência de estabilidade: 18.1.8 (extraído localmente) e 21.1.8
+reproduzem byte a byte os hashes fixados `e9f412f7…` (alias) e `49b7cf96…`
+(condição). Os demais testes (C, catálogo, extração, `integer_operand_llvm_
+differential.py`) passam; EDK2 X64 GCC DEBUG/RELEASE passam.
+Sobreposições resolvidas como textuais: 106 casos LSL/UBFIZ (mesmo opcode UBFM)
+e 170 BFC/BFI (mesmo opcode BFM) não são divergências arquiteturais; a escolha
+normativa de desmontagem preferencial do Arm (primeiro alias na ordem XML) é LSL
+para UBFM e BFI para BFM, enquanto o runtime Armito escolhe UBFIZ/BFC — a
+operação canônica e os operandos são idênticos. Equivalência semântica em
+execução (NZCV, SP/ZR, larguras, extensões) permanece dependente das fases
+semânticas futuras e não foi provada nesta subfase. A lacuna histórica dos 506
+REJECT continua irrecuperada e não se confunde com estes bloqueios.
+
 # Fase 3.2.5.1 — sobreposições e limitações (2026-11-26)
 
 Relatório `integer_alias_predicates.csv` registra por codificação 106
@@ -343,3 +453,10 @@ completas, 4.255 parciais, 33 raw, 0 não suportadas, 8 não alcançadas.
 `AARCH64_OPERAND_EXTRACTION_COMPLETE` não foi atribuído a resultados
 parciais; GPR sem largura, campos de sistema raw e operandos vetoriais
 requerem interpretação arquitetural adicional. A Fase 3 permanece aberta.
+# Fase 3.4.1
+
+Nenhuma divergência real injustificada ficou aberta nas 91 formas convencionais.
+A divergência de `LDRSW` literal (destino 32 em vez de 64) foi corrigida no
+runtime. 905 formas Load/Store são lacunas explícitas da 3.4.2, não falhas da
+3.4.1. Execução semântica de memória, MMU/TLB e acessos reais continuam fora.
+

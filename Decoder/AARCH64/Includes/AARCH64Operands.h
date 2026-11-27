@@ -54,6 +54,33 @@ typedef enum {
     AARCH64_POINTER_AUTH_CONTEXT_ADDRESS
 } AARCH64OperandPointerAuthContext;
 
+typedef enum {
+    AARCH64_CONTROL_FLOW_NONE = 0,
+    AARCH64_CONTROL_FLOW_DIRECT,
+    AARCH64_CONTROL_FLOW_INDIRECT,
+    AARCH64_CONTROL_FLOW_CONDITIONAL,
+    AARCH64_CONTROL_FLOW_RETURN,
+    AARCH64_CONTROL_FLOW_AUTHENTICATED_INDIRECT,
+    AARCH64_CONTROL_FLOW_AUTHENTICATED_RETURN,
+    AARCH64_CONTROL_FLOW_EXCEPTION_ENTRY,
+    AARCH64_CONTROL_FLOW_EXCEPTION_RETURN,
+    AARCH64_CONTROL_FLOW_DEBUG_CONTROL,
+    AARCH64_CONTROL_FLOW_TRANSACTION_ABORT
+} AARCH64ControlFlowKind;
+
+typedef enum {
+    AARCH64_EXCEPTION_NONE = 0,
+    AARCH64_EXCEPTION_SVC,
+    AARCH64_EXCEPTION_HVC,
+    AARCH64_EXCEPTION_SMC,
+    AARCH64_EXCEPTION_BRK,
+    AARCH64_EXCEPTION_HLT,
+    AARCH64_EXCEPTION_DCPS,
+    AARCH64_EXCEPTION_TCANCEL,
+    AARCH64_EXCEPTION_ERET,
+    AARCH64_EXCEPTION_DRPS
+} AARCH64ExceptionKind;
+
 #define AARCH64_OPERAND_FLAG_PC_RELATIVE 0x01u
 #define AARCH64_OPERAND_FLAG_COMPOSITE 0x02u
 #define AARCH64_OPERAND_FLAG_BITMASK 0x04u
@@ -99,6 +126,68 @@ typedef struct {
     uint8_t pointer_auth_action;
     uint8_t pointer_auth_context;
     uint8_t pointer_auth_address_diversity;
+    uint8_t control_flow;
+    uint8_t branch_link;
+    uint8_t branch_fallthrough;
+    uint8_t branch_condition;
+    uint8_t branch_reads_nzcv;
+    uint8_t branch_reads_lr;
+    uint8_t branch_target_register;
+    uint8_t branch_compare_width;
+    uint8_t branch_modifier_register;
+    uint8_t branch_reads_pc;
+    uint8_t branch_reads_sp;
+    uint8_t branch_reads_pstate;
+    uint8_t branch_reads_elr;
+    uint8_t branch_reads_spsr;
+    uint8_t branch_reads_debug_link;
+    uint8_t branch_reads_debug_status;
+    uint8_t branch_writes_pstate;
+    uint8_t branch_writes_elr;
+    uint8_t branch_writes_spsr;
+    uint8_t exception_kind;
+    uint8_t exception_min_el;
+    uint8_t exception_level_selector;
+    uint8_t exception_requires_el2;
+    uint8_t exception_requires_el3;
+    uint16_t exception_immediate;
+    uint64_t branch_target_address;
+    uint64_t branch_fallthrough_address;
+    uint8_t memory_access_width;
+    uint8_t memory_element_count;
+    uint8_t memory_direction;
+    uint8_t memory_writeback;
+    uint8_t memory_base_register;
+    uint8_t memory_data_register;
+    uint8_t memory_pair_register;
+    uint8_t memory_sign_extend;
+    uint8_t memory_zero_extend;
+    uint8_t memory_literal;
+    uint8_t memory_base_is_sp;
+    uint8_t memory_base_is_zero;
+    uint8_t memory_data_is_sp;
+    uint8_t memory_data_is_zero;
+    uint64_t memory_offset;
+    uint64_t memory_base_address;
+    uint8_t memory_offset_register;
+    uint8_t memory_offset_extend;
+    uint8_t memory_offset_scale;
+    uint8_t memory_address_expression_resolved;
+    uint8_t memory_static_overlap;
+    uint8_t memory_execution_overlap;
+    uint8_t memory_element_width;
+    uint8_t memory_vector_width;
+    uint8_t memory_lane;
+    uint8_t memory_register_count;
+    uint8_t memory_wraparound;
+    uint8_t memory_nontemporal;
+    uint8_t memory_unprivileged;
+    uint8_t memory_acquire;
+    uint8_t memory_release;
+    uint8_t memory_exclusive;
+    uint8_t memory_atomic;
+    uint8_t memory_tagged;
+    uint8_t memory_phase;
     AARCH64Operand operands[AARCH64_OPERANDS_MAX_COUNT];
 } AARCH64OperandSet;
 

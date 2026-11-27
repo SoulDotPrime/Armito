@@ -1,3 +1,135 @@
+# Fase 3.3.3 — controle de fluxo fechado (2026-11-26)
+
+76/76 formas com extração COMPLETE e 53 não-alvo formalmente encaminhadas
+à Fase 3.6 (31 hints/7 barreiras/4 PSTATE/11 sistema). Relatório novo:
+`control_flow_comprehensive_validation.csv`, 634 linhas, SHA-256
+`5a96fa23…`. Reconciliação: 23.385 casos históricos de 3.3 (22.216
+positivos, 1.113 rejeições pela forma, 54 por feature e 2 prioridades
+de forma irmã), 1.336 positivos LLVM; mais 412 rebases PC e 4 perfis
+PAuth_LR sem PAuth. Cobertura registrada: 32 operações, 28 nomes de
+operandos, 11 dependências, 11 restrições e 5 features. O runtime agora
+marca dependência PC de diretos/BLR;
+BR/RET continuam sem dependência de PC para alvo. Os 13 CSVs anteriores,
+290.770 ocorrências, 3.099/4.296/45.360 e 506 REJECT permanecem.
+Testes sequenciais e builds EDK2 DEBUG/RELEASE EXIT 0. El atual,
+Apple ARM64E proprietário e execução semântica continuam fora do escopo;
+3.4 e 3.6 não iniciadas.
+
+# Fase 3.3.2 — autenticação e exceções extraídas (2026-11-26)
+
+27/27 formas autenticadas/excepcionais COMPLETE, sem divergência nas
+campanhas. `authenticated_control_flow_validation.csv` tem 1.142 linhas
+(1.088 casos + 53 formas futuras + cabeçalho); SHA-256 `acebf7ec…`.
+539 casos LLVM positivos, 530 flips fixos rejeitados pela forma, 17
+features rejeitadas e 2 sobreposições de forma irmã válidas. Dependências
+arquiteturais explícitas no `AARCH64OperandSet` incluem IA/IB, contexto
+zero/registrador/SP, link/PC, LR, PSTATE, ELR/SPSR e registradores de debug.
+As 53 formas de hints/barreiras/PSTATE/sistema foram classificadas para a
+futura 3.3.3 (não iniciada). Os 12 hashes e 289.682 ocorrências anteriores
+foram preservados; testes e EDK2 X64 GCC DEBUG/RELEASE EXIT 0. Semântica
+PAC/exception não executada; Apple ARM64E proprietário não validado.
+
+# Fase 3.3.1 — controle de fluxo convencional validado (2026-11-26)
+
+129 formas de controle auditadas: 49 convencionais com evidência positiva de
+COMPLETE e 80 não convencionais classificadas, sem alegar suporte. O runtime C
+expõe endereço do alvo, tipo direto/indireto/condicional/retorno, condição,
+fallthrough (PC+4), chamada/escrita de LR, leitura de LR em RET X30, leitura
+de NZCV em B.cond/BC.cond, largura 8/16/32/64 de comparação e bit_index.
+Campos estruturais RAW são seletores; `Rm` de BR/BLR/RET não é registrador
+arquitetural. `imm6` de FEAT_CMPBR compara; `imm9` desloca o PC. Auditoria
+`control_flow_validation.py`: 22.297 casos (21.677 positivos, 620 negativos),
+797 confrontos LLVM MC 21.1.8, 0 divergências, CSV SHA-256 `edddbdea…`.
+Os 11 relatórios 3.2 e 267.385 ocorrências históricas permanecem; 3.099/
+4.296/45.360 e 506 REJECT preservados. Testes sequenciais e EDK2 DEBUG/
+RELEASE EXIT 0; nenhuma execução semântica e 3.3.2 não iniciada.
+
+# Fase 3.2.8 — validação Integer abrangente e finalização (2026-11-26)
+
+Consolidação e auditoria de 3.2.0–3.2.7. 195/195 formas Integer/Data Processing
+com extração COMPLETE demonstrada por evidência positiva (semente distintiva por
+forma, perfil completo de features, referência LLVM MC qualificada); 93/93 aliases
+validados (92 selecionados + REV64 negativo-only); 112 operações. Novo oráculo
+`integer_comprehensive_validation.py` + `integer_comprehensive_validation.csv`
+(289 linhas = 195 formas + 93 aliases + cabeçalho; SHA-256 `3f24c847…`), com
+cobertura por forma/operação/alias/operando/dependência/restrição/feature, ligado
+ao `operand-extraction-test`.
+
+As 38 formas `runtime-partial` da 3.2.7 foram ELIMINADAS: a causa raiz não era
+rebaixamento COMPLETE→PARTIAL do runtime, e sim a semente ambígua do oráculo
+`integer_invalid_encodings.py`, que usava o `value` bruto do padrão. Os bits
+discriminadores de opcode ([11:10]) ficam como wildcard na máscara, então a
+semente colidia com a forma irmã (ASRV/LSLV/LSRV/RORV = `1AC02000`/`FFE0F000`;
+SDIV/UDIV = `1AC00800`/`FFE0F800`). O runtime já resolve corretamente cada forma
+(LSLV `1AC02000`, LSRV `1AC02400`, ASRV `1AC02800`, RORV `1AC02C00`, UDIV
+`1AC00800`, SDIV `1AC00C00`) com COMPLETE. Correção: o oráculo deriva uma semente
+distintiva por forma (`sample_words` + probe). `integer_invalid_encodings` agora
+3.173 casos, 0 runtime-partial, 0 undue-accept; SHA-256 `550ba37f…` (alteração
+justificada e versionada; os outros 9 hashes preservados).
+
+Campos estruturais de opcode (kind=RAW: sf/op/opc/op0-3/S/N) diferenciados dos
+operandos arquiteturais: os RAW arquiteturais (nzcv/mask/hw/seletores) já são
+promovidos a INTERPRETED; os RAW restantes são estruturais e não rebaixam COMPLETE.
+Nenhuma alteração C foi necessária (experimento revertido para preservar
+baselines). 3.099 padrões/4.296 formas/45.360 descritores e 267.385 ocorrências
+históricas preservados; 506 REJECT mantidos. `make -B test`/`make test`/
+`make catalog-test` EXIT 0 (LLVM 18.1.8 qualificada); EDK2 X64 GCC DEBUG/RELEASE
+EXIT 0. Semântica em execução adiada; 3.3 não iniciada.
+
+# Fase 3.2.7 — codificações classificadas (2026-11-26)
+
+`integer_invalid_encodings.py`: 3.173 casos, 195 formas, 0 undue-accept,
+38 runtime-partial (válidas, limitação do runtime), `integer_invalid_encodings.csv`
+SHA-256 `977a6320…`. Classifica undefined (bits fixos), runtime-partial, feature-
+gated (CSSC/MTE/CPA/PAuth/PAuth_LR/CRC32/FlagM). ASRV/AUTIASPPC investigados:
+válidos, rejeitados por PARTIAL (campos RAW), não inválidos. LLVM complementar.
+9 hashes e 264.212 ocorrências preservados; 3.099/4.296/45.360. `make -B test`/
+`make test`/`make catalog-test` EXIT 0; EDK2 DEBUG/RELEASE EXIT 0. 506 REJECT
+mantidos; semântica adiada; 3.2.8 não iniciada.
+
+# Fase 3.2.6 — operandos implícitos classificados (2026-11-26)
+
+`integer_implicit_operands.py` classifica as 195 formas Integer: 1.800 casos,
+195 formas, 0 divergências, `integer_implicit_operands.csv` SHA-256 `6df6ade8…`.
+Cobre NZCV (CCMP/CCMN, ADDS/SUBS/ANDS/BICS/ADCS/SBCS/SETF/RMIF), carry
+(ADC/SBC/ADCS/SBCS), condicionais (CSEL/CSINC/CSINV/CSNEG/CCMP/CCMN), SP/ZR/
+WSP/XZR, leituras implícitas de destino (MOVK, BFM), larguras e parciais.
+Runtime C não alterado (flag IMPLICIT_REGISTER reservada ao contexto SP; contrato
+de leitura é metadado do oráculo). 8 hashes e 262.412 ocorrências preservados;
+3.099/4.296/45.360. `make -B test`/`make test`/`make catalog-test` EXIT 0; EDK2
+DEBUG/RELEASE EXIT 0. Semântica em execução adiada; 506 REJECT mantidos; 3.2.7
+não iniciada.
+
+# Fase 3.2.5.2 — toolchain qualificada; 3.2.5 aprovada (2026-11-26)
+
+Gates literais `18.1.3` removidos e substituídos por política explícita em
+`llvm_toolchain.py` (`LLVM_MC` seleciona o executável; `QUALIFIED` = 18.1.3
+histórico, 18.1.8, 21.1.8; `require_qualified` rejeita o resto com diagnóstico).
+Qualificação empírica por reprodução de TODAS as baselines (não um único corpus):
+18.1.8 e 21.1.8 com `operand-extraction-test` EXIT 0. `make -B test`, `make test`
+e `make catalog-test` com EXIT 0 (padrão 21.1.8). EDK2 X64 GCC DEBUG/RELEASE
+EXIT 0 (2.502.656 bytes). Preservados 93 aliases (68/25), 48.005 pares, 142.731
+linhas, 262.412 ocorrências, 3.099/4.296/45.360 e os 8 hashes. Runtime C intacto;
+semântica em execução adiada; 506 REJECT mantidos; 3.2.6 não iniciada.
+
+# Fase 3.2.5.1 — predicados classificados; encerramento bloqueado (2026-11-26)
+
+Retomada sem repetição. Inventário mantido: 195 formas, 93 aliases em 66 formas,
+48.005 pares, 142.731 linhas (94.854 verificadas, 47.877 rejeitadas). Classificação
+independente dos predicados: 68 variáveis (ambas as polaridades presentes),
+25 constantes-verdadeiros (só positivo, correto), 0 constantes-falsos; REV64
+`preferred=false` nunca selecionado. Asserção adicionada a
+`integer_alias_predicates.py` (CSV inalterado, SHA-256 `e9f412f7…`). Novo
+relatório `integer_alias_coverage.csv` (93 linhas, SHA-256 `05e1d7d7…`) e
+`integer_alias_coverage.py` auto-verificável, ligado ao `operand-extraction-test`.
+106 sobreposições LSL/UBFIZ e 170 diferenças BFC/BFI confirmadas como preferência
+textual da mesma operação UBFM/BFM, sem divergência arquitetural. Hashes das
+214.407 ocorrências anteriores preservados. `make catalog-test` passou;
+`make -B test`/`make test` falham só no gate de versão (18.1.3 exigido; há 21.1.8
+e 18.1.8, que reproduzem os hashes). EDK2 X64 GCC DEBUG/RELEASE passaram
+(2.502.656 bytes). 3.2.5.1 segue aberta por indisponibilidade de LLVM 18.1.3 e
+por depender de execução semântica futura; não iniciar 3.2.6.
+
 # Fase 3.2.5.1 — cobertura de Decoder parcial (2026-11-26)
 
 93 aliases inventariados individualmente; 48.005 pares forma/codificação em
@@ -438,3 +570,15 @@ cumpridos.
 
 Atualize a data e os estados após cada marco confirmado. Não converter
 "implementado" em "validado" sem evidência de teste.
+# Fase 3.4.1 — Memory/Load/Store convencional (2026-11-26)
+
+91/91 formas convencionais possuem extração C COMPLETE, 905 formas da família
+Load/Store permanecem especializadas e foram encaminhadas exclusivamente à
+3.4.2. O relatório possui 2.172 linhas lógicas (91 testemunhos completos,
+1.084 rejeições fixas de bits, 91 testes boundary, 905 classificados especiais
+e cabeçalho), SHA-256
+`e7893e5f0c2b6443f1df6d978ad7d31136d9a34dfadca708a4ec3fcccfa2de41`.
+Metadados incluem acesso/dado/pair, direção, writeback, SP/ZR, sinal/zero,
+literal, offset, expressão registrador e sobreposição estática/executável.
+Os 14 hashes anteriores e os invariantes 3.099/4.296/45.360/506 permanecem.
+

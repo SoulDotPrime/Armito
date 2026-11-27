@@ -1,3 +1,155 @@
+# Auditoria final de controle de fluxo — Fase 3.3.3
+
+As 76 formas publicadas no Arm AARCHMRS (49 convencionais, 16 autenticadas,
+11 excepcionais) fornecem extração COMPLETE e metadados de alvo, offset
+sinalizado/alinhado, condição, registradores, largura, bit_index, fallthrough,
+chamadas/retornos, PC, LR, SP, NZCV, PSTATE, ELR, SPSR, debug e PAC IA/IB.
+`branch_reads_pc` é verdadeiro em desvios diretos/condicionais e BLR; BR/RET
+não leem PC para determinar alvo. Em chamadas, o endereço de continuação
+permanece PC+4. Testes independentes repetem 412 extrações em PC normal,
+zero e `0xfffffffffffffffc`, incluindo offsets extremos e wrap de 64 bits.
+
+Os 1.113 flips fixos rejeitam a forma solicitada: 679 aparecem
+indisponíveis em LLVM MC 21.1.8 com features qualificadas, 434 decodificam
+como outra codificação válida. Rm=31 em RETAASPPCR/RETABSPPCR resolve
+prioritariamente para RETAA/RETAB e é caso positivo de sobreposição, não
+invalidez. Quatro formas RET*SPPC aceitam perfil `PAuth_LR` habilitado e
+`PAuth` desabilitado, conforme catálogo e LLVM; a implicação entre flags
+não foi inventada. EL2/EL3, EL corrente, ESR e permissões de exceção
+continuam requisitos de futuros consumidores, não validação de execução.
+`AARCH64OperandSet` oferece metadados mas CPUState ainda não possui bancos
+ELR/SPSR nem EL corrente; UIR/JIT/AOT não executam os efeitos descritos.
+PointerAuth mantém provider `compatibility_only` e CPUToCPU/Apple/Mac14_3
+continua sem backend. As 53 formas não desviadas (31 hints, 7 barreiras,
+4 PSTATE, 11 sistema) ficam formalmente reservadas à Fase 3.6, não 3.4.
+
+# Autenticação e exceções — Fase 3.3.2
+
+O subconjunto C inclui 27 formas publicadas no Arm AARCHMRS: 16 desvios
+autenticados (BRA*/BLRA*, RETAA/RETAB, RET*SPPCR, RET*SPPC, ERETAA/ERETAB)
+e 11 exceções/retornos de exceção (BRK, DCPS1/2/3, HLT, HVC, SMC, SVC,
+TCANCEL, ERET, DRPS). `Rn` de BRA*/BLRA* identifica o alvo Xn; `Rm`
+identifica o modificador Xm apenas nas codificações registradas. BRAAZ/
+BRABZ/BLRAAZ/BLRABZ usam zero; RETAA/RETAB usam LR como alvo e SP como
+modificador; RET*SPPCR também identifica Rm e dependências de PC/SP;
+ERETAA/B autenticam o retorno excepcional via ELR/SPSR e SP. Registradores
+codificados fixos e campos RAW de opcode não são operandos arquiteturais.
+`imm16` de exceção e de RET*SPPC é imediato codificado sem deslocamento PC
+inventado. A classe `TCANCEL` representa cancelamento transacional, não
+entrada síncrona de exceção; DCPSn é controle de debug, DRPS usa estado
+de retorno debug (DLR/DSPSR) em vez de ELR/SPSR gerais.
+
+`AARCH64OperandSet` expõe `branch_modifier_register`, flags de leitura de
+PC/SP/PSTATE/ELR/SPSR e debug, escrita de PSTATE/ELR/SPSR, classe e imediato
+de exceção e disponibilidade EL2/EL3. O perfil `AARCH64CatalogGuestProfile`
+codifica features e ABI, **não** o EL atual: `exception_min_el` e requisitos
+EL2/EL3 são para validação posterior com CPUState, não prova de execução
+autorizada no EL corrente. `AARCH64PointerAuth` tem provider de software
+`compatibility_only` e helpers, mas este extrator não calcula PAC nem
+entra em exceção. CPUToCPU/Apple/Mac14_3 não implementa backend; nenhuma
+instrução privada ARM64E, convenção ABI não publicada ou algoritmo Apple
+foi presumido. As 53 formas restantes (hints 31, barreiras 7, PSTATE 4,
+sistema 11) foram inventariadas para a futura 3.3.3, não iniciada.
+
+# Desvios convencionais — Fase 3.3.1
+
+O catálogo Arm AARCHMRS conserva 129 formas de controle. A extração C
+interpreta integralmente as 49 formas de desvio convencionais (B, BL, BR,
+BLR, RET, B.cond, BC.cond, CBZ/CBNZ, TBZ/TBNZ e 36 FEAT_CMPBR); as outras
+80 não são incluídas neste contrato. O extrator classifica campos RAW de
+opcode como seletores apenas nestas formas; `Rm` da codificação compartilhada
+de BR/BLR/RET é estrutural, ao passo que `Rn` é o alvo arquitetural Xn.
+Inventário por grupo: hints 31, pstate 4, condbranch 2, branch_reg 19,
+branch_imm 2, exception 9, compbranch_regs2 12, compbranch_imm 12,
+compbranch_regs 12, compbranch 4, barriers 7, systemmovepr 2, systemmove
+2, miscbranch 2, systeminstrs 2, syspairinstrs 1, testbranch 2,
+systemresult 2 e systeminstrswithreg 2. Dos 80 não convencionais, 16 são
+desvios autenticados, 11 são exceções/retornos de exceção e 53 são outros
+controles (incluindo hints PAuth).
+`imm26`, `imm19`, `imm14` e `imm9` de CBcc são deslocamentos sinalizados
+escalados por quatro, com alvo `(PC + offset) mod 2^64`; `imm6` de CBcc é
+imediato de comparação distinto. TBZ/TBNZ combinam `b5:b40` no operando
+`bit_index`, e a largura de Rt segue b5. CBB/CBH comparam 8/16 bits usando
+registradores W de 32 bits.
+
+`AARCH64OperandSet` disponibiliza `control_flow`, `branch_target_address`,
+`branch_target_register`, `branch_condition`, `branch_compare_width`,
+`branch_link`, `branch_reads_lr`, `branch_reads_nzcv`,
+`branch_fallthrough` e `branch_fallthrough_address`. BL/BLR sinalizam escrita futura de X30
+com PC+4; RET depende de X30 apenas quando Rn=30; BC.cond/B.cond lêem NZCV,
+CBcc/CBZ/TBZ não. Em B.cond/BC.cond, AL/NV são incondicionais na
+avaliação de ConditionHolds e não lêem NZCV nem têm fallthrough. Condição
+CBcc é o comparador codificado, não NZCV.
+Metadados descrevem controle de fluxo para UIR/JIT/AOT futuros; nenhuma
+execução semântica é atribuída. O probe e o oráculo independentes registram
+49 testemunhos COMPLETE e 22.297 casos (797 referências LLVM); versões
+LLVM MC qualificadas são exigidas, e FEAT_CMPBR requer 21.1.8.
+
+# Validação abrangente Integer — 3.2.8
+
+`Tests/Decoder/AARCH64/integer_comprehensive_validation.py` consolida as fases
+3.2.0–3.2.7 em um relatório determinístico (`integer_comprehensive_validation.csv`,
+SHA-256 `3f24c847…`, 289 linhas = 195 formas + 93 aliases + cabeçalho). Para cada
+forma deriva uma semente distintiva (`sample_words` + probe) e exige extração
+COMPLETE com o perfil completo de features, cruzando com LLVM MC qualificada.
+Diferencia campos estruturais de opcode (kind=RAW: sf/op/opc/op0-3/S/N) dos
+operandos arquiteturais: os RAW arquiteturais (nzcv/mask/hw/seletores) são
+promovidos a INTERPRETED no runtime; os RAW restantes são estruturais e não
+rebaixam COMPLETE. As 38 formas `runtime-partial` da 3.2.7 eram falso-positivo do
+oráculo `integer_invalid_encodings.py` (semente = `value` bruto, ambígua porque os
+bits discriminadores de opcode [11:10] são wildcard na máscara e colidem com a
+forma irmã — ASRV/LSLV/LSRV/RORV e SDIV/UDIV); o runtime sempre resolveu cada
+forma corretamente. A correção (semente distintiva por forma) elimina os 38 casos
+sem alterar o C. Cobertura registrada por forma/operação/alias/operando/dependência
+(NZCV/carry/SP-ZR/implícitos)/restrição/feature. Reconhecimento, validação,
+extração e execução semântica permanecem distintos; esta fase não implementa
+execução.
+
+# Codificações inválidas/reservadas — 3.2.7
+
+`Tests/Decoder/AARCH64/integer_invalid_encodings.py` classifica
+independentemente as codificações das 195 formas Integer: `undefined` quando os
+bits fixos/reservados (`value_pattern`/`should_be_mask`) divergem;
+`runtime-partial` quando a codificação é arquiteturalmente válida mas o probe
+retorna REJECT/PARTIAL (campos de opcode RAW rebaixam COMPLETE→PARTIAL);
+`feature-gated` quando a forma depende de FEAT_CSSC/MTE/CPA/PAuth/PAuth_LR/
+CRC32/FlagM. Não trata REJECT do runtime como prova de invalidade arquitetural.
+LLVM MC é referência complementar (leniente com bits reservados), não autoridade.
+Cada forma recebe casos de semente e de flip de cada bit fixo (positivo/
+negativo/limítrofe). A flag de resultado `runtime-partial` documenta limitação do
+runtime, não erro arquitetural; ASRV e AUTIASPPC são válidos. A equivalência
+semântica em execução segue requisito das fases futuras.
+
+# Operandos implícitos Integer — 3.2.6
+
+`Tests/Decoder/AARCH64/integer_implicit_operands.py` é um oráculo independente
+que classifica as 195 formas Integer/Data Processing a partir da especificação
+Arm, sem usar a ausência de operandos no LLVM MC como prova. Cada forma recebe:
+operandos explícitos, implícitos (leituras de merge como MOVK Rd e BFM Rd/Rn),
+derivados e constantes; conjuntos de leitura/escrita; NZCV (CCMP/CCMN lêem e
+escrevem; ADDS/SUBS/ANDS/BICS/ADCS/SBCS/SETF/RMIF escrevem); carry (ADC/SBC/
+ADCS/SBCS); condicionais (CSEL/CSINC/CSINV/CSNEG/CCMP/CCMN); contexto SP/ZR/
+WSP/XZR; larguras e dependências parciais. A validação confirma o contrato
+contra a superfície observável estável do probe (SP/ZR, larguras) e registra a
+cobertura por forma/operação/operando/tipo. A flag C `IMPLICIT_REGISTER` permanece
+reservada ao contexto de SP (não carrega o contrato de leitura implícita); o
+runtime C não foi modificado. Aliases textuais e operações canônicas permanecem
+distintos. A equivalência semântica em execução (NZCV/SP/ZR/larguras no
+tradutor/IR) é requisito das fases semânticas futuras.
+
+# Política de toolchain LLVM — 3.2.5.2
+
+`Tests/Decoder/AARCH64/llvm_toolchain.py` centraliza a seleção e qualificação do
+`llvm-mc`. O executável vem de `LLVM_MC` (padrão `llvm-mc`); `version` lê a
+versão; `require_qualified` aceita apenas `QUALIFIED` = {18.1.3 (referência
+histórica), 18.1.8, 21.1.8} e rejeita as demais com diagnóstico explícito. A
+qualificação não presume equivalência por um único corpus: uma versão só é
+considerada qualificada após reproduzir integralmente todas as baselines fixadas
+(registrador, immediate, bitmask, condição, alias e rejeições). Os gates literais
+de `integer_form_differential.py` e `integer_immediate_differential.py` foram
+removidos; `llvm_disassemble` e os diferenciais diretos usam o executável
+selecionado. A referência 18.1.3 permanece como baseline histórica dos hashes.
+
 # Contrato parcial de aliases Integer — 3.2.5.1
 
 O alias é metadado de apresentação associado à forma/operation_id canônicos;
@@ -7,9 +159,16 @@ os 93 ASTs de condição/preferência da fonte Arm usando campos extraídos por
 posição do opcode, sem chamar a lógica de predicados C. Inclui comparação de
 registradores SP/ZR pelo valor codificado e função independente de bitmasks
 para MoveWidePreferred. Predicados falsos/verdadeiros e sobreposições são
-registrados individualmente. UBFM admite simultaneamente LSL e UBFIZ quando
+registrados individualmente. Classificação verificada: 68 predicados variáveis
+(com polaridade positiva e negativa), 25 constantes-verdadeiros (só positivo),
+0 constantes-falsos; REV64 (`preferred=false`) nunca selecionado. Essa
+classificação é asserida pelo oráculo e resumida em
+`integer_alias_coverage.csv` (SHA-256 `05e1d7d7…`), gerado por
+`integer_alias_coverage.py`. UBFM admite simultaneamente LSL e UBFIZ quando
 imms+1==immr; o runtime escolhe UBFIZ, LLVM imprime LSL, ambos representam o
-mesmo opcode UBFM. A semântica de execução futura precisa verificar efeitos
+mesmo opcode UBFM. BFM admite BFC (Rn==ZR), BFI (Rn!=ZR) e BFXIL (imms>=immr),
+mesma operação canônica. As diferenças são de apresentação textual, não
+arquiteturais. A semântica de execução futura precisa verificar efeitos
 de NZCV, SP/ZR, extensões e larguras no tradutor/IR, além da equivalência
 formal de cada alias; esta campanha não implementa execução.
 
@@ -375,3 +534,12 @@ A arquitetura deve ser consolidada por contratos e testes antes da
 expansão para novos pares de ISA. Primeiro deve ser provado um caminho
 vertical completo e verificável; depois, a cobertura deve crescer de
 forma incremental.
+# Memória convencional
+
+`AARCH64OperandSet` expõe largura de acesso, quantidade de elementos, direção,
+writeback, registradores base/dado/pair, SP/ZR, literal e offset. O offset pode
+ser imediato, literal relativo ao PC ou expressão registrada; somente literais
+calculam endereço efetivo base/PC, enquanto endereços indexados permanecem
+expressões até resolução de estado. Sobreposições base/dado/pair são separadas
+em restrições estáticas e dependentes de execução. Sem MMU/TLB/acesso real.
+

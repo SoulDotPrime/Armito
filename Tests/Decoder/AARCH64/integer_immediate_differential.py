@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 import integer_form_differential as register
+import llvm_toolchain
 
 
 IMMEDIATE_GROUPS = {
@@ -217,10 +218,8 @@ def check(form, word, operands, text):
 
 
 def main(probe):
-    version = subprocess.run(["llvm-mc", "--version"], check=True,
-                             capture_output=True, text=True).stdout
-    if not re.search(r"\bLLVM version 18\.1\.3\b", version):
-        raise RuntimeError("LLVM MC 18.1.3 required")
+    exe, ver = llvm_toolchain.require_qualified()
+    print(f"LLVM MC toolchain: {exe} version {ver}")
     with open(register.CATALOG, encoding="utf-8") as stream:
         catalog = json.load(stream)
     forms = [form for form in catalog["instruction_forms"]

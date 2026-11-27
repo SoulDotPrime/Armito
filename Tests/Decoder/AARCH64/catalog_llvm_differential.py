@@ -2,6 +2,8 @@ import re
 import subprocess
 import sys
 
+import llvm_toolchain
+
 
 CASES = (
     (0xD2800000, "movz", "mov"),
@@ -50,7 +52,7 @@ def llvm_bytes(encoding):
 def disassemble(encoding):
     process = subprocess.run(
         [
-            "llvm-mc",
+            llvm_toolchain.executable(),
             "--disassemble",
             "--triple=aarch64",
             "--mattr=+pauth,+lse",
