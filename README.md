@@ -49,4 +49,4 @@ Armito is licensed under the GNU General Public License v2.0 only (GPL-2.0-only)
 
 Armito is an original project developed by SoulDotPrime. Independent forks are encouraged to clearly identify themselves as unofficial derivatives and preserve the original attribution.
 
-See "LICENSE" (LICENSE) for the full license terms.
+See "LICENSE" [License](LICENSE.md) for the full license terms.
