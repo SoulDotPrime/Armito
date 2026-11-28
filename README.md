@@ -45,3 +45,13 @@ Catalog data remains with the AArch64 decoder (`Decoder/AARCH64/Catalog/`); the 
 - [Decisions](Docs/DECISIONS.md)
 
 Recognition and architectural validation do not imply that every catalogued instruction has IR translation or an execution backend. See the status and compatibility documents for implemented coverage.
+
+## License
+
+Copyright © 2026 SoulDotPrime.
+
+Armito is licensed under the GNU General Public License v2.0 only (GPL-2.0-only).
+
+Armito is an original project developed by SoulDotPrime. Independent forks are encouraged to clearly identify themselves as unofficial derivatives and preserve the original attribution.
+
+See "LICENSE" [License](LICENSE) for the full license terms.
