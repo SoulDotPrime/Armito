@@ -1,3 +1,41 @@
+# Fase 3.5.2 — Security-relevant instructions (em andamento, 2026-11-28)
+
+22 formas-alvo (9 exception, 4 ldst_pac, 2 addsub_immtags e 7 operações
+ERET/DRPS/PACGA/IRG/GMI/SUBP/SUBPS) têm seeds COMPLETE. A extração de
+exceções preserva a classificação existente de DCPS/ERET/DRPS; cargas
+autenticadas usam as chaves DA/DB do enum de operandos e ação LOAD, enquanto
+PACGA usa GA e SIGN. MTE de tag arithmetic expõe registradores e immediates.
+`security_validation.csv`: 397 casos, 22 comparações LLVM MC, 312 mutações
+UNSUPPORTED, 51 rejeições de forma irmã, 12 rejeições por feature; SHA-256
+`d52277ecfe29270e7c50df55571068041e637c362624a0182d9872993f1af947`.
+`make -B test` e `make catalog-test` passam. BTI C/J/JC devolvem OK/COMPLETE
+com op2 2/4/6; GCSSTR/GCSSTTR seguem forwarded/UNSUPPORTED em
+`integration_validation.csv` para 3.6. As formas `ldsttags` do mesmo CSV
+seguem COMPLETE. EDK2 DEBUG/RELEASE com `Armito/Armito.dsc`
+passaram (o link antigo `ArmitoPkg` não existe nesta workspace). Sem commit
+ou push. Pendente: retomada da refatoração 3.4.R.
+
+# Fase 3.5.1 — System Instructions & System Registers (2026-11-28)
+
+53/53 formas de sistema COMPLETE em 9 grupos (31 hints, 7 barreiras, 4 PSTATE,
+2 systemmove, 2 systemmovepr, 2 systeminstrs, 2 systemresult, 2
+systeminstrswithreg, 1 syspairinstrs). Extração abrangente: MRS/MSR resolvem
+registrador canônico via `AARCH64SysRegResolve` (nome, identidade, access
+read/write por bit L, implementation-defined); SYS/SYSL extraem op0/op1/CRn/
+CRm/op2/Rt com flag SYSL; barreiras (DMB/DSB/ISB/SB/CLREX/TCOMMIT) extraem
+domínio/tipo; hints extraem immediate; PSTATE extrai campo. O fluxo
+`AARCH64DecodeLoadStore` agora aceita formas de sistema PATTERN_MATCHED_UNVALIDATED
+via `AARCH64FormIsSystem` (todos os grupos); `AARCH64OperandsExtractWithProfile`
+isenta formas de sistema do status PARTIAL (alias + catalog_status + raw/interpreted
+misto); GPR de sistema recebe `register_width=64`. NOP/HINT e PACIASP/PACIBSP/
+AUTIASP/AUTIBSP roteiam pelo catálogo para extração de operandos preservando
+campos PAuth. `Decoder.c` só retorna cedo (sem IR) quando operandos são solicitados.
+Relatório: `system_validation.csv`, 53 linhas, SHA-256 `207ef6ae…`; 50 comparações
+LLVM MC. 15 hashes históricos e invariantes 3.099/4.296/45.360/506 preservados.
+Testes: Core 78/0, IR 172/0, Decoder 226/0, CPU 58/0, ARM64E 514/0; EDK2 X64
+GCC DEBUG/RELEASE EXIT 0 (2.519.040 bytes). Sem MMU/TLB, execução semântica ou
+acessos reais; 3.5.2 em andamento e 3.6 não iniciada.
+
 # Fase 3.3.3 — controle de fluxo fechado (2026-11-26)
 
 76/76 formas com extração COMPLETE e 53 não-alvo formalmente encaminhadas

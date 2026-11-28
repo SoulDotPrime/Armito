@@ -12,6 +12,7 @@
 
     Architecture/AARCH64/AARCH64CPUState.c
     Architecture/AARCH64/AARCH64PointerAuth.c
+    Architecture/AARCH64/AARCH64SysReg.c
     Formats/MachO/AARCH64MachO.c
 
     # Core (fechado: Tests/CoreTest.c 74/0)

@@ -257,10 +257,10 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstructionWithOperands(
         return status;
     }
 
-    if (decoded.operands != NULL &&
+    if (operands != NULL &&
+        decoded.operands != NULL &&
         decoded.operands->status == AARCH64_OPERAND_EXTRACTION_COMPLETE) {
-        if (operands != NULL)
-            *operands = *decoded.operands;
+        *operands = *decoded.operands;
         *result = ARMITO_DECODE_OK;
         ArmitoDecoderStatsRecord(
             ARMITO_DECODE_OK, instruction->offset, instruction->encoding, 0

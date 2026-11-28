@@ -565,3 +565,35 @@ end-to-end: `integration_validation.py/.csv`, 996 casos (527 OK + 469
 UNSUPPORTED), SHA-256 `3fa4b4e2…`. 15 hashes históricos e invariantes
 3.099/4.296/45.360/506 preservados. Sem MMU/TLB, execução semântica ou acessos
 reais; 3.5/3.6 não iniciadas.
+# Fase 3.5.1 — System Instructions & System Registers
+
+53 formas de sistema em 9 grupos tornam-se COMPLETE. `AARCH64SysReg.h/.c` define
+identidade canônica (~60 registradores, encoding op0/op1/CRn/CRm/op2, access
+read/write, implementation-defined). `AARCH64Operands.c` extrai campos de sistema
+(op0/op1/CRn/CRm/op2/Rt), resolve nome/identidade via `AARCH64SysRegResolve`,
+classifica access pelo bit L (MRS=read, MSR=write), SYSL por bit 21, barreiras
+domínio/tipo, hints immediate, PSTATE campo. `AARCH64DecodeLoadStore` aceita
+formas de sistema PATTERN_MATCHED_UNVALIDATED; `AARCH64OperandsExtractWithProfile`
+isenta sistema do status PARTIAL (alias/catalog_status/raw+interpreted); GPR de
+sistema recebe `register_width=64`. NOP/HINT e PAC-SP roteiam pelo catálogo para
+extrair operandos preservando campos PAuth/IR. `Decoder.c` só retorna cedo
+(sem IR) quando operandos são solicitados (`operands != NULL`). Oráculo:
+`system_validation.py/.csv`, 53 casos, 50 comparações LLVM MC, SHA-256
+`207ef6aee587e9ce9db579a1a10aab90638ba332be00ca0f22c4a43dd2281bcb`.
+15 hashes históricos e invariantes 3.099/4.296/45.360/506 preservados.
+Testes: Core 78/0, IR 172/0, Decoder 226/0, CPU 58/0, ARM64E 514/0; EDK2 X64
+GCC DEBUG/RELEASE EXIT 0. Sem MMU/TLB, execução semântica ou acessos reais;
+3.5.2 em andamento e 3.6 não iniciada.
+
+# Fase 3.5.2 — Security-relevant instructions (em andamento)
+
+Seeds de 22 formas-alvo COMPLETE: exceções, cargas autenticadas, operações
+MTE de tag arithmetic, PACGA, ERET/DRPS. `security_validation.py/.csv` está
+no gate `make test`: 397 casos (22 seeds, 363 mutações de bits fixos e 12
+rejeições por feature), 22 comparações LLVM MC; SHA-256
+`d52277ecfe29270e7c50df55571068041e637c362624a0182d9872993f1af947`.
+Chaves DA/DB/GA usam o enum de operandos; o metadata existente de exceções
+não é sobrescrito pela síntese de operandos. BTI C/J/JC produzem OK/COMPLETE;
+GCSSTR/GCSSTTR seguem forwarded/UNSUPPORTED para 3.6; `ldsttags` permanece
+COMPLETE. EDK2 DEBUG/RELEASE passaram usando `Armito/Armito.dsc`; pendente
+3.4.R E–I.

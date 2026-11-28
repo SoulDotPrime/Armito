@@ -2,6 +2,7 @@
 #define ARMITO_AARCH64_OPERANDS_H
 
 #include "../Catalog/AARCH64Catalog.h"
+#include "../../../Architecture/AARCH64/Includes/AARCH64SysReg.h"
 
 #define AARCH64_OPERANDS_MAX_COUNT 32u
 
@@ -32,7 +33,8 @@ typedef enum {
     AARCH64_POINTER_AUTH_KEY_IA,
     AARCH64_POINTER_AUTH_KEY_IB,
     AARCH64_POINTER_AUTH_KEY_DA,
-    AARCH64_POINTER_AUTH_KEY_DB
+    AARCH64_POINTER_AUTH_KEY_DB,
+    AARCH64_POINTER_AUTH_KEY_GA
 } AARCH64OperandPointerAuthKey;
 
 typedef enum {
@@ -140,6 +142,7 @@ typedef struct {
     uint8_t pointer_auth_action;
     uint8_t pointer_auth_context;
     uint8_t pointer_auth_address_diversity;
+    uint8_t pstate_pacm_write;
     uint8_t control_flow;
     uint8_t branch_link;
     uint8_t branch_fallthrough;
@@ -234,6 +237,22 @@ typedef struct {
     uint16_t memory_postindex_immediate;
     uint8_t memory_mops_destination_discarded;
     uint8_t memory_mops_source_zero;
+    uint8_t system_op0;
+    uint8_t system_op1;
+    uint8_t system_crn;
+    uint8_t system_crm;
+    uint8_t system_op2;
+    uint8_t system_rt;
+    uint8_t system_access;
+    uint8_t system_is_implementation_defined;
+    uint8_t system_is_sysl;
+    uint8_t barrier_domain;
+    uint8_t barrier_type;
+    uint8_t hint_immediate;
+    uint8_t pstate_field;
+    uint16_t system_register;
+    AARCH64SysRegIdentity system_register_identity;
+    const char *system_register_name;
     AARCH64Operand operands[AARCH64_OPERANDS_MAX_COUNT];
 } AARCH64OperandSet;
 

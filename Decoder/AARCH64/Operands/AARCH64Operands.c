@@ -1,4 +1,5 @@
 #include "../Includes/AARCH64Operands.h"
+#include "../../../Architecture/AARCH64/Includes/AARCH64CPUState.h"
 
 static void AARCH64OperandsClear(void *memory, uint32_t byte_count)
 {
@@ -179,6 +180,74 @@ static uint8_t AARCH64OperandsFormHasGroup(
             AARCH64CatalogGetGroup(form->group_indices[index]);
         if (group != 0 &&
             AARCH64OperandsStringEquals(group->name, name))
+            return 1;
+    }
+    return 0;
+}
+
+static uint8_t AARCH64OperandsFormIsSystemGroup(
+    const AARCH64CatalogForm *form
+)
+{
+    static const char *const system_groups[] = {
+        "systemmove", "systemmovepr", "systeminstrs",
+        "syspairinstrs", "barriers", "hints", "pstate",
+        "systeminstrswithreg", "systemresult"
+    };
+    uint32_t index;
+
+    if (form == 0 || form->group_count == 0)
+        return 0;
+
+    for (index = 0;
+         index < sizeof(system_groups) / sizeof(system_groups[0]);
+         index++) {
+        if (AARCH64OperandsFormHasGroup(form, system_groups[index]))
+            return 1;
+    }
+    return 0;
+}
+
+static uint8_t AARCH64OperandsFormIsSystemOrSecurity(
+    const AARCH64CatalogForm *form
+)
+{
+    static const char *const security_groups[] = {
+        "exception", "ldst_pac", "addsub_immtags"
+    };
+    static const char *const security_ops[] = {
+        "ERET", "DRPS", "PACGA", "IRG", "ADDG", "SUBG",
+        "GMI", "SUBP", "SUBPS"
+    };
+    uint32_t index;
+
+    if (AARCH64OperandsFormIsSystemGroup(form))
+        return 1;
+
+    if (form == 0)
+        return 0;
+
+    if (AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "PAC") ||
+        AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "AUT") ||
+        AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "XPAC") ||
+        AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "BRA") ||
+        AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "BLRA") ||
+        AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "RETA") ||
+        AARCH64OperandsStringStartsWithIgnoreCase(form->operation_id, "ERETA"))
+        return 1;
+
+    for (index = 0;
+         index < sizeof(security_ops) / sizeof(security_ops[0]);
+         index++) {
+        if (AARCH64OperandsStringEquals(form->operation_id,
+                                        security_ops[index]))
+            return 1;
+    }
+
+    for (index = 0;
+         index < sizeof(security_groups) / sizeof(security_groups[0]);
+         index++) {
+        if (AARCH64OperandsFormHasGroup(form, security_groups[index]))
             return 1;
     }
     return 0;
@@ -968,8 +1037,14 @@ static void AARCH64OperandsSetPointerAuthMetadata(AARCH64OperandSet *set)
 {
     const char *operation = set->operation_id;
 
+    if (AARCH64OperandsStringEquals(operation, "PACM")) {
+        set->pstate_pacm_write = 1u;
+        return;
+    }
+
     if (AARCH64OperandsNameStartsWith(set, "PACIA") ||
         AARCH64OperandsNameStartsWith(set, "AUTIA") ||
+        AARCH64OperandsNameStartsWith(set, "PACNBIASPPC") ||
         AARCH64OperandsNameStartsWith(set, "PACIZA") ||
         AARCH64OperandsNameStartsWith(set, "AUTIZA") ||
         AARCH64OperandsNameStartsWith(set, "BRAA") ||
@@ -978,6 +1053,7 @@ static void AARCH64OperandsSetPointerAuthMetadata(AARCH64OperandSet *set)
         set->pointer_auth_key = AARCH64_POINTER_AUTH_KEY_IA;
     } else if (AARCH64OperandsNameStartsWith(set, "PACIB") ||
                AARCH64OperandsNameStartsWith(set, "AUTIB") ||
+               AARCH64OperandsNameStartsWith(set, "PACNBIBSPPC") ||
                AARCH64OperandsNameStartsWith(set, "PACIZB") ||
                AARCH64OperandsNameStartsWith(set, "AUTIZB") ||
                AARCH64OperandsNameStartsWith(set, "BRAB") ||
@@ -996,7 +1072,8 @@ static void AARCH64OperandsSetPointerAuthMetadata(AARCH64OperandSet *set)
                AARCH64OperandsNameStartsWith(set, "AUTDZB") ||
                AARCH64OperandsNameStartsWith(set, "LDRAB")) {
         set->pointer_auth_key = AARCH64_POINTER_AUTH_KEY_DB;
-    } else if (AARCH64OperandsNameStartsWith(set, "XPACI")) {
+    } else if (AARCH64OperandsNameStartsWith(set, "XPACI") ||
+               AARCH64OperandsNameStartsWith(set, "XPACLRI")) {
         set->pointer_auth_key = AARCH64_POINTER_AUTH_KEY_IA;
     } else if (AARCH64OperandsNameStartsWith(set, "XPACD")) {
         set->pointer_auth_key = AARCH64_POINTER_AUTH_KEY_DA;
@@ -1028,8 +1105,9 @@ static void AARCH64OperandsSetPointerAuthMetadata(AARCH64OperandSet *set)
         AARCH64OperandsNameStartsWith(set, "AUTDZ")) {
         set->pointer_auth_context = AARCH64_POINTER_AUTH_CONTEXT_ZERO;
     } else if (AARCH64OperandsStringEndsWith(
-                   set->canonical_mnemonic, "SP"
-               ) || AARCH64OperandsStringEndsWith(operation, "SP") ||
+                    set->canonical_mnemonic, "SP"
+                ) || AARCH64OperandsStringEndsWith(operation, "SP") ||
+                AARCH64OperandsNameStartsWith(set, "PACNBI") ||
                AARCH64OperandsNameStartsWith(set, "RETAA") ||
                AARCH64OperandsNameStartsWith(set, "RETAB")) {
         set->pointer_auth_context = AARCH64_POINTER_AUTH_CONTEXT_SP;
@@ -1039,6 +1117,10 @@ static void AARCH64OperandsSetPointerAuthMetadata(AARCH64OperandSet *set)
         set->pointer_auth_address_diversity = 1u;
     } else if (set->pointer_auth_action != AARCH64_POINTER_AUTH_ACTION_NONE) {
         set->pointer_auth_context = AARCH64_POINTER_AUTH_CONTEXT_REGISTER;
+    }
+    if (AARCH64OperandsNameStartsWith(set, "PACNBI")) {
+        set->branch_reads_sp = 1u;
+        set->branch_reads_pc = 1u;
     }
 }
 
@@ -1616,34 +1698,307 @@ static uint8_t AARCH64OperandsAddCompositeOperands(
             0, 6u, 0u, AARCH64_OPERAND_FLAG_COMPOSITE))
         return 0;
 
-    if (form->family == AARCH64_CATALOG_FAMILY_CONTROL &&
-        (AARCH64OperandsFormHasGroup(form, "systemmove") ||
-         AARCH64OperandsFormHasGroup(form, "systemmovepr")) &&
-        AARCH64OperandsFindField(form, set->encoding, "op0", &value_a, 0) &&
-        AARCH64OperandsFindField(form, set->encoding, "op1", &value_b, 0) &&
-        AARCH64OperandsFindField(form, set->encoding, "CRn", &value_c, 0)) {
-        uint64_t cr_m;
-        uint64_t op2;
-        if (AARCH64OperandsFindField(form, set->encoding, "CRm", &cr_m, 0) &&
-            AARCH64OperandsFindField(form, set->encoding, "op2", &op2, 0)) {
-            uint64_t system_register =
-                (((set->encoding >> 19) & 3u) << 14) |
-                (((set->encoding >> 16) & 7u) << 11) |
-                (((set->encoding >> 12) & 15u) << 7) |
-                (((set->encoding >> 8) & 15u) << 3) |
-                ((set->encoding >> 5) & 7u);
+    if (form->family == AARCH64_CATALOG_FAMILY_CONTROL) {
+        static const char *const system_groups[] = {
+            "systemmove", "systemmovepr", "systeminstrs",
+            "syspairinstrs", "barriers", "hints", "pstate",
+            "systeminstrswithreg", "systemresult"
+        };
+        uint32_t group_index;
+        uint8_t is_system = 0;
+
+        for (group_index = 0u;
+             group_index < sizeof(system_groups) / sizeof(system_groups[0]);
+             group_index++) {
+            if (AARCH64OperandsFormHasGroup(form, system_groups[group_index])) {
+                is_system = 1u;
+                break;
+            }
+        }
+
+        if (is_system) {
+            uint8_t op0 = (uint8_t)((set->encoding >> 19) & 3u);
+            uint8_t op1 = (uint8_t)((set->encoding >> 16) & 7u);
+            uint8_t crn = (uint8_t)((set->encoding >> 12) & 15u);
+            uint8_t crm = (uint8_t)((set->encoding >> 8) & 15u);
+            uint8_t op2 = (uint8_t)((set->encoding >> 5) & 7u);
+            uint8_t rt = (uint8_t)(set->encoding & 31u);
+            const AARCH64SysRegDescriptor *sysreg;
+
+            set->system_op0 = op0;
+            set->system_op1 = op1;
+            set->system_crn = crn;
+            set->system_crm = crm;
+            set->system_op2 = op2;
+            set->system_rt = rt;
+            set->system_register =
+                AARCH64SysRegEncode(op0, op1, crn, crm, op2);
+
+            if (AARCH64OperandsFormHasGroup(form, "systemmove") ||
+                AARCH64OperandsFormHasGroup(form, "systemmovepr") ||
+                AARCH64OperandsFormHasGroup(form, "systeminstrs") ||
+                AARCH64OperandsFormHasGroup(form, "syspairinstrs")) {
+                uint8_t is_read;
+                uint8_t is_sysl =
+                    AARCH64OperandsFormHasGroup(form, "systeminstrs") &&
+                    ((set->encoding >> 21) & 1u) != 0u;
+
+                if (AARCH64OperandsFormHasGroup(form, "systemmovepr"))
+                    is_read = 1u;
+                else if (AARCH64OperandsFormHasGroup(form, "systemmove"))
+                    is_read = (uint8_t)((set->encoding >> 21) & 1u);
+                else
+                    is_read = 0u;
+
+                set->system_is_sysl = is_sysl;
+                set->system_access = is_read
+                    ? AARCH64_SYSREG_ACCESS_READ
+                    : AARCH64_SYSREG_ACCESS_WRITE;
+
+                sysreg = AARCH64SysRegResolve(op0, op1, crn, crm, op2);
+                set->system_register_identity = sysreg->identity;
+                set->system_register_name = sysreg->name;
+                set->system_is_implementation_defined =
+                    sysreg->is_implementation_defined;
+
+                if (!AARCH64OperandsAddSynthetic(
+                        set, "system_register_encoding",
+                        AARCH64_CATALOG_OPERAND_SYSTEM_FIELD,
+                        AARCH64_CATALOG_OPERAND_ROLE_CONTROL,
+                        set->system_register, set->system_register,
+                        0, 16u, 0, AARCH64_OPERAND_FLAG_COMPOSITE))
+                    return 0;
+            }
+
+            if (AARCH64OperandsFormHasGroup(form, "barriers")) {
+                uint8_t opc = (uint8_t)((set->encoding >> 5) & 3u);
+                uint8_t option = (uint8_t)((set->encoding >> 8) & 15u);
+
+                set->barrier_type = opc;
+                set->barrier_domain = option;
+            }
+
+            if (AARCH64OperandsFormHasGroup(form, "hints")) {
+                set->hint_immediate = crm;
+            }
+
+            if (AARCH64OperandsFormHasGroup(form, "pstate")) {
+                set->pstate_field = crm;
+            }
+        }
+    }
+
+    if (AARCH64OperandsFormHasGroup(form, "hints") &&
+        (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PAC") ||
+         AARCH64OperandsStringStartsWithIgnoreCase(form->id, "AUT") ||
+         AARCH64OperandsStringStartsWithIgnoreCase(form->id, "XPAC")) &&
+        !AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PACM_")) {
+        const char *name = form->mnemonic;
+        uint8_t destination = AARCH64OperandsStringEndsWith(name, "1716")
+            ? 17u : 30u;
+        uint8_t has_modifier = !AARCH64OperandsStringEquals(name, "XPACLRI");
+        uint8_t modifier = AARCH64OperandsStringEndsWith(name, "1716")
+            ? 16u : 31u;
+        AARCH64Operand *implicit;
+
+        if (!AARCH64OperandsAddSynthetic(set, "implicit_destination",
+                AARCH64_CATALOG_OPERAND_GPR,
+                AARCH64_CATALOG_OPERAND_ROLE_DESTINATION,
+                destination, destination, 0, 64u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE))
+            return 0;
+        implicit = &set->operands[set->operand_count - 1u];
+        implicit->register_index = destination;
+        implicit->register_width = 64u;
+        implicit->flags |= AARCH64_OPERAND_FLAG_IMPLICIT_REGISTER;
+
+        if (has_modifier) {
+            if (!AARCH64OperandsAddSynthetic(set, "implicit_modifier",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                    modifier, modifier, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE))
+                return 0;
+            implicit = &set->operands[set->operand_count - 1u];
+            implicit->register_index = modifier;
+            implicit->register_width = 64u;
+            implicit->flags |= AARCH64_OPERAND_FLAG_IMPLICIT_REGISTER;
+            if (modifier == 31u)
+                implicit->register_special =
+                    AARCH64OperandsStringEndsWith(name, "SP")
+                    ? AARCH64_REGISTER_SPECIAL_SP
+                    : AARCH64_REGISTER_SPECIAL_ZERO;
+        }
+    }
+
+    if (AARCH64OperandsFormHasGroup(form, "exception")) {
+        uint16_t imm16 = (uint16_t)((set->encoding >> 5) & 0xFFFFu);
+
+        set->exception_immediate = imm16;
+
+        if (form->operand_descriptor_count == 0u &&
+            !AARCH64OperandsAddSynthetic(
+                set, "exception_immediate",
+                AARCH64_CATALOG_OPERAND_IMMEDIATE,
+                AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                imm16, imm16, 0, 16u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE))
+            return 0;
+    }
+
+    if (AARCH64OperandsStringEquals(form->operation_id, "PACGA")) {
+        set->pointer_auth_key = AARCH64_POINTER_AUTH_KEY_GA;
+        set->pointer_auth_action = AARCH64_POINTER_AUTH_ACTION_SIGN;
+
+        if (form->operand_descriptor_count == 0u) {
+            uint8_t rd = (uint8_t)(set->encoding & 31u);
+            uint8_t rn = (uint8_t)((set->encoding >> 5) & 31u);
+            uint8_t rm = (uint8_t)((set->encoding >> 16) & 31u);
+
             if (!AARCH64OperandsAddSynthetic(
-                    set,
-                    "system_register_encoding",
-                    AARCH64_CATALOG_OPERAND_SYSTEM_FIELD,
-                    AARCH64_CATALOG_OPERAND_ROLE_CONTROL,
-                    system_register,
-                    system_register,
-                    0,
-                    16u,
-                    0,
-                    AARCH64_OPERAND_FLAG_COMPOSITE
-                ))
+                    set, "Rd",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_DESTINATION,
+                    rd, rd, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE) ||
+                !AARCH64OperandsAddSynthetic(
+                    set, "Rn",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                    rn, rn, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE) ||
+                !AARCH64OperandsAddSynthetic(
+                    set, "Rm",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                    rm, rm, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE))
+                return 0;
+        }
+    }
+
+    if (AARCH64OperandsFormHasGroup(form, "ldst_pac")) {
+        uint8_t rt = (uint8_t)(set->encoding & 31u);
+        uint8_t rn = (uint8_t)((set->encoding >> 5) & 31u);
+        uint8_t writeback = (set->encoding & (1u << 11)) != 0u;
+        int64_t simm10 = AARCH64OperandsSignExtend(
+            ((set->encoding >> 12) & 0x1FFu) |
+            (((set->encoding >> 22) & 1u) << 9), 10);
+        uint64_t offset = (uint64_t)(simm10 * 8);
+
+        set->memory_data_register = rt;
+        set->memory_base_register = rn;
+        set->memory_offset = offset;
+        set->memory_writeback = writeback;
+        set->memory_access_width = 64u;
+        set->pointer_auth_key = (set->encoding & (1u << 23))
+            ? AARCH64_POINTER_AUTH_KEY_DB : AARCH64_POINTER_AUTH_KEY_DA;
+        set->pointer_auth_action = AARCH64_POINTER_AUTH_ACTION_LOAD;
+        set->pointer_auth_address_diversity = 1u;
+
+        if (!AARCH64OperandsAddSynthetic(
+                set, "auth_offset", AARCH64_CATALOG_OPERAND_IMMEDIATE,
+                AARCH64_CATALOG_OPERAND_ROLE_OFFSET,
+                ((set->encoding >> 12) & 0x1FFu) |
+                    (((set->encoding >> 22) & 1u) << 9),
+                offset, simm10 * 8, 10u, 8u,
+                AARCH64_OPERAND_FLAG_COMPOSITE |
+                    AARCH64_OPERAND_FLAG_SIGNED))
+            return 0;
+
+        if (form->operand_descriptor_count == 0u &&
+            (!AARCH64OperandsAddSynthetic(
+                set, "Rt",
+                AARCH64_CATALOG_OPERAND_GPR,
+                AARCH64_CATALOG_OPERAND_ROLE_DESTINATION,
+                rt, rt, 0, 64u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE) ||
+            !AARCH64OperandsAddSynthetic(
+                set, "Rn",
+                AARCH64_CATALOG_OPERAND_GPR,
+                AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                rn, rn, 0, 64u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE) ||
+            !AARCH64OperandsAddSynthetic(
+                set, "simm10",
+                AARCH64_CATALOG_OPERAND_IMMEDIATE,
+                AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                ((set->encoding >> 12) & 0x1FFu) |
+                    (((set->encoding >> 22) & 1u) << 9), offset,
+                simm10 * 8, 10u, 8,
+                AARCH64_OPERAND_FLAG_COMPOSITE)))
+            return 0;
+    }
+
+    if (AARCH64OperandsStringEquals(form->operation_id, "IRG") ||
+        AARCH64OperandsStringEquals(form->operation_id, "GMI") ||
+        AARCH64OperandsStringEquals(form->operation_id, "SUBP") ||
+        AARCH64OperandsStringEquals(form->operation_id, "SUBPS")) {
+        set->memory_tagged = 1u;
+        set->memory_tag_granule_bytes = 16u;
+
+        if (form->operand_descriptor_count == 0u) {
+            uint8_t rd = (uint8_t)(set->encoding & 31u);
+            uint8_t rn = (uint8_t)((set->encoding >> 5) & 31u);
+            uint8_t rm = (uint8_t)((set->encoding >> 16) & 31u);
+
+            if (!AARCH64OperandsAddSynthetic(
+                    set, "Rd",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_DESTINATION,
+                    rd, rd, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE) ||
+                !AARCH64OperandsAddSynthetic(
+                    set, "Rn",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                    rn, rn, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE) ||
+                !AARCH64OperandsAddSynthetic(
+                    set, "Rm",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                    rm, rm, 0, 64u, 0,
+                    AARCH64_OPERAND_FLAG_COMPOSITE))
+                return 0;
+        }
+    }
+
+    if (AARCH64OperandsStringEquals(form->operation_id, "ADDG") ||
+        AARCH64OperandsStringEquals(form->operation_id, "SUBG")) {
+        set->memory_tagged = 1u;
+        set->memory_tag_granule_bytes = 16u;
+
+        if (form->operand_descriptor_count == 0u) {
+            uint8_t rd = (uint8_t)(set->encoding & 31u);
+            uint8_t rn = (uint8_t)((set->encoding >> 5) & 31u);
+            uint8_t uimm6 = (uint8_t)((set->encoding >> 10) & 63u);
+            uint8_t uimm4 = (uint8_t)((set->encoding >> 22) & 15u);
+
+            if (!AARCH64OperandsAddSynthetic(
+                    set, "Rd",
+                    AARCH64_CATALOG_OPERAND_GPR,
+                    AARCH64_CATALOG_OPERAND_ROLE_DESTINATION,
+                    rd, rd, 0, 64u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE) ||
+            !AARCH64OperandsAddSynthetic(
+                set, "Rn",
+                AARCH64_CATALOG_OPERAND_GPR,
+                AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                rn, rn, 0, 64u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE) ||
+            !AARCH64OperandsAddSynthetic(
+                set, "uimm6",
+                AARCH64_CATALOG_OPERAND_IMMEDIATE,
+                AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                uimm6, uimm6, 0, 6u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE) ||
+            !AARCH64OperandsAddSynthetic(
+                set, "uimm4",
+                AARCH64_CATALOG_OPERAND_IMMEDIATE,
+                AARCH64_CATALOG_OPERAND_ROLE_SOURCE,
+                uimm4, uimm4, 0, 4u, 0,
+                AARCH64_OPERAND_FLAG_COMPOSITE))
                 return 0;
         }
     }
@@ -1689,14 +2044,20 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
         return operands->status;
 
     form = match->form;
+    if (catalog_status == AARCH64_CATALOG_PATTERN_MATCHED_UNVALIDATED &&
+        AARCH64OperandsFormIsSystemOrSecurity(form) &&
+        !AARCH64OperandsFormIsSystemGroup(form))
+        return operands->status;
     if (!AARCH64CatalogFormEncodingValid(form, encoding))
         return operands->status;
     if (!AARCH64OperandsSpecializedMemoryEncodingValid(form, encoding))
         return operands->status;
     if (form->operand_descriptor_count == 0u ||
         form->operand_descriptors == 0) {
-        operands->status = AARCH64_OPERAND_EXTRACTION_UNSUPPORTED;
-        return AARCH64_OPERAND_EXTRACTION_UNSUPPORTED;
+        if (!AARCH64OperandsFormIsSystemOrSecurity(form)) {
+            operands->status = AARCH64_OPERAND_EXTRACTION_UNSUPPORTED;
+            return AARCH64_OPERAND_EXTRACTION_UNSUPPORTED;
+        }
     }
     if (form->operand_descriptor_count > AARCH64_OPERANDS_MAX_COUNT) {
         operands->status = AARCH64_OPERAND_EXTRACTION_UNSUPPORTED;
@@ -1960,6 +2321,10 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
                         "RPRFM_"))
                     operand->value = operand->raw_value & 7u;
             }
+            if (AARCH64OperandsFormIsSystemOrSecurity(form) &&
+                operand->kind == AARCH64_CATALOG_OPERAND_GPR &&
+                operand->register_width == 0u)
+                operand->register_width = 64u;
             if (operand->kind == AARCH64_CATALOG_OPERAND_GPR &&
                 operand->register_width == 0u)
                 operand->status = AARCH64_OPERAND_VALUE_PARTIAL;
@@ -2090,7 +2455,8 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
         }
 
         if ((AARCH64OperandsConventionalBranch(form) ||
-             AARCH64OperandsExceptionalControl(form)) &&
+              AARCH64OperandsExceptionalControl(form) ||
+              AARCH64OperandsFormHasGroup(form, "hints")) &&
             operand->kind == AARCH64_CATALOG_OPERAND_RAW &&
             operand->role == AARCH64_CATALOG_OPERAND_ROLE_FIELD) {
             operand->status = AARCH64_OPERAND_VALUE_INTERPRETED;
@@ -2177,6 +2543,16 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
     AARCH64OperandsSetExceptionalControlMetadata(operands);
     AARCH64OperandsSetMemoryMetadata(operands);
     AARCH64OperandsSetSpecializedMemoryMetadata(operands);
+    if (AARCH64OperandsFormHasGroup(form, "ldst_pac")) {
+        int64_t offset = AARCH64OperandsSignExtend(
+            ((encoding >> 12) & 0x1ffu) |
+            (((encoding >> 22) & 1u) << 9), 10) * 8;
+        operands->memory_access_width = 64u;
+        operands->memory_base_register = (uint8_t)((encoding >> 5) & 31u);
+        operands->memory_data_register = (uint8_t)(encoding & 31u);
+        operands->memory_writeback = (encoding & (1u << 11)) != 0u;
+        operands->memory_offset = (uint64_t)offset;
+    }
     if (AARCH64OperandsConventionalBranch(form)) {
         uint16_t branch_index;
         operands->branch_condition = 0xffu;
@@ -2247,8 +2623,9 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
         profile,
         &operands->preferred_alias
     );
-    if (alias_result == AARCH64_CATALOG_PATTERN_MATCHED_UNVALIDATED ||
-        alias_result == AARCH64_CATALOG_AMBIGUOUS)
+    if ((alias_result == AARCH64_CATALOG_PATTERN_MATCHED_UNVALIDATED ||
+         alias_result == AARCH64_CATALOG_AMBIGUOUS) &&
+        !AARCH64OperandsFormIsSystemOrSecurity(form))
         saw_partial = 1u;
     for (index = form->operand_descriptor_count;
          index < operands->operand_count;
@@ -2260,11 +2637,15 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
                  AARCH64_OPERAND_VALUE_INTERPRETED)
             saw_interpreted = 1;
     }
-    if (catalog_status != AARCH64_CATALOG_VALID_ENCODING)
+    if (catalog_status != AARCH64_CATALOG_VALID_ENCODING &&
+        !(catalog_status == AARCH64_CATALOG_PATTERN_MATCHED_UNVALIDATED &&
+          AARCH64OperandsFormIsSystemOrSecurity(form)))
         saw_partial = 1;
-    if (saw_partial || (saw_raw && saw_interpreted))
+    if (saw_partial ||
+        (saw_raw && saw_interpreted &&
+         !AARCH64OperandsFormIsSystemOrSecurity(form)))
         operands->status = AARCH64_OPERAND_EXTRACTION_PARTIAL;
-    else if (saw_raw)
+    else if (saw_raw && !AARCH64OperandsFormIsSystemOrSecurity(form))
         operands->status = AARCH64_OPERAND_EXTRACTION_RAW;
     if ((form->family == AARCH64_CATALOG_FAMILY_DP_IMMEDIATE ||
          form->family == AARCH64_CATALOG_FAMILY_DP_REGISTER) &&

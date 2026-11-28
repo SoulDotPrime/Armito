@@ -36,7 +36,7 @@ static uint8_t AARCH64FormIsForwarded(const AARCH64CatalogForm *form)
         "ldstexclr", "ldstexclp", "ldstexclr_unpriv", "ldstord",
         "comswap", "comswappr", "comswap_unpriv", "comswappr_unpriv",
         "memop", "memop_128", "rcwcomswap", "rcwcomswappr",
-        "ldst_pac", "ldst_gcs", "ldapstl_unscaled", "ldapstl_simd",
+        "ldst_gcs", "ldapstl_unscaled", "ldapstl_simd",
         "ldapstl_writeback", "ldiappstilp"
     };
     const AARCH64CatalogGroup *group;
@@ -63,6 +63,85 @@ static uint8_t AARCH64FormIsForwarded(const AARCH64CatalogForm *form)
     return 0;
 }
 
+static uint8_t AARCH64FormIsSystem(const AARCH64CatalogForm *form)
+{
+    static const char *const system_groups[] = {
+        "systemmove", "systemmovepr", "systeminstrs",
+        "syspairinstrs", "barriers", "hints", "pstate",
+        "systeminstrswithreg", "systemresult"
+    };
+    uint32_t group_index;
+    uint32_t system_index;
+
+    if (form->family != AARCH64_CATALOG_FAMILY_CONTROL ||
+        form->group_count == 0)
+        return 0;
+
+    for (group_index = 0u; group_index < form->group_count; group_index++) {
+        const AARCH64CatalogGroup *group =
+            AARCH64CatalogGetGroup(form->group_indices[group_index]);
+
+        if (group == NULL || group->name == NULL)
+            continue;
+
+        for (system_index = 0u;
+             system_index < sizeof(system_groups) / sizeof(system_groups[0]);
+             system_index++) {
+            if (strcmp(group->name, system_groups[system_index]) == 0)
+                return 1;
+        }
+    }
+
+    return 0;
+}
+
+static uint8_t AARCH64FormIsSecurity(const AARCH64CatalogForm *form)
+{
+    static const char *const security_ops[] = {
+        "ERET", "DRPS", "PACGA", "IRG", "ADDG", "SUBG",
+        "GMI", "SUBP", "SUBPS"
+    };
+    static const char *const security_groups[] = {
+        "exception", "ldst_pac", "addsub_immtags"
+    };
+    uint32_t group_index;
+    uint32_t index;
+
+    if (form == 0)
+        return 0;
+
+    if (strncmp(form->operation_id, "PAC", 3) == 0 ||
+        strncmp(form->operation_id, "AUT", 3) == 0 ||
+        strncmp(form->operation_id, "XPAC", 4) == 0 ||
+        strncmp(form->operation_id, "BRA", 3) == 0 ||
+        strncmp(form->operation_id, "BLRA", 4) == 0 ||
+        strncmp(form->operation_id, "RETA", 4) == 0 ||
+        strncmp(form->operation_id, "ERETA", 5) == 0)
+        return 1;
+
+    for (index = 0;
+         index < sizeof(security_ops) / sizeof(security_ops[0]);
+         index++) {
+        if (strcmp(form->operation_id, security_ops[index]) == 0)
+            return 1;
+    }
+
+    for (group_index = 0; group_index < form->group_count; group_index++) {
+        const AARCH64CatalogGroup *group =
+            AARCH64CatalogGetGroup(form->group_indices[group_index]);
+        if (group == 0 || group->name == 0)
+            continue;
+        for (index = 0;
+             index < sizeof(security_groups) / sizeof(security_groups[0]);
+             index++) {
+            if (strcmp(group->name, security_groups[index]) == 0)
+                return 1;
+        }
+    }
+
+    return 0;
+}
+
 static ArmitoDecoderStatus AARCH64DecodeLoadStore(
     uint32_t encoding,
     uint64_t address,
@@ -84,11 +163,17 @@ static ArmitoDecoderStatus AARCH64DecodeLoadStore(
         result == AARCH64_CATALOG_AMBIGUOUS)
         return ARMITO_DECODER_INVALID_INSTRUCTION;
 
-    if (result != AARCH64_CATALOG_VALID_ENCODING ||
-        match.form == NULL)
+    if (match.form == NULL)
         return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
 
-    if (match.form->family != AARCH64_CATALOG_FAMILY_LOAD_STORE)
+    if (result != AARCH64_CATALOG_VALID_ENCODING &&
+        !(result == AARCH64_CATALOG_PATTERN_MATCHED_UNVALIDATED &&
+          AARCH64FormIsSystem(match.form)))
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+
+    if (match.form->family != AARCH64_CATALOG_FAMILY_LOAD_STORE &&
+        !AARCH64FormIsSystem(match.form) &&
+        !AARCH64FormIsSecurity(match.form))
         return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
 
     if (AARCH64FormIsForwarded(match.form))
@@ -284,6 +369,12 @@ ArmitoDecoderStatus AARCH64Classify(uint32_t encoding, AARCH64Opcode *opcode)
         break;
     }
 
+    if ((encoding & 0xFFC0C000u) == 0x91800000u ||
+        (encoding & 0xFFC0C000u) == 0xD1800000u) {
+        *opcode = AARCH64_OPCODE_CATALOG_ONLY;
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+    }
+
     if ((encoding & 0x1F000000u) == 0x11000000u) {
         uint8_t subtract = (uint8_t)((encoding >> 30) & 1u);
         uint8_t set_flags = (uint8_t)((encoding >> 29) & 1u);
@@ -410,8 +501,10 @@ ArmitoDecoderStatus AARCH64DecodeWithAddress(
     instruction->branch_target = 0;
     instruction->encoding = encoding;
 
-    if (opcode == AARCH64_OPCODE_NOP || opcode == AARCH64_OPCODE_HINT)
+    if (opcode == AARCH64_OPCODE_NOP || opcode == AARCH64_OPCODE_HINT) {
+        (void)AARCH64DecodeLoadStore(encoding, address, instruction);
         return ARMITO_DECODER_SUCCESS;
+    }
 
     if (opcode == AARCH64_OPCODE_B || opcode == AARCH64_OPCODE_BL) {
         instruction->immediate = AARCH64SignExtend(encoding & 0x03FFFFFFu, 26) * 4;
@@ -490,6 +583,8 @@ ArmitoDecoderStatus AARCH64DecodeWithAddress(
                         : AARCH64_AUTH_KEY_DB
         );
         instruction->auth_modifier_is_zero = instruction->rn_is_zero;
+        if (instruction->operands != NULL)
+            return AARCH64DecodeLoadStore(encoding, address, instruction);
         return ARMITO_DECODER_SUCCESS;
     }
 
@@ -519,6 +614,8 @@ ArmitoDecoderStatus AARCH64DecodeWithAddress(
         } else {
             instruction->auth_key = AARCH64_AUTH_KEY_IA;
         }
+        if (instruction->operands != NULL)
+            return AARCH64DecodeLoadStore(encoding, address, instruction);
         return ARMITO_DECODER_SUCCESS;
     }
 
@@ -535,6 +632,7 @@ ArmitoDecoderStatus AARCH64DecodeWithAddress(
              opcode == AARCH64_OPCODE_RETAB)
                 ? AARCH64_AUTH_KEY_IB
                 : AARCH64_AUTH_KEY_IA;
+        (void)AARCH64DecodeLoadStore(encoding, address, instruction);
         return ARMITO_DECODER_SUCCESS;
     }
 
@@ -560,6 +658,8 @@ ArmitoDecoderStatus AARCH64DecodeWithAddress(
                 ? AARCH64_AUTH_KEY_IB
                 : AARCH64_AUTH_KEY_IA;
         instruction->auth_modifier_is_zero = instruction->rm_is_zero;
+        if (instruction->operands != NULL)
+            return AARCH64DecodeLoadStore(encoding, address, instruction);
         return ARMITO_DECODER_SUCCESS;
     }
 
@@ -583,6 +683,7 @@ ArmitoDecoderStatus AARCH64DecodeWithAddress(
                 ? AARCH64_AUTH_KEY_DA
                 : AARCH64_AUTH_KEY_DB;
         instruction->auth_address_diversity = 1;
+        (void)AARCH64DecodeLoadStore(encoding, address, instruction);
         return ARMITO_DECODER_SUCCESS;
     }
 

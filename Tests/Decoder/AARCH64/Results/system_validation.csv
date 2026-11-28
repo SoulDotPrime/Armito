@@ -1,0 +1,54 @@
+class,form,operation,group,features,variant,word,result,op0,op1,crn,crm,op2,rt,register,access,impl_def,is_sysl,barrier_domain,barrier_type,hint_immediate,register_name,pstate_field,identity,llvm
+system,AUTIA1716_HI_hints,AUTIA,hints,FEAT_PAuth,seed,D503219F,complete,0,3,2,1,4,31,6412,0,0,0,0,0,1,null,0,0,autia1716
+system,AUTIASP_HI_hints,AUTIA,hints,FEAT_PAuth,seed,D50323BF,complete,0,3,2,3,5,31,6429,0,0,0,0,0,3,null,0,0,autiasp
+system,AUTIAZ_HI_hints,AUTIA,hints,FEAT_PAuth,seed,D503239F,complete,0,3,2,3,4,31,6428,0,0,0,0,0,3,null,0,0,autiaz
+system,AUTIB1716_HI_hints,AUTIB,hints,FEAT_PAuth,seed,D50321DF,complete,0,3,2,1,6,31,6414,0,0,0,0,0,1,null,0,0,autib1716
+system,AUTIBSP_HI_hints,AUTIB,hints,FEAT_PAuth,seed,D50323FF,complete,0,3,2,3,7,31,6431,0,0,0,0,0,3,null,0,0,autibsp
+system,AUTIBZ_HI_hints,AUTIB,hints,FEAT_PAuth,seed,D50323DF,complete,0,3,2,3,6,31,6430,0,0,0,0,0,3,null,0,0,autibz
+system,AXFLAG_M_pstate,AXFLAG,pstate,FEAT_FlagM2,seed,D500405F,complete,0,0,4,0,2,31,514,0,0,0,0,0,0,null,0,0,"msr	s0_0_c4_c0_2, xzr"
+system,BTI_HB_hints,BTI,hints,FEAT_BTI,seed,D503241F,complete,0,3,2,4,0,31,6432,0,0,0,0,0,4,null,0,0,hint	#32
+system,CFINV_M_pstate,CFINV,pstate,FEAT_FlagM,seed,D500401F,complete,0,0,4,0,0,31,512,0,0,0,0,0,0,null,0,0,"msr	s0_0_c4_c0_0, xzr"
+system,CHKFEAT_HF_hints,CHKFEAT,hints,FEAT_CHK,seed,D503251F,complete,0,3,2,5,0,31,6440,0,0,0,0,0,5,null,0,0,hint	#40
+system,CLRBHB_HI_hints,CLRBHB,hints,FEAT_CLRBHB,seed,D50322DF,complete,0,3,2,2,6,31,6422,0,0,0,0,0,2,null,0,0,hint	#22
+system,CLREX_BN_barriers,CLREX,barriers,-,seed,D503305F,complete,0,3,3,0,2,31,6530,0,0,0,0,2,0,null,0,0,clrex	#0
+system,CSDB_HI_hints,CSDB,hints,-,seed,D503229F,complete,0,3,2,2,4,31,6420,0,0,0,0,0,2,null,0,0,csdb
+system,DGH_HI_hints,DGH,hints,FEAT_DGH,seed,D50320DF,complete,0,3,2,0,6,31,6406,0,0,0,0,0,0,null,0,0,dgh
+system,DMB_BO_barriers,DMB,barriers,-,seed,D503309F,complete,0,3,3,0,4,31,6532,0,0,0,0,0,0,null,0,0,ssbb
+system,DSB_BO_barriers,DSB,barriers,-,seed,D503309F,complete,0,3,3,0,4,31,6532,0,0,0,0,0,0,null,0,0,ssbb
+system,DSB_BOn_barriers,DSB,barriers,FEAT_XS,seed,D503323F,complete,0,3,3,2,1,31,6545,0,0,0,2,1,0,null,0,0,"msr	s0_3_c3_c2_1, xzr"
+system,ESB_HI_hints,ESB,hints,FEAT_RAS,seed,D503221F,complete,0,3,2,2,0,31,6416,0,0,0,0,0,2,null,0,0,hint	#16
+system,GCSB_HD_hints,GCSB,hints,FEAT_GCS,seed,D503227F,complete,0,3,2,2,3,31,6419,0,0,0,0,0,2,null,0,0,hint	#19
+system,HINT_HM_hints,HINT,hints,-,seed,D503201F,complete,0,3,2,0,0,31,6400,0,0,0,0,0,0,null,0,0,nop
+system,ISB_BI_barriers,ISB,barriers,-,seed,D503309F,complete,0,3,3,0,4,31,6532,0,0,0,0,0,0,null,0,0,ssbb
+system,MRRS_RS_systemmovepr,MRRS,systemmovepr,FEAT_SYSREG128,seed,D5700000,complete,2,0,0,0,0,0,32768,1,0,0,0,0,0,unknown,0,0,-
+system,MRS_RS_systemmove,MRS,systemmove,-,seed,D5300000,complete,2,0,0,0,0,0,32768,1,0,0,0,0,0,unknown,0,0,"mrs	x0, s2_0_c0_c0_0"
+system,MSRR_SR_systemmovepr,MSRR,systemmovepr,FEAT_SYSREG128,seed,D5500000,complete,2,0,0,0,0,0,32768,1,0,0,0,0,0,unknown,0,0,-
+system,MSR_SI_pstate,MSR_imm,pstate,-,seed,D500401F,complete,0,0,4,0,0,31,512,0,0,0,0,0,0,null,0,0,"msr	s0_0_c4_c0_0, xzr"
+system,MSR_SR_systemmove,MSR_reg,systemmove,-,seed,D5100000,complete,2,0,0,0,0,0,32768,2,0,0,0,0,0,unknown,0,0,"msr	s2_0_c0_c0_0, x0"
+system,NOP_HI_hints,NOP,hints,-,seed,D503201F,complete,0,3,2,0,0,31,6400,0,0,0,0,0,0,null,0,0,nop
+system,PACIA1716_HI_hints,PACIA,hints,FEAT_PAuth,seed,D503211F,complete,0,3,2,1,0,31,6408,0,0,0,0,0,1,null,0,0,pacia1716
+system,PACIASP_HI_hints,PACIA,hints,FEAT_PAuth,seed,D503233F,complete,0,3,2,3,1,31,6425,0,0,0,0,0,3,null,0,0,paciasp
+system,PACIAZ_HI_hints,PACIA,hints,FEAT_PAuth,seed,D503231F,complete,0,3,2,3,0,31,6424,0,0,0,0,0,3,null,0,0,paciaz
+system,PACIB1716_HI_hints,PACIB,hints,FEAT_PAuth,seed,D503215F,complete,0,3,2,1,2,31,6410,0,0,0,0,0,1,null,0,0,pacib1716
+system,PACIBSP_HI_hints,PACIB,hints,FEAT_PAuth,seed,D503237F,complete,0,3,2,3,3,31,6427,0,0,0,0,0,3,null,0,0,pacibsp
+system,PACIBZ_HI_hints,PACIB,hints,FEAT_PAuth,seed,D503235F,complete,0,3,2,3,2,31,6426,0,0,0,0,0,3,null,0,0,pacibz
+system,PACM_HI_hints,PACM,hints,FEAT_PAuth_LR,seed,D50324FF,complete,0,3,2,4,7,31,6439,0,0,0,0,0,4,null,0,0,hint	#39
+system,PSB_HC_hints,PSB,hints,FEAT_SPE,seed,D503223F,complete,0,3,2,2,1,31,6417,0,0,0,0,0,2,null,0,0,hint	#17
+system,SB_only_barriers,SB,barriers,FEAT_SB,seed,D503309F,complete,0,3,3,0,4,31,6532,0,0,0,0,0,0,null,0,0,ssbb
+system,SEVL_HI_hints,SEVL,hints,-,seed,D50320BF,complete,0,3,2,0,5,31,6405,0,0,0,0,0,0,null,0,0,sevl
+system,SEV_HI_hints,SEV,hints,-,seed,D503209F,complete,0,3,2,0,4,31,6404,0,0,0,0,0,0,null,0,0,sev
+system,STSHH_HI_hints,STSHH,hints,FEAT_PCDPHINT,seed,D503261F,complete,0,3,2,6,0,31,6448,0,0,0,0,0,6,null,0,0,hint	#48
+system,SYSL_RC_systeminstrs,SYSL,systeminstrs,-,seed,D5280000,complete,1,0,0,0,0,0,16384,2,0,1,0,0,0,unknown,0,0,"sysl	x0, #0, c0, c0, #0"
+system,SYSP_CR_syspairinstrs,SYSP,syspairinstrs,FEAT_SYSINSTR128,seed,D5480000,complete,1,0,0,0,0,0,16384,2,0,0,0,0,0,unknown,0,0,-
+system,SYS_CR_systeminstrs,SYS,systeminstrs,-,seed,D5080000,complete,1,0,0,0,0,0,16384,2,0,0,0,0,0,unknown,0,0,"sys	#0, c0, c0, #0, x0"
+system,TCOMMIT_only_barriers,TCOMMIT,barriers,FEAT_TME,seed,D503307F,complete,0,3,3,0,3,31,6531,0,0,0,0,3,0,null,0,0,"msr	s0_3_c3_c0_3, xzr"
+system,TSB_HC_hints,TSB,hints,FEAT_TRF,seed,D503225F,complete,0,3,2,2,2,31,6418,0,0,0,0,0,2,null,0,0,hint	#18
+system,TSTART_BR_systemresult,TSTART,systemresult,FEAT_TME,seed,D5233060,complete,0,3,3,0,3,0,6531,0,0,0,0,0,0,null,0,0,"mrs	x0, s0_3_c3_c0_3"
+system,TTEST_BR_systemresult,TTEST,systemresult,FEAT_TME,seed,D5233160,complete,0,3,3,1,3,0,6539,0,0,0,0,0,0,null,0,0,"mrs	x0, s0_3_c3_c1_3"
+system,WFET_only_systeminstrswithreg,WFET,systeminstrswithreg,FEAT_WFxT,seed,D5031000,complete,0,3,1,0,0,0,6272,0,0,0,0,0,0,null,0,0,"msr	s0_3_c1_c0_0, x0"
+system,WFE_HI_hints,WFE,hints,-,seed,D503205F,complete,0,3,2,0,2,31,6402,0,0,0,0,0,0,null,0,0,wfe
+system,WFIT_only_systeminstrswithreg,WFIT,systeminstrswithreg,FEAT_WFxT,seed,D5031020,complete,0,3,1,0,1,0,6273,0,0,0,0,0,0,null,0,0,"msr	s0_3_c1_c0_1, x0"
+system,WFI_HI_hints,WFI,hints,-,seed,D503207F,complete,0,3,2,0,3,31,6403,0,0,0,0,0,0,null,0,0,wfi
+system,XAFLAG_M_pstate,XAFLAG,pstate,FEAT_FlagM2,seed,D500403F,complete,0,0,4,0,1,31,513,0,0,0,0,0,0,null,0,0,"msr	s0_0_c4_c0_1, xzr"
+system,XPACLRI_HI_hints,XPAC,hints,FEAT_PAuth,seed,D50320FF,complete,0,3,2,0,7,31,6407,0,0,0,0,0,0,null,0,0,xpaclri
+system,YIELD_HI_hints,YIELD,hints,-,seed,D503203F,complete,0,3,2,0,1,31,6401,0,0,0,0,0,0,null,0,0,yield

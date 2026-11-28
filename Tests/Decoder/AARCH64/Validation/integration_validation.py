@@ -9,14 +9,14 @@ import sys
 
 CATALOG = pathlib.Path("Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json")
 REPORT = pathlib.Path("Tests/Decoder/AARCH64/Results/integration_validation.csv")
-REPORT_SHA256 = "3fa4b4e2bbf956e67526591bd656f6defefb2f7f156d586245746e397e59b113"
+REPORT_SHA256 = "0133254688480534f895dda7c3bf9e94ff9d4335ca73017264dcd2bf73828263"
 PC = 0x1000000000004000
 
 FORWARD = frozenset((
     "ldstexclr", "ldstexclp", "ldstexclr_unpriv", "ldstord",
     "comswap", "comswappr", "comswap_unpriv", "comswappr_unpriv",
     "memop", "memop_128", "rcwcomswap", "rcwcomswappr",
-    "ldst_pac", "ldst_gcs", "ldapstl_unscaled", "ldapstl_simd",
+    "ldst_gcs", "ldapstl_unscaled", "ldapstl_simd",
     "ldapstl_writeback", "ldiappstilp"))
 
 

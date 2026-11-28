@@ -202,6 +202,10 @@ complete,LDP_Q_ldstpair_pre,LDP_fpsimd,ldstpair_pre,FEAT_FP,seed,ADC00000,ok,OK
 complete,LDP_S_ldstpair_off,LDP_fpsimd,ldstpair_off,FEAT_FP,seed,2D400000,ok,OK
 complete,LDP_S_ldstpair_post,LDP_fpsimd,ldstpair_post,FEAT_FP,seed,2CC00000,ok,OK
 complete,LDP_S_ldstpair_pre,LDP_fpsimd,ldstpair_pre,FEAT_FP,seed,2DC00000,ok,OK
+complete,LDRAA_64W_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8200C00,ok,OK
+complete,LDRAA_64_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8200400,ok,OK
+complete,LDRAB_64W_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8A00C00,ok,OK
+complete,LDRAB_64_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8A00400,ok,OK
 complete,LDRB_32BL_ldst_regoff,LDRB_reg,ldst_regoff,,seed,38606800,ok,OK
 complete,LDRB_32B_ldst_regoff,LDRB_reg,ldst_regoff,,seed,38606800,ok,OK
 complete,LDRB_32_ldst_immpost,LDRB_imm,ldst_immpost,,seed,38400400,ok,OK
@@ -733,10 +737,6 @@ forwarded,LDLARB_LR32_ldstord,LDLARB,ldstord,FEAT_LOR,seed,08DF7C00,unsupported,
 forwarded,LDLARH_LR32_ldstord,LDLARH,ldstord,FEAT_LOR,seed,48DF7C00,unsupported,UNSUPPORTED
 forwarded,LDLAR_LR32_ldstord,LDLAR,ldstord,FEAT_LOR,seed,88DF7C00,unsupported,UNSUPPORTED
 forwarded,LDLAR_LR64_ldstord,LDLAR,ldstord,FEAT_LOR,seed,C8DF7C00,unsupported,UNSUPPORTED
-forwarded,LDRAA_64W_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8200C00,unsupported,UNSUPPORTED
-forwarded,LDRAA_64_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8200400,unsupported,UNSUPPORTED
-forwarded,LDRAB_64W_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8A00C00,unsupported,UNSUPPORTED
-forwarded,LDRAB_64_ldst_pac,LDRA,ldst_pac,FEAT_PAuth,seed,F8A00400,unsupported,UNSUPPORTED
 forwarded,LDSETAB_32_memop,LDSETB,memop,FEAT_LSE,seed,38A03000,unsupported,UNSUPPORTED
 forwarded,LDSETAH_32_memop,LDSETH,memop,FEAT_LSE,seed,78A03000,unsupported,UNSUPPORTED
 forwarded,LDSETALB_32_memop,LDSETB,memop,FEAT_LSE,seed,38E03000,unsupported,UNSUPPORTED

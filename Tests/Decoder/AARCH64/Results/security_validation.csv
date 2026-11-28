@@ -1,0 +1,595 @@
+form,operation,group,variant,word,feature,state,key,action,diversity,memory_tagged,granule,exception_kind,level,immediate,flow,memory_width,memory_base,memory_data,writeback,pacm_write,offset,base_sp,data_zero,operands,preferred_alias,llvm
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,seed,91800000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,91804000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,91808000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,91C00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,91000000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,90800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,93800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,95800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,99800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,81800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,B1800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,D1800000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,fixed-bit,11800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,feature-negative,91800000,FEAT_MTE,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,register-Rd-1,91800001,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x1, x0, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,register-Rd-30,9180001E,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x30, x0, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,register-Rd-31,9180001F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	sp, x0, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,register-Rn-1,91800020,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x1, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,register-Rn-30,918003C0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x30, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,register-Rn-31,918003E0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, sp, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-0,91800000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-1,91800400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #1"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-2,91800800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #2"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-3,91800C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #3"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-4,91801000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #4"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-5,91801400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #5"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-6,91801800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #6"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-7,91801C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #7"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-8,91802000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #8"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-9,91802400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #9"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-10,91802800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #10"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-11,91802C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #11"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-12,91803000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #12"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-13,91803400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #13"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-14,91803800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #14"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-domain-15,91803C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #0, #15"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-offset-1,91810000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #16, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-offset-31,919F0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #496, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,tag-offset-63,91BF0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"addg	x0, x0, #1008, #0"
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,repeat,91800000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,seed,D4200000,-,OK,0,0,0,0,0,4,0,0,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,brk	#0
+BRK_EX_exception,BRK,exception,fixed-bit,D4200001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4200002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4200004,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4200008,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4200010,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4000000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4600000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D4A00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D5200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D6200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,D0200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,DC200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,C4200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,F4200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,94200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,fixed-bit,54200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BRK_EX_exception,BRK,exception,immediate-imm16-1,D4200020,-,OK,0,0,0,0,0,4,0,1,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,brk	#0x1
+BRK_EX_exception,BRK,exception,immediate-imm16-32767,D42FFFE0,-,OK,0,0,0,0,0,4,0,32767,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,brk	#0x7fff
+BRK_EX_exception,BRK,exception,immediate-imm16-65535,D43FFFE0,-,OK,0,0,0,0,0,4,0,65535,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,brk	#0xffff
+BRK_EX_exception,BRK,exception,repeat,D4200000,-,OK,0,0,0,0,0,4,0,0,7,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,seed,D4A00001,-,OK,0,0,0,0,0,6,1,0,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps1
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4A00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4A00003,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4A00005,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4A00009,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4A00011,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4800001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4E00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D4200001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D5A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D6A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,D0A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,DCA00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,C4A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,F4A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,94A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,fixed-bit,54A00001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS1_DC_exception,DCPS1,exception,immediate-imm16-1,D4A00021,-,OK,0,0,0,0,0,6,1,1,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps1	#0x1
+DCPS1_DC_exception,DCPS1,exception,immediate-imm16-32767,D4AFFFE1,-,OK,0,0,0,0,0,6,1,32767,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps1	#0x7fff
+DCPS1_DC_exception,DCPS1,exception,immediate-imm16-65535,D4BFFFE1,-,OK,0,0,0,0,0,6,1,65535,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps1	#0xffff
+DCPS1_DC_exception,DCPS1,exception,repeat,D4A00001,-,OK,0,0,0,0,0,6,1,0,9,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,seed,D4A00002,-,OK,0,0,0,0,0,6,2,0,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps2
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4A00003,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4A00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4A00006,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4A0000A,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4A00012,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4800002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4E00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D4200002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D5A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D6A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,D0A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,DCA00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,C4A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,F4A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,94A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,fixed-bit,54A00002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS2_DC_exception,DCPS2,exception,immediate-imm16-1,D4A00022,-,OK,0,0,0,0,0,6,2,1,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps2	#0x1
+DCPS2_DC_exception,DCPS2,exception,immediate-imm16-32767,D4AFFFE2,-,OK,0,0,0,0,0,6,2,32767,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps2	#0x7fff
+DCPS2_DC_exception,DCPS2,exception,immediate-imm16-65535,D4BFFFE2,-,OK,0,0,0,0,0,6,2,65535,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps2	#0xffff
+DCPS2_DC_exception,DCPS2,exception,repeat,D4A00002,-,OK,0,0,0,0,0,6,2,0,9,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,seed,D4A00003,-,OK,0,0,0,0,0,6,3,0,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps3
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4A00002,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4A00001,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4A00007,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4A0000B,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4A00013,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4800003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4E00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D4200003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D5A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D6A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,D0A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,DCA00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,C4A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,F4A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,94A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,fixed-bit,54A00003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DCPS3_DC_exception,DCPS3,exception,immediate-imm16-1,D4A00023,-,OK,0,0,0,0,0,6,3,1,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps3	#0x1
+DCPS3_DC_exception,DCPS3,exception,immediate-imm16-32767,D4AFFFE3,-,OK,0,0,0,0,0,6,3,32767,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps3	#0x7fff
+DCPS3_DC_exception,DCPS3,exception,immediate-imm16-65535,D4BFFFE3,-,OK,0,0,0,0,0,6,3,65535,9,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,dcps3	#0xffff
+DCPS3_DC_exception,DCPS3,exception,repeat,D4A00003,-,OK,0,0,0,0,0,6,3,0,9,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,seed,D6BF03E0,-,OK,0,0,0,0,0,9,0,0,8,0,0,0,0,0,0,0,0,Rn:k0:w64 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 op4:k0:w0 opc:k0:w0,-,drps
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03E1,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03E2,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03E4,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03E8,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03F0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03C0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF03A0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF0360,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF02E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF01E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF07E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF0BE0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF13E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF23E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF43E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BF83E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BE03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BD03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6BB03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6B703E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6AF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D69F03E0,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D6FF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D63F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D7BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D4BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,D2BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,DEBF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,C6BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,F6BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,96BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,fixed-bit,56BF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+DRPS_64E_branch_reg,DRPS,branch_reg,repeat,D6BF03E0,-,OK,0,0,0,0,0,9,0,0,8,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,seed,D69F03E0,-,OK,0,0,0,0,0,8,0,0,8,0,0,0,0,0,0,0,0,A:k0:w0 M:k0:w0 Rn:k0:w64 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 op4:k0:w0 opc:k0:w0,-,eret
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03E1,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03E2,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03E4,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03E8,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03F0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03C0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F03A0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F0360,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F02E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F01E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F13E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F23E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F43E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69F83E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69E03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69D03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69B03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D69703E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D68F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D6BF03E0,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D6DF03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D61F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D79F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D49F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,D29F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,DE9F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,C69F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,F69F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,969F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,fixed-bit,569F03E0,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+ERET_64E_branch_reg,ERET,branch_reg,repeat,D69F03E0,-,OK,0,0,0,0,0,8,0,0,8,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,seed,9AC01400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, x0, x0"
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AC01000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AC01C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AC00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AC03400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AC05400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AC09400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9AE01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9A801400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9A401400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9BC01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,98C01400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,9EC01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,92C01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,8AC01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,BAC01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,DAC01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,fixed-bit,1AC01400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,feature-negative,9AC01400,FEAT_MTE,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+GMI_64G_dp_2src,GMI,dp_2src,register-Rd-1,9AC01401,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x1, x0, x0"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rd-30,9AC0141E,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x30, x0, x0"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rd-31,9AC0141F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	xzr, x0, x0"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rn-1,9AC01420,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, x1, x0"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rn-30,9AC017C0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, x30, x0"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rn-31,9AC017E0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, sp, x0"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rm-1,9AC11400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, x0, x1"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rm-30,9ADE1400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, x0, x30"
+GMI_64G_dp_2src,GMI,dp_2src,register-Rm-31,9ADF1400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"gmi	x0, x0, xzr"
+GMI_64G_dp_2src,GMI,dp_2src,repeat,9AC01400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,seed,D4400000,-,OK,0,0,0,0,0,5,0,0,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hlt	#0
+HLT_EX_exception,HLT,exception,fixed-bit,D4400001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4400002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4400004,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4400008,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4400010,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4600000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4000000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D4C00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D5400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D6400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,D0400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,DC400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,C4400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,F4400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,94400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,fixed-bit,54400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HLT_EX_exception,HLT,exception,immediate-imm16-1,D4400020,-,OK,0,0,0,0,0,5,0,1,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hlt	#0x1
+HLT_EX_exception,HLT,exception,immediate-imm16-32767,D44FFFE0,-,OK,0,0,0,0,0,5,0,32767,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hlt	#0x7fff
+HLT_EX_exception,HLT,exception,immediate-imm16-65535,D45FFFE0,-,OK,0,0,0,0,0,5,0,65535,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hlt	#0xffff
+HLT_EX_exception,HLT,exception,repeat,D4400000,-,OK,0,0,0,0,0,5,0,0,7,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,seed,D4000002,-,OK,0,0,0,0,0,2,0,0,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hvc	#0
+HVC_EX_exception,HVC,exception,fixed-bit,D4000003,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D4000000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D4000006,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D400000A,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D4000012,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D4200002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D4400002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D4800002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D5000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D6000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,D0000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,DC000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,C4000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,F4000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,94000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,fixed-bit,54000002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+HVC_EX_exception,HVC,exception,immediate-imm16-1,D4000022,-,OK,0,0,0,0,0,2,0,1,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hvc	#0x1
+HVC_EX_exception,HVC,exception,immediate-imm16-32767,D40FFFE2,-,OK,0,0,0,0,0,2,0,32767,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hvc	#0x7fff
+HVC_EX_exception,HVC,exception,immediate-imm16-65535,D41FFFE2,-,OK,0,0,0,0,0,2,0,65535,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,hvc	#0xffff
+HVC_EX_exception,HVC,exception,repeat,D4000002,-,OK,0,0,0,0,0,2,0,0,7,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,seed,9AC01000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, x0, x0"
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AC01400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AC01800,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AC00000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AC03000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AC05000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AC09000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9AE01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9A801000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9A401000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9BC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,98C01000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,9EC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,92C01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,8AC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,BAC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,DAC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,fixed-bit,1AC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,feature-negative,9AC01000,FEAT_MTE,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+IRG_64I_dp_2src,IRG,dp_2src,register-Rd-1,9AC01001,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x1, x0, x0"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rd-30,9AC0101E,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x30, x0, x0"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rd-31,9AC0101F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	sp, x0, x0"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rn-1,9AC01020,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, x1, x0"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rn-30,9AC013C0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, x30, x0"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rn-31,9AC013E0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, sp, x0"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rm-1,9AC11000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, x0, x1"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rm-30,9ADE1000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, x0, x30"
+IRG_64I_dp_2src,IRG,dp_2src,register-Rm-31,9ADF1000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"irg	x0, x0"
+IRG_64I_dp_2src,IRG,dp_2src,repeat,9AC01000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,seed,F8200C00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8200800,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8200400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8000C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8A00C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F9200C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,FA200C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,FC200C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F0200C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,E8200C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,D8200C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,B8200C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,78200C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,feature-negative,F8200C00,FEAT_PAuth,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,register-Rt-1,F8200C01,-,OK,3,7,1,0,0,0,0,0,0,64,0,1,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x1, [x0, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,register-Rt-30,F8200C1E,-,OK,3,7,1,0,0,0,0,0,0,64,0,30,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x30, [x0, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,register-Rt-31,F8200C1F,-,OK,3,7,1,0,0,0,0,0,0,64,0,31,1,0,0,0,1,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	xzr, [x0, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,register-Rn-1,F8200C20,-,OK,3,7,1,0,0,0,0,0,0,64,1,0,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x1, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,register-Rn-30,F8200FC0,-,OK,3,7,1,0,0,0,0,0,0,64,30,0,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x30, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,register-Rn-31,F8200FE0,-,OK,3,7,1,0,0,0,0,0,0,64,31,0,1,0,0,1,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [sp, #0]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-1,F8201C00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,8,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #8]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-255,F82FFC00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,2040,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #2040]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-511,F83FFC00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,4088,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #4088]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-512,F8600C00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,18446744073709547520,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #-4096]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-1023,F87FFC00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,18446744073709551608,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #-8]!"
+LDRAA_64W_ldst_pac,LDRA,ldst_pac,repeat,F8200C00,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,1,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,seed,F8200400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8200000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8200C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8000400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8A00400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F9200400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,FA200400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,FC200400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F0200400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,E8200400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,D8200400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,B8200400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,fixed-bit,78200400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,feature-negative,F8200400,FEAT_PAuth,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAA_64_ldst_pac,LDRA,ldst_pac,register-Rt-1,F8200401,-,OK,3,7,1,0,0,0,0,0,0,64,0,1,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x1, [x0]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,register-Rt-30,F820041E,-,OK,3,7,1,0,0,0,0,0,0,64,0,30,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x30, [x0]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,register-Rt-31,F820041F,-,OK,3,7,1,0,0,0,0,0,0,64,0,31,0,0,0,0,1,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	xzr, [x0]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,register-Rn-1,F8200420,-,OK,3,7,1,0,0,0,0,0,0,64,1,0,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x1]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,register-Rn-30,F82007C0,-,OK,3,7,1,0,0,0,0,0,0,64,30,0,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x30]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,register-Rn-31,F82007E0,-,OK,3,7,1,0,0,0,0,0,0,64,31,0,0,0,0,1,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [sp]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,immediate-auth-1,F8201400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,8,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #8]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,immediate-auth-255,F82FF400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,2040,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #2040]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,immediate-auth-511,F83FF400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,4088,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #4088]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,immediate-auth-512,F8600400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,18446744073709547520,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #-4096]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,immediate-auth-1023,F87FF400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,18446744073709551608,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldraa	x0, [x0, #-8]"
+LDRAA_64_ldst_pac,LDRA,ldst_pac,repeat,F8200400,-,OK,3,7,1,0,0,0,0,0,0,64,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,seed,F8A00C00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8A00800,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8A00400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8800C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F8200C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F9A00C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,FAA00C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,FCA00C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,F0A00C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,E8A00C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,D8A00C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,B8A00C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,fixed-bit,78A00C00,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,feature-negative,F8A00C00,FEAT_PAuth,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,register-Rt-1,F8A00C01,-,OK,4,7,1,0,0,0,0,0,0,64,0,1,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x1, [x0, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,register-Rt-30,F8A00C1E,-,OK,4,7,1,0,0,0,0,0,0,64,0,30,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x30, [x0, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,register-Rt-31,F8A00C1F,-,OK,4,7,1,0,0,0,0,0,0,64,0,31,1,0,0,0,1,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	xzr, [x0, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,register-Rn-1,F8A00C20,-,OK,4,7,1,0,0,0,0,0,0,64,1,0,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x1, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,register-Rn-30,F8A00FC0,-,OK,4,7,1,0,0,0,0,0,0,64,30,0,1,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x30, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,register-Rn-31,F8A00FE0,-,OK,4,7,1,0,0,0,0,0,0,64,31,0,1,0,0,1,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [sp, #0]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-1,F8A01C00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,8,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #8]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-255,F8AFFC00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,2040,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #2040]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-511,F8BFFC00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,4088,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #4088]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-512,F8E00C00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,18446744073709547520,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #-4096]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,immediate-auth-1023,F8FFFC00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,18446744073709551608,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #-8]!"
+LDRAB_64W_ldst_pac,LDRA,ldst_pac,repeat,F8A00C00,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,1,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,seed,F8A00400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8A00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8A00C00,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8800400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F8200400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F9A00400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,FAA00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,FCA00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,F0A00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,E8A00400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,D8A00400,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,B8A00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,fixed-bit,78A00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,feature-negative,F8A00400,FEAT_PAuth,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+LDRAB_64_ldst_pac,LDRA,ldst_pac,register-Rt-1,F8A00401,-,OK,4,7,1,0,0,0,0,0,0,64,0,1,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x1, [x0]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,register-Rt-30,F8A0041E,-,OK,4,7,1,0,0,0,0,0,0,64,0,30,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x30, [x0]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,register-Rt-31,F8A0041F,-,OK,4,7,1,0,0,0,0,0,0,64,0,31,0,0,0,0,1,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	xzr, [x0]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,register-Rn-1,F8A00420,-,OK,4,7,1,0,0,0,0,0,0,64,1,0,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x1]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,register-Rn-30,F8A007C0,-,OK,4,7,1,0,0,0,0,0,0,64,30,0,0,0,0,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x30]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,register-Rn-31,F8A007E0,-,OK,4,7,1,0,0,0,0,0,0,64,31,0,0,0,0,1,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [sp]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,immediate-auth-1,F8A01400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,8,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #8]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,immediate-auth-255,F8AFF400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,2040,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #2040]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,immediate-auth-511,F8BFF400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,4088,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #4088]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,immediate-auth-512,F8E00400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,18446744073709547520,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #-4096]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,immediate-auth-1023,F8FFF400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,18446744073709551608,0,0,M:k0:w0 Rn:k1:w64 Rt:k1:w64 S:k0:w0 VR:k0:w0 W:k0:w0 auth_offset:k6:w0 imm9:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 size:k0:w0,-,"ldrab	x0, [x0, #-8]"
+LDRAB_64_ldst_pac,LDRA,ldst_pac,repeat,F8A00400,-,OK,4,7,1,0,0,0,0,0,0,64,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,seed,9AC03000,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, x0, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AC03400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AC03800,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AC02000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AC01000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AC07000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AC0B000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9AE03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9A803000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9A403000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9BC03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,98C03000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,9EC03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,92C03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,8AC03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,BAC03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,DAC03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,fixed-bit,1AC03000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,feature-negative,9AC03000,FEAT_PAuth,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rd-1,9AC03001,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x1, x0, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rd-30,9AC0301E,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x30, x0, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rd-31,9AC0301F,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	xzr, x0, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rn-1,9AC03020,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, x1, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rn-30,9AC033C0,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, x30, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rn-31,9AC033E0,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, xzr, x0"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rm-1,9AC13000,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, x0, x1"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rm-30,9ADE3000,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, x0, x30"
+PACGA_64P_dp_2src,PACGA,dp_2src,register-Rm-31,9ADF3000,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"pacga	x0, x0, sp"
+PACGA_64P_dp_2src,PACGA,dp_2src,repeat,9AC03000,-,OK,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,seed,D4000003,-,OK,0,0,0,0,0,3,0,0,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,smc	#0
+SMC_EX_exception,SMC,exception,fixed-bit,D4000002,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D4000001,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D4000007,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D400000B,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D4000013,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D4200003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D4400003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D4800003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D5000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D6000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,D0000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,DC000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,C4000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,F4000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,94000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,fixed-bit,54000003,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SMC_EX_exception,SMC,exception,immediate-imm16-1,D4000023,-,OK,0,0,0,0,0,3,0,1,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,smc	#0x1
+SMC_EX_exception,SMC,exception,immediate-imm16-32767,D40FFFE3,-,OK,0,0,0,0,0,3,0,32767,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,smc	#0x7fff
+SMC_EX_exception,SMC,exception,immediate-imm16-65535,D41FFFE3,-,OK,0,0,0,0,0,3,0,65535,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,smc	#0xffff
+SMC_EX_exception,SMC,exception,repeat,D4000003,-,OK,0,0,0,0,0,3,0,0,7,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,seed,D1800000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D1804000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D1808000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D1C00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D1000000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D0800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D3800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D5800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,D9800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,C1800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,F1800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,91800000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,fixed-bit,51800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,feature-negative,D1800000,FEAT_MTE,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,register-Rd-1,D1800001,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x1, x0, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,register-Rd-30,D180001E,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x30, x0, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,register-Rd-31,D180001F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	sp, x0, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,register-Rn-1,D1800020,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x1, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,register-Rn-30,D18003C0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x30, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,register-Rn-31,D18003E0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, sp, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-0,D1800000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-1,D1800400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #1"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-2,D1800800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #2"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-3,D1800C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #3"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-4,D1801000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #4"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-5,D1801400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #5"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-6,D1801800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #6"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-7,D1801C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #7"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-8,D1802000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #8"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-9,D1802400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #9"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-10,D1802800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #10"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-11,D1802C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #11"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-12,D1803000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #12"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-13,D1803400,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #13"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-14,D1803800,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #14"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-domain-15,D1803C00,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #0, #15"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-offset-1,D1810000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #16, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-offset-31,D19F0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #496, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,tag-offset-63,D1BF0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rn:k1:w64 S:k0:w0 imm4:k6:w0 imm6:k6:w0 op:k0:w0 op0:k0:w0 op1:k0:w0 op3:k0:w0 sf:k0:w0,-,"subg	x0, x0, #1008, #0"
+SUBG_64_addsub_immtags,SUBG,addsub_immtags,repeat,D1800000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,seed,BAC00000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, x0, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAC00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAC00800,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAC01000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAC02000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAC04000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAC08000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BAE00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BA800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BA400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BBC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,B8C00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,BEC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,B2C00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,AAC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,9AC00000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,FAC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,fixed-bit,3AC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,feature-negative,BAC00000,FEAT_MTE,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rd-1,BAC00001,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x1, x0, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rd-30,BAC0001E,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x30, x0, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rd-31,BAC0001F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,CMPP,"subps	xzr, x0, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rn-1,BAC00020,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, x1, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rn-30,BAC003C0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, x30, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rn-31,BAC003E0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, sp, x0"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rm-1,BAC10000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, x0, x1"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rm-30,BADE0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, x0, x30"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,register-Rm-31,BADF0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subps	x0, x0, sp"
+SUBPS_64S_dp_2src,SUBPS,dp_2src,repeat,BAC00000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBPS_64S_dp_2src,SUBPS,dp_2src,alias,BAC0001F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,CMPP,"subps	xzr, x0, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,seed,9AC00000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, x0, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AC00400,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AC00800,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AC01000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AC02000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AC04000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AC08000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9AE00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9A800000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9A400000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9BC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,98C00000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,9EC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,92C00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,8AC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,BAC00000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,DAC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,fixed-bit,1AC00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,feature-negative,9AC00000,FEAT_MTE,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rd-1,9AC00001,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x1, x0, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rd-30,9AC0001E,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x30, x0, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rd-31,9AC0001F,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	xzr, x0, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rn-1,9AC00020,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, x1, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rn-30,9AC003C0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, x30, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rn-31,9AC003E0,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, sp, x0"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rm-1,9AC10000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, x0, x1"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rm-30,9ADE0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, x0, x30"
+SUBP_64S_dp_2src,SUBP,dp_2src,register-Rm-31,9ADF0000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,Rd:k1:w64 Rm:k1:w64 Rn:k1:w64 S:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 op3:k0:w0 opcode:k0:w0 sf:k0:w0,-,"subp	x0, x0, sp"
+SUBP_64S_dp_2src,SUBP,dp_2src,repeat,9AC00000,-,OK,0,0,0,1,16,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,seed,D4000001,-,OK,0,0,0,0,0,1,0,0,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,svc	#0
+SVC_EX_exception,SVC,exception,fixed-bit,D4000000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4000003,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4000005,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4000009,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4000011,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4200001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4400001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D4800001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D5000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D6000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,D0000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,DC000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,C4000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,F4000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,94000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,fixed-bit,54000001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+SVC_EX_exception,SVC,exception,immediate-imm16-1,D4000021,-,OK,0,0,0,0,0,1,0,1,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,svc	#0x1
+SVC_EX_exception,SVC,exception,immediate-imm16-32767,D40FFFE1,-,OK,0,0,0,0,0,1,0,32767,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,svc	#0x7fff
+SVC_EX_exception,SVC,exception,immediate-imm16-65535,D41FFFE1,-,OK,0,0,0,0,0,1,0,65535,7,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,svc	#0xffff
+SVC_EX_exception,SVC,exception,repeat,D4000001,-,OK,0,0,0,0,0,1,0,0,7,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,seed,D4600000,-,OK,0,0,0,0,0,7,0,0,10,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,tcancel	#0
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4600001,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4600002,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4600004,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4600008,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4600010,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4400000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4200000,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D4E00000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D5600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D6600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,D0600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,DC600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,C4600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,F4600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,94600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,fixed-bit,54600000,-,UNSUPPORTED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,feature-negative,D4600000,FEAT_TME,FEATURE_UNAVAILABLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+TCANCEL_EX_exception,TCANCEL,exception,immediate-imm16-1,D4600020,-,OK,0,0,0,0,0,7,0,1,10,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,tcancel	#0x1
+TCANCEL_EX_exception,TCANCEL,exception,immediate-imm16-32767,D46FFFE0,-,OK,0,0,0,0,0,7,0,32767,10,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,tcancel	#0x7fff
+TCANCEL_EX_exception,TCANCEL,exception,immediate-imm16-65535,D47FFFE0,-,OK,0,0,0,0,0,7,0,65535,10,0,0,0,0,0,0,0,0,LL:k0:w0 imm16:k6:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0 opc:k0:w0,-,tcancel	#0xffff
+TCANCEL_EX_exception,TCANCEL,exception,repeat,D4600000,-,OK,0,0,0,0,0,7,0,0,10,0,0,0,0,0,0,0,0,-,-,-
+ADDG_64_addsub_immtags,ADDG,addsub_immtags,reserved,00000000,-,RESERVED,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,-
+BTI_HB_hints,BTI,hints,bti-c,D503245F,-,OK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,CRm:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0,-,bti	c
+BTI_HB_hints,BTI,hints,bti-j,D503249F,-,OK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,CRm:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0,-,bti	j
+BTI_HB_hints,BTI,hints,bti-jc,D50324DF,-,OK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,CRm:k0:w0 op0:k0:w0 op1:k0:w0 op2:k0:w0,-,bti	jc
+BTI_HB_hints,BTI,hints,bti-domain-1,D503243F,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,-,hint	#33
+BTI_HB_hints,BTI,hints,bti-domain-3,D503247F,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,-,hint	#35
+BTI_HB_hints,BTI,hints,bti-domain-5,D50324BF,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,-,hint	#37
+BTI_HB_hints,BTI,hints,bti-domain-7,D50324FF,-,REJECT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,-,pacm
