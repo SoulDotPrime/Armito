@@ -4,7 +4,7 @@
 
 #include "AARCH64/Includes/AARCH64CPUState.h"
 #include "AARCH64/Includes/AARCH64PointerAuth.h"
-#include "AARCH64/Includes/AARCH64MachO.h"
+#include "Formats/MachO/Includes/AARCH64MachO.h"
 #include "Decoder/AARCH64/Includes/AARCH64.h"
 #include "Decoder/Includes/Decoder.h"
 #include "Includes/IR.h"

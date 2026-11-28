@@ -8,7 +8,7 @@ import sys
 
 import integer_form_differential as differential
 
-REPORT = "Tests/Decoder/AARCH64/integer_invalid_encodings.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/integer_invalid_encodings.csv"
 REPORT_SHA256 = "550ba37f5e60486ee7ad1735403bc45d9d95c83f7d1353c6f923fcbb367e1d8f"
 
 

@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_INIT_H
 #define ARMITO_CORE_INIT_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 ArmitoCoreStatus ArmitoCoreInitPrepare(void);
 

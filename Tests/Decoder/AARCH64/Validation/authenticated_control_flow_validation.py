@@ -11,7 +11,7 @@ import sys
 import control_flow_validation as branch
 import llvm_toolchain
 
-REPORT = "Tests/Decoder/AARCH64/authenticated_control_flow_validation.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/authenticated_control_flow_validation.csv"
 REPORT_SHA256 = "acebf7ec98c12d14000310c15cc65ef86dd5ba4b2dfed38b3e9541f07ca6e982"
 FEATURES = "+pauth,+pauth-lr,+tme,+el3"
 PC = branch.PC

@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_CONFIG_H
 #define ARMITO_CORE_CONFIG_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 #define ARMITO_CORE_MAX_MODULES 64
 #define ARMITO_CORE_MAX_DEPENDENCIES 16

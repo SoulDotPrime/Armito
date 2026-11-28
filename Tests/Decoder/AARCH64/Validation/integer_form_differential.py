@@ -12,7 +12,7 @@ CATALOG = "Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json"
 LLVM_FEATURES = "+crc,+pauth,+mte,+cssc,+flagm,+pauth-lr,+cpa"
 REGISTER_FIELDS = ("Rd", "Rn", "Rm", "Ra")
 IMPLICIT_FLAG = 0x100
-REGRESSION = "Tests/Decoder/AARCH64/integer_register_baseline.csv"
+REGRESSION = "Tests/Decoder/AARCH64/Results/integer_register_baseline.csv"
 
 
 def bit_fields(form, groups, instruction_sets):

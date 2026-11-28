@@ -6,8 +6,9 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 
-CATALOG_DIR = Path(__file__).resolve().parent
-ROOT_DIR = CATALOG_DIR.parents[2]
+TOOLS_DIR = Path(__file__).resolve().parent
+ROOT_DIR = TOOLS_DIR.parents[1]
+CATALOG_DIR = ROOT_DIR / "Decoder" / "AARCH64" / "Catalog"
 CATALOG_PATH = CATALOG_DIR / "AARCH64InstructionCatalog.json"
 PATTERNS_PATH = (
     ROOT_DIR / "Tests" / "Fixtures" / "AARCH64" / "AARCH64CatalogPatterns.inc"

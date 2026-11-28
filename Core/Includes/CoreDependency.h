@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_DEPENDENCY_H
 #define ARMITO_CORE_DEPENDENCY_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 ArmitoCoreStatus ArmitoCoreDependencyInitialize(void);
 

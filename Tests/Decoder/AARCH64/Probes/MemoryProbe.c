@@ -13,7 +13,9 @@ int main(int argc, char **argv)
     char disabled[80];
     unsigned word;
     unsigned long long address;
-    int memory = argc == 2 && strcmp(argv[1], "--mem") == 0;
+    int specialized = argc == 2 && strcmp(argv[1], "--specialized") == 0;
+    int memory = specialized ||
+        (argc == 2 && strcmp(argv[1], "--mem") == 0);
 
     if (argc > 2 || (argc == 2 && !memory))
         return 1;
@@ -56,13 +58,62 @@ int main(int argc, char **argv)
                     set.memory_base_is_sp, set.memory_base_is_zero,
                     set.memory_data_is_sp, set.memory_data_is_zero,
                     (unsigned long long)set.memory_offset);
-                printf("\tMX:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u",
+                printf("\tMX:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u",
                     set.memory_element_width, set.memory_vector_width,
                     set.memory_lane, set.memory_register_count,
                     set.memory_wraparound, set.memory_nontemporal,
                     set.memory_unprivileged, set.memory_acquire,
                     set.memory_release, set.memory_exclusive,
-                    set.memory_atomic, set.memory_tagged, set.memory_phase);
+                    set.memory_atomic, set.memory_tagged, set.memory_phase,
+                    set.memory_offset_register, set.memory_offset_extend,
+                    set.memory_offset_scale,
+                    set.memory_address_expression_resolved,
+                    set.memory_static_overlap,
+                    set.memory_execution_overlap);
+                if (specialized) {
+                    uint64_t metadata[] = {
+                        set.memory_kind, set.memory_data_bank,
+                        set.memory_register_list_start,
+                        set.memory_structure_count,
+                        set.memory_interleave_factor,
+                        set.memory_replicate,
+                        set.memory_merge_inactive, set.memory_lane_valid,
+                        set.memory_predicate_register,
+                        set.memory_depends_vl, set.memory_depends_svl,
+                        set.memory_mops_stage,
+                        set.memory_mops_source_register,
+                        set.memory_mops_destination_register,
+                        set.memory_mops_length_register,
+                        set.memory_mops_reads_carry,
+                        set.memory_mops_writes_nzcv,
+                        set.memory_state_dependent_size,
+                        set.memory_min_el,
+                        set.memory_tag_granule_bytes,
+                        set.memory_tag_block_symbolic,
+                        set.memory_tag_checked,
+                        set.memory_offset_kind,
+                        set.memory_list_stride,
+                        set.memory_mops_options,
+                        set.memory_tag_zero_data,
+                        set.memory_atomic_read_result,
+                        set.memory_writeback_register_count,
+                        set.memory_total_bytes,
+                        set.memory_postindex_immediate,
+                        set.memory_base_address,
+                        set.memory_mops_destination_discarded,
+                        set.memory_mops_source_zero
+                    };
+                    unsigned metadata_index;
+                    printf("\tSM");
+                    for (metadata_index = 0;
+                         metadata_index < sizeof(metadata) / sizeof(metadata[0]);
+                         metadata_index++)
+                        printf(":%llu",
+                            (unsigned long long)metadata[metadata_index]);
+                    printf("\tALIAS:%s",
+                        set.preferred_alias != 0
+                        ? set.preferred_alias->mnemonic : "-");
+                }
             }
             for (index = 0; index < set.operand_count; index++) {
                 const AARCH64Operand *operand = &set.operands[index];

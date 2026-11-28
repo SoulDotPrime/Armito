@@ -9,7 +9,7 @@ import sys
 import integer_form_differential as differential
 
 
-REPORT = "Tests/Decoder/AARCH64/integer_alias_predicates.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/integer_alias_predicates.csv"
 REPORT_SHA256 = "e9f412f73d15c3595bb844da9dd9519da76f7fc8cdc92a057763b12cfd0babeb"
 
 

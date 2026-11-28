@@ -1,6 +1,6 @@
 #include "Includes/CoreDependency.h"
-#include "Registry/Includes/CoreRegistry.h"
-#include "Config/Includes/CoreConfig.h"
+#include "Includes/CoreRegistry.h"
+#include "Includes/CoreConfig.h"
 
 typedef struct {
     ArmitoModuleID module_id;

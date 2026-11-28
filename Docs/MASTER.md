@@ -43,7 +43,7 @@ O fluxo conceitual é:
 6.  Decoder produz uma representação intermediária universal, o
     **Universal IR**.
 7.  A representação intermediária é encaminhada ao componente de
-    tradução/execução de destino, incluindo a infraestrutura CPUToCPU.
+    tradução/execução de destino, incluindo a infraestrutura Compatibility.
 8.  O resultado é preparado para a arquitetura de destino.
 
 O Core é o orquestrador. O Decoder não deve ser chamado diretamente por
@@ -106,7 +106,7 @@ ou regras de memória como concluídos antes dessa especificação.
 O Decoder deve conhecer as regras necessárias para interpretar a
 arquitetura de origem. A tradução para uma arquitetura de destino deve
 pertencer aos componentes responsáveis pelo backend e pela
-infraestrutura CPUToCPU.
+infraestrutura Compatibility.
 
 ### 2.4 Orquestração centralizada
 
@@ -176,7 +176,7 @@ Componentes centrais:
 
 -   Decoder.
 -   Universal IR.
--   CPUToCPU.
+-   Compatibility.
 -   Adaptadores de arquitetura de origem.
 -   Backends de arquitetura de destino.
 
@@ -227,7 +227,7 @@ ArmitoBoot
  Universal IR
     |
     v
- CPUToCPU / Backend
+ Compatibility / Backend
     |
     v
  Arquitetura de destino
@@ -557,9 +557,9 @@ A lista é uma base de requisitos, não uma especificação final.
 
 ------------------------------------------------------------------------
 
-## 9. CPUToCPU e backends
+## 9. Compatibility e backends
 
-CPUToCPU faz parte da infraestrutura que conecta a representação
+Compatibility faz parte da infraestrutura que conecta a representação
 intermediária à arquitetura de destino.
 
 ### 9.1 Responsabilidade pretendida
@@ -832,10 +832,10 @@ de desenvolvimento, não funcionalidades já existentes.
 -   [ ] 08.08 --- Testes com amostras conhecidas
 -   [ ] 08.09 --- Integração do Decoder com Core
 
-### Fase 09 --- CPUToCPU e backends
+### Fase 09 --- Compatibility e backends
 
--   [ ] 09.01 --- Definir contrato Universal IR ↔ CPUToCPU
--   [ ] 09.02 --- Estruturar CPUToCPU
+-   [ ] 09.01 --- Definir contrato Universal IR ↔ Compatibility
+-   [ ] 09.02 --- Estruturar Compatibility
 -   [ ] 09.03 --- Definir interface de backend
 -   [ ] 09.04 --- Primeiro backend de destino
 -   [ ] 09.05 --- Mapeamento de registradores
@@ -871,7 +871,7 @@ de desenvolvimento, não funcionalidades já existentes.
 -   [ ] 12.02 --- Core inicializa os módulos
 -   [ ] 12.03 --- Core aciona o Decoder
 -   [ ] 12.04 --- Decoder produz Universal IR
--   [ ] 12.05 --- Universal IR é entregue ao CPUToCPU
+-   [ ] 12.05 --- Universal IR é entregue ao Compatibility
 -   [ ] 12.06 --- Backend prepara operações para o destino
 -   [ ] 12.07 --- Validar comunicação entre módulos
 -   [ ] 12.08 --- Testar ciclo completo de boot
@@ -916,7 +916,7 @@ conclusão precisa ser demonstrada por testes em cada camada.
 -   Core controla os módulos.
 -   Core aciona Decoder.
 -   Decoder produz IR.
--   CPUToCPU recebe o IR.
+-   Compatibility recebe o IR.
 -   O backend de destino processa as operações.
 -   Diagnósticos e logs funcionam nos caminhos de sucesso e falha.
 -   O ciclo completo é repetível e testado.
@@ -936,7 +936,7 @@ conclusão precisa ser demonstrada por testes em cada camada.
 7.  Core decide quando o Decoder entra em ação.
 8.  Decoder trabalha com instruções da arquitetura de origem.
 9.  Decoder entrega Universal IR, não código específico de um destino.
-10. CPUToCPU e os backends cuidam da adaptação ao destino.
+10. Compatibility e os backends cuidam da adaptação ao destino.
 11. `fail.c` é a autoridade de detecção de falhas.
 12. Core apenas instrumentaliza a apresentação e o registro das falhas.
 13. `Display.c` é o caminho de apresentação visual.

@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_SHUTDOWN_H
 #define ARMITO_CORE_SHUTDOWN_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 ArmitoCoreStatus ArmitoCoreShutdownManagerInitialize(void);
 ArmitoCoreStatus ArmitoCoreShutdownManagerRequest(void);

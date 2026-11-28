@@ -6,8 +6,8 @@ import json
 import sys
 
 CATALOG = "Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json"
-SOURCE = "Tests/Decoder/AARCH64/integer_alias_predicates.csv"
-REPORT = "Tests/Decoder/AARCH64/integer_alias_coverage.csv"
+SOURCE = "Tests/Decoder/AARCH64/Results/integer_alias_predicates.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/integer_alias_coverage.csv"
 REPORT_SHA256 = "05e1d7d7df3dde2c8aa1542d5a46a9e93ae0b62b9cee2b94a73b63d4bd0e5433"
 
 

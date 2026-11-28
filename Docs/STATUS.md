@@ -351,7 +351,7 @@ continuam marcados como não suportados pela tradução. As formas LDRAA/LDRAB
 pre-index com writeback permanecem não reconhecidas. A suíte Decoder passou
 224 verificações host; ARM64E passou 514 verificações e CPU State 58.
 Os testes host estão organizados em `Tests/Core/`, `Tests/IR/`,
-`Tests/Decoder/` e `Tests/CPU/AARCH64/`; os fixtures ficam em
+`Tests/Decoder/` e `Tests/Architecture/AARCH64/`; os fixtures ficam em
 `Tests/Fixtures/AARCH64/`.
 `Tests/` deixou de ser ignorado para permitir versionar os testes; as regras
 de `Docs/FIRMWARE/` e `Docs/AUDI/` permanecem. A execução em firmware UEFI
@@ -364,7 +364,7 @@ camadas restantes.
 
 ## 5.1 Estado arquitetural da CPU AArch64
 
-O módulo `CPU/AARCH64/AARCH64CPUState` armazena X0-X30, SP, PC, NZCV, FPCR,
+O módulo `Architecture/AARCH64/AARCH64CPUState` armazena X0-X30, SP, PC, NZCV, FPCR,
 FPSR, V0-V31, estado de exceção e as chaves PAC IA, IB, DA, DB e GA. As
 vistas Wn/WSP limitam escritas a 32 bits e zero-estendem; XZR/WZR leem zero
 e descartam escritas. Vetores são armazenados em 128 bits; escrita de 64
@@ -435,7 +435,7 @@ externa. Naquele estado, `make test` não pôde iniciar porque
 `Tests/Core/CoreTest.c` e `Tests/IR/IRTest.c` estavam ausentes; os arquivos
 foram restaurados depois, e a suíte completa passou conforme Seção 5.4. Para
 repetir a comparação da fonte, use
-`python3 Decoder/AARCH64/Catalog/catalog_tool.py check --source <Instructions.json>`.
+`python3 Tools/Catalog/catalog_tool.py check --source <Instructions.json>`.
 
 Na Fase 1 o build EDK2 não foi reexecutado porque INF/DSC não haviam mudado
 e as fixtures eram host-only. A validação EDK2 da Fase 2 está registrada na
@@ -572,13 +572,40 @@ Atualize a data e os estados após cada marco confirmado. Não converter
 "implementado" em "validado" sem evidência de teste.
 # Fase 3.4.1 — Memory/Load/Store convencional (2026-11-26)
 
-91/91 formas convencionais possuem extração C COMPLETE, 905 formas da família
-Load/Store permanecem especializadas e foram encaminhadas exclusivamente à
-3.4.2. O relatório possui 2.172 linhas lógicas (91 testemunhos completos,
-1.084 rejeições fixas de bits, 91 testes boundary, 905 classificados especiais
-e cabeçalho), SHA-256
-`e7893e5f0c2b6443f1df6d978ad7d31136d9a34dfadca708a4ec3fcccfa2de41`.
+94/94 formas convencionais possuem extração C COMPLETE. Das 902 restantes,
+433 foram reservadas à 3.4.2, 463 a 3.6 e 6 a 3.5/3.6. O relatório possui
+25.070 linhas (24.167 casos, 902 classificados e cabeçalho): 1.115 rejeições
+fixas por forma, imm9/imm7 exaustivos, limites imm12/imm19, registradores
+SP/ZR e 96 combinações prfop (88 PRFM e 8 sobreposições RPRFM). SHA-256
+`313b773c73ff173519effcb6513dc2abf0b53a38f6c5071bf94a632770967606`.
 Metadados incluem acesso/dado/pair, direção, writeback, SP/ZR, sinal/zero,
 literal, offset, expressão registrador e sobreposição estática/executável.
 Os 14 hashes anteriores e os invariantes 3.099/4.296/45.360/506 permanecem.
+# Fase 3.4.2 — Memory/Load/Store especializada (2026-11-27)
 
+433/433 formas especializadas possuem extração C COMPLETE (105 operações,
+8 features, 12 aliases, 18 famílias). As 469 restantes seguem encaminhadas a
+3.5/3.6. O relatório possui 47.668 linhas (47.197 casos, 469 encaminhadas e
+cabeçalho): 433 sementes COMPLETE distintas, 5.001 comparações LLVM MC 21.1.8,
+12 aliases, 6.570 flips fixos rejeitados, 429 feature-negatives rejeitados,
+imm9/imm7/imm12/imm19 exaustivos, domínios Q/size/S/op2 e literais PC-relativos.
+SHA-256 `2979f0373dbfe08c89959fdcec602dedb9c0eaaf340f93ccdd93d455d7887285`.
+Metadados: MemoryKind, banco/largura, lista estrutural, interleave/replicate,
+merge inativa, validade de lane, estágios/registradores/options MOPS, tag MTE,
+tipo de offset, bytes totais, post-index e zero-discard. Integrado ao gate
+`operand-extraction-test` no Makefile. 94 formas convencionais, 15 hashes
+históricos e invariantes 3.099/4.296/45.360/506 preservados; `make -B test`,
+`make test`, `make catalog-test` e EDK2 X64 GCC DEBUG/RELEASE EXIT 0.
+# Fase 3.4.3 — Integração Load/Store (2026-11-27)
+
+527/527 formas COMPLETE integradas ao fluxo real
+(`ArmitoDecoderDecodeInstructionWithOperands`/`AARCH64DecodeWithAddress`).
+996 formas classificadas: 94 convencionais + 433 especializadas COMPLETE,
+469 encaminhadas (18 grupos) → UNSUPPORTED. Nova API expõe operandos
+estruturados via `AARCH64OperandSet`. Campanha end-to-end
+(`integration_validation.py/.csv`, 996 casos, SHA-256
+`3fa4b4e2bbf956e67526591bd656f6defefb2f7f156d586245746e397e59b113`) integrada
+ao gate `operand-extraction-test`. Busca indexada (64 buckets), determinística,
+sem alocações dinâmicas por instrução. 15 hashes históricos e invariantes
+3.099/4.296/45.360/506 preservados; `make -B test`, `make test`,
+`make catalog-test` e EDK2 X64 GCC DEBUG/RELEASE EXIT 0. Fase 3.4 concluída.

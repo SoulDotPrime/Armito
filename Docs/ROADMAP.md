@@ -41,7 +41,7 @@ na referência; a necessidade de EL2 para HVC é metadado, não validação de
 EL corrente. As 53 formas restantes são 31 hints (incluindo alguns PAuth),
 7 barreiras, 4 PSTATE e 11 instruções de sistema; encaminhadas à futura
 3.3.3, **não iniciada**. Nenhum comportamento proprietário Apple ARM64E foi
-inferido; CPUToCPU/Apple/Mac14_3 continua sem backend. Os 12 hashes, 289.682
+inferido; Compatibility/CPU continua sem backend. Os 12 hashes, 289.682
 ocorrências históricas, 3.099 padrões, 4.296 formas, 45.360 descritores e
 a lacuna dos 506 REJECT permanecem. `make -B test`, `make test`,
 `make catalog-test`, EDK2 DEBUG/RELEASE EXIT 0.
@@ -128,7 +128,7 @@ futuras; 506 REJECT mantidos; 3.2.7 não iniciada.
 # Fase 3.2.5.2 — compatibilidade de toolchain e finalização (2026-11-26)
 
 Substituiu os gates literais de `LLVM MC 18.1.3` por uma política explícita de
-toolchains verificadas. Novo módulo `Tests/Decoder/AARCH64/llvm_toolchain.py`:
+toolchains verificadas. Novo módulo `Tests/Decoder/AARCH64/Validation/llvm_toolchain.py`:
 `LLVM_MC` seleciona o executável (padrão `llvm-mc`); `QUALIFIED` registra
 18.1.3 (referência histórica), 18.1.8 e 21.1.8; `require_qualified` rejeita
 qualquer outra versão com diagnóstico claro. A qualificação é empírica: cada
@@ -526,11 +526,42 @@ como parciais/não suportadas; não avançar para tradução semântica antes de
 fechar e medir as lacunas da extração.
 # Fase 3.4.1 — Memory/Load/Store convencionais
 
-Extração convencional concluída para 91 formas GPR, com 905 formas encaminhadas
-a 3.4.2. Cobertos escalares, literais e pares: carga/armazenamento 8/16/32/64,
+Extração convencional concluída para 94 formas, incluindo as três PRFM, com
+902 formas classificadas sem sobreposição: 433 para 3.4.2, 380 atomics/MOPS
+para 3.6, 83 exclusive/acquire-release para 3.6 e 6 PAC/GCS para 3.5/3.6.
+Cobertos escalares, literais e pares: carga/armazenamento 8/16/32/64,
 sign/zero extension, offsets imediatos, registrador, literal, pre/post-index,
-pair no-alias e PRFM excluído desta fase como especializado. Oráculo:
+pair no-alias e prefetch. Oráculo:
 `memory_operand_validation.py/.csv`, SHA-256
-`e7893e5f0c2b6443f1df6d978ad7d31136d9a34dfadca708a4ec3fcccfa2de41`.
+`313b773c73ff173519effcb6513dc2abf0b53a38f6c5071bf94a632770967606`.
 Não há MMU, TLB, execução semântica ou acessos reais; 3.4.2 não iniciada.
+# Fase 3.4.2 — Memory/Load/Store especializada
 
+Extração especializada concluída para 433 formas (105 operações, 8 features,
+12 aliases) em 18 famílias: AdvSIMD estrutural/lane
+(`asisdlse/sep/so/sop`), unprivileged/unscaled/writeback/pair/lit/regoff,
+MOPS (`memcms`), LSUI RMW (`memop_unpriv`), MTE (`ldsttags`/STGP) e prefetch
+(RPRFM/PRFUM). As 469 formas restantes seguem encaminhadas a 3.5/3.6 (PAC/GCS,
+exclusive/ordering, atomics). Oráculo: `specialized_memory_validation.py/.csv`,
+SHA-256 `2979f0373dbfe08c89959fdcec602dedb9c0eaaf340f93ccdd93d455d7887285`.
+Campanha: 47.197 casos, 5.001 comparações LLVM MC 21.1.8, 433/433 sementes
+COMPLETE distintas, 12 aliases, 6.570 flips fixos e 429 feature-negatives
+rejeitados. Metadados simbólicos cobrem banco/largura de registrador, lista
+estrutural, interleave/replicate, merge de lane inativa, validade de lane,
+estágios/registradores/options MOPS, estado de tag MTE, tipo de offset, bytes
+totais, post-index e zero-discard MOPS. 94 formas convencionais e 15 hashes
+históricos preservados. Sem MMU/TLB, execução semântica ou acessos reais;
+3.4.3/3.5/3.6 não iniciadas.
+# Fase 3.4.3 — Integração Load/Store no fluxo real
+
+As 527 formas COMPLETE (94 convencionais + 433 especializadas) foram integradas
+ao fluxo real via `ArmitoDecoderDecodeInstructionWithOperands` e
+`AARCH64DecodeWithAddress`. O fluxo recebe 32 bits, classifica candidatos no
+catálogo indexado (64 buckets por bits [31:26]), resolve máscara/valor/guards,
+verifica features, seleciona extrator, extrai e normaliza operandos, e retorna
+representação estruturada determinística. Formas encaminhadas (469, 18 grupos)
+retornam UNSUPPORTED; reservadas/inválidas retornam INVALID. Campanha
+end-to-end: `integration_validation.py/.csv`, 996 casos (527 OK + 469
+UNSUPPORTED), SHA-256 `3fa4b4e2…`. 15 hashes históricos e invariantes
+3.099/4.296/45.360/506 preservados. Sem MMU/TLB, execução semântica ou acessos
+reais; 3.5/3.6 não iniciadas.

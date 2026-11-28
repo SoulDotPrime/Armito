@@ -27,7 +27,7 @@ Preservados os 12 relatórios anteriores, 289.682 ocorrências, 3.099/
 4.296/45.360 e 506 REJECT. Testes sequenciais e builds EDK2 X64 GCC
 DEBUG/RELEASE EXIT 0. O teste valida instruções públicas Arm, não PAC
 proprietário Apple ARM64E ou execução nativa Mac14_3; o provider de
-PointerAuth é `compatibility_only` e CPUToCPU/Apple/Mac14_3 está vazio.
+PointerAuth é `compatibility_only` e Compatibility/CPU está vazio.
 
 # Compatibilidade de desvios — 3.3.1 (2026-11-26)
 
@@ -97,7 +97,7 @@ mantidos. Reprodução: `make test`.
 # Compatibilidade de toolchain LLVM — 3.2.5.2 (2026-11-26)
 
 Os gates literais `LLVM MC 18.1.3` foram substituídos por política explícita de
-toolchains verificadas em `Tests/Decoder/AARCH64/llvm_toolchain.py`. Seleção do
+toolchains verificadas em `Tests/Decoder/AARCH64/Validation/llvm_toolchain.py`. Seleção do
 executável por `LLVM_MC` (padrão `llvm-mc`); registro `QUALIFIED` com 18.1.3
 (referência histórica), 18.1.8 e 21.1.8; `require_qualified` rejeita outras
 versões com diagnóstico claro. Qualificação empírica por reprodução integral de
@@ -234,7 +234,7 @@ SHA-256 (caminhos relativos à raiz, salvo o pacote Arm em `Build/`):
 | `Tests/Decoder/AARCH64/integer_immediate_differential.py` | `700c201cdfe96c896849749b5dc1d1084790f782db9ce0cea79ddd3e39b8c9fc` |
 | `Tests/Decoder/AARCH64/integer_immediate_rejection_audit.py` | `16293dbf457e451b699c13c3887b98629f7ca539fb63e1731f1071ddb2d0b255` |
 | `Tests/Decoder/AARCH64/integer_form_differential.py` | `f6d0cb8bb89b6ee0db73147ef72185646ea46a9e882ee652347ffcfb7999e008` |
-| `Tests/Decoder/AARCH64/IntegerFormProbe.c` | `cc691b29faec94bcc86184490f98abb99e021fd5f69a90ded9488d210e60488c` |
+| `Tests/Decoder/AARCH64/Probes/IntegerFormProbe.c` | `cc691b29faec94bcc86184490f98abb99e021fd5f69a90ded9488d210e60488c` |
 | `Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json` | `5ef585e94947a0e112b248f067b0b2165670f67473e2e3ca795abfbe9f04b6a1` |
 | `Build/arm-isa-2025-12.tar.gz` (local, não versionado) | `845ed227a6692ddb6b602da2ecbbac776620195a9c001ec576ced3a9a53dc26b` |
 
@@ -518,9 +518,29 @@ Nunca se deve emitir código aproximado sem preservar a semântica.
 Atualize esta matriz somente com base em testes reproduzíveis.
 # Fase 3.4.1
 
-91 formas convencionais GPR foram validadas independentemente com LLVM MC
-21.1.8 e sementes distintivas: 91 seeds, 91 boundary-zero e 1.084 flips fixos
-rejeitados pela forma. 905 formas foram classificadas como especializadas e não
-constituem cobertura da fase; LSUI/MTE e variantes não-GPR/feature-gated ficam
-para 3.4.2. 3.099 padrões, 4.296 formas e 45.360 descritores preservados.
+94 formas convencionais foram validadas com LLVM MC 21.1.8 e sementes
+distintivas, incluindo PRFM imediato, registrador e literal. A campanha contém
+24.167 casos: 23.044 COMPLETE, 1.115 flips rejeitados pela forma e 8 palavras
+PRFM reconhecidas como RPRFM. As 902 restantes estão classificadas como 433
+para 3.4.2, 380 atomics/MOPS para 3.6, 83 exclusive/ordering para 3.6 e 6
+PAC/GCS para 3.5/3.6. SHA-256 `313b773c…`; 3.099 padrões, 4.296 formas e
+45.360 descritores preservados.
+# Fase 3.4.2
 
+433 formas especializadas foram validadas com LLVM MC 21.1.8 e 433 sementes
+distintas (105 operações, 8 features, 12 aliases, 18 famílias). A campanha
+contém 47.197 casos: 433 sementes COMPLETE, 5.001 comparações LLVM, 6.570 flips
+fixos rejeitados pela forma, 429 feature-negatives rejeitados, domínios
+Q/size/S/op2, imm9/imm7/imm12/imm19 exaustivos e literais PC-relativos. As 469
+restantes seguem encaminhadas a 3.5/3.6 (PAC/GCS, exclusive/ordering, atomics).
+SHA-256 `2979f0…`; 94 formas convencionais, 15 hashes históricos e invariantes
+3.099/4.296/45.360/506 preservados. Sem MMU/TLB, execução semântica ou acessos
+reais.
+# Fase 3.4.3
+
+527 formas COMPLETE integradas ao fluxo real do Decoder via
+`ArmitoDecoderDecodeInstructionWithOperands`. 996 formas classificadas
+(527 COMPLETE, 469 encaminhadas a 3.5/3.6). Campanha end-to-end: 996 casos,
+SHA-256 `3fa4b4e2…`; 15 hashes históricos e invariantes
+3.099/4.296/45.360/506 preservados. Busca indexada determinística. Sem MMU/TLB,
+execução semântica ou acessos reais. Compatibilidade Apple M2 não declarada.

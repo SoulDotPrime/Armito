@@ -91,6 +91,20 @@ typedef enum {
 #define AARCH64_OPERAND_FLAG_ENCODING_SELECTOR 0x80u
 #define AARCH64_OPERAND_FLAG_IMPLICIT_REGISTER 0x100u
 
+typedef enum {
+    AARCH64_MEMORY_KIND_NONE = 0,
+    AARCH64_MEMORY_KIND_FP_SCALAR,
+    AARCH64_MEMORY_KIND_ADVSIMD_STRUCTURE,
+    AARCH64_MEMORY_KIND_ADVSIMD_LANE,
+    AARCH64_MEMORY_KIND_ADVSIMD_REPLICATE,
+    AARCH64_MEMORY_KIND_UNPRIVILEGED,
+    AARCH64_MEMORY_KIND_MOPS_COPY,
+    AARCH64_MEMORY_KIND_MOPS_SET,
+    AARCH64_MEMORY_KIND_MTE_TAG,
+    AARCH64_MEMORY_KIND_ATOMIC_RMW,
+    AARCH64_MEMORY_KIND_PREFETCH
+} AARCH64MemoryKind;
+
 typedef struct {
     const char *name;
     uint64_t raw_value;
@@ -188,6 +202,38 @@ typedef struct {
     uint8_t memory_atomic;
     uint8_t memory_tagged;
     uint8_t memory_phase;
+    uint8_t memory_kind;
+    uint8_t memory_data_bank;
+    uint8_t memory_register_list_start;
+    uint8_t memory_structure_count;
+    uint8_t memory_interleave_factor;
+    uint8_t memory_replicate;
+    uint8_t memory_merge_inactive;
+    uint8_t memory_lane_valid;
+    uint8_t memory_predicate_register;
+    uint8_t memory_depends_vl;
+    uint8_t memory_depends_svl;
+    uint8_t memory_mops_stage;
+    uint8_t memory_mops_source_register;
+    uint8_t memory_mops_destination_register;
+    uint8_t memory_mops_length_register;
+    uint8_t memory_mops_reads_carry;
+    uint8_t memory_mops_writes_nzcv;
+    uint8_t memory_state_dependent_size;
+    uint8_t memory_min_el;
+    uint8_t memory_tag_granule_bytes;
+    uint8_t memory_tag_block_symbolic;
+    uint8_t memory_tag_checked;
+    uint8_t memory_offset_kind;
+    uint8_t memory_list_stride;
+    uint8_t memory_mops_options;
+    uint8_t memory_tag_zero_data;
+    uint8_t memory_atomic_read_result;
+    uint8_t memory_writeback_register_count;
+    uint16_t memory_total_bytes;
+    uint16_t memory_postindex_immediate;
+    uint8_t memory_mops_destination_discarded;
+    uint8_t memory_mops_source_zero;
     AARCH64Operand operands[AARCH64_OPERANDS_MAX_COUNT];
 } AARCH64OperandSet;
 

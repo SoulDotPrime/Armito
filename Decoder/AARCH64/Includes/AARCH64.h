@@ -5,6 +5,7 @@
 #include "Decoder/Includes/DecoderRegister.h"
 #include "Includes/IRTypes.h"
 #include "Includes/IROperation.h"
+#include "AARCH64Operands.h"
 
 #define AARCH64_MASK_OP0      0x1F000000u
 #define AARCH64_SHIFT_OP0     25u
@@ -376,6 +377,7 @@ typedef struct {
     int64_t immediate;
     uint64_t branch_target;
     uint32_t encoding;
+    AARCH64OperandSet *operands;
 } AARCH64Instruction;
 
 /* classifica sozinho: nunca depende de estado global */
@@ -384,6 +386,11 @@ ArmitoDecoderStatus AARCH64Classify(uint32_t encoding, AARCH64Opcode *opcode);
 ArmitoDecoderStatus AARCH64ClassifyMnemonic(uint32_t encoding, const char **mnemonic);
 ArmitoDecoderStatus AARCH64ClassifyGeneric(uint32_t encoding, AARCH64Opcode *opcode);
 ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruction);
+ArmitoDecoderStatus AARCH64DecodeWithAddress(
+    uint32_t encoding,
+    uint64_t address,
+    AARCH64Instruction *instruction
+);
 ArmitoDecoderStatus AARCH64ToIR(
     const AARCH64Instruction *instruction,
     uint64_t address,

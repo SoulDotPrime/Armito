@@ -63,7 +63,7 @@ The decoder tests cover classification, operand extraction, source bounds,
 unsupported-instruction recording, branch stopping, and the return IR
 operation. The decoder is not a complete AArch64/ARM64E implementation.
 ARM64E subtype and Mach-O slice identification are provided by
-`CPU/AARCH64/AARCH64MachO`; this is not a Mach-O loader.
+`Formats/MachO/AARCH64MachO`; this is not a Mach-O loader.
 
 The EDK2 X64 DEBUG and RELEASE builds were validated with GCC in an isolated
 workspace; both produced a PE32+ EFI application. This verifies compilation

@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_TOPOLOGY_H
 #define ARMITO_CORE_TOPOLOGY_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 #define ARMITO_TOPOLOGY_MAX_MODULES 64
 

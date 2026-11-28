@@ -12,7 +12,7 @@ import sys
 import llvm_toolchain
 
 CATALOG = "Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json"
-REPORT = "Tests/Decoder/AARCH64/control_flow_validation.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/control_flow_validation.csv"
 REPORT_SHA256 = "edddbdeab51b3491df3189d94445dbd19254a8e8e9443765adf0a1a61db4a4ff"
 PC = 0x1000000000004000
 MASK64 = (1 << 64) - 1

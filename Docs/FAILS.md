@@ -22,7 +22,7 @@ RETAA/RETAB são válidas e explícitas. EL corrente, routing/ESR, síndrome,
 permissões de exceção e efeitos de CPUState dependem de estado dinâmico que
 o perfil do catálogo não traz; EL2/EL3 e mínimo EL1 são requisitos
 descritivos, não autorização de execução. PAC de hardware Apple, convenções
-ARM64E não publicadas e tradução CPUToCPU/Apple/Mac14_3 não foram validadas.
+ARM64E não publicadas e tradução Compatibility/CPU não foram validadas.
 53 formas de hints/barreiras/PSTATE/sistema seguem para a futura 3.3.3,
 sem iniciar a fase. A lacuna histórica de 506 REJECT permanece.
 
@@ -455,8 +455,23 @@ parciais; GPR sem largura, campos de sistema raw e operandos vetoriais
 requerem interpretação arquitetural adicional. A Fase 3 permanece aberta.
 # Fase 3.4.1
 
-Nenhuma divergência real injustificada ficou aberta nas 91 formas convencionais.
+Nenhuma divergência real injustificada ficou aberta nas 94 formas convencionais.
 A divergência de `LDRSW` literal (destino 32 em vez de 64) foi corrigida no
-runtime. 905 formas Load/Store são lacunas explícitas da 3.4.2, não falhas da
-3.4.1. Execução semântica de memória, MMU/TLB e acessos reais continuam fora.
+runtime. Oito valores de `prfop` pertencem à forma RPRFM, não são PRFM inválido.
+902 formas ficam explicitamente fora: 433 na 3.4.2 e 469 em 3.5/3.6. Execução
+semântica de memória, MMU/TLB e acessos reais continuam fora.
+# Fase 3.4.2
 
+Nenhuma divergência real injustificada ficou aberta nas 433 formas
+especializadas. Correções: `Rm` em `ldst_regoff` usa bit 13 (option&1) para
+largura 64; `imm9` com sinal em `ldst_unpriv`; validações independentes para
+non-temporal/overlap MOPS, deslocamentos imm9/imm7/imm12/imm19, literal
+PC-relativa, largura/índice de `Rm` e writeback de pares. 469 formas ficam
+explicitamente fora (3.5/3.6). Execução semântica de memória, MMU/TLB e acessos
+reais continuam fora; 3.4.3/3.5/3.6 não iniciadas.
+# Fase 3.4.3
+
+Nenhuma regressão introduzida. As 527 formas COMPLETE são decodificadas
+corretamente pelo fluxo real; 469 encaminhadas retornam UNSUPPORTED sem
+confusão com COMPLETE. Limitações: IR/semântica Load/Store não emitida (futura
+fase de tradução), MMU/TLB e acessos reais fora, 3.5/3.6 não iniciadas.

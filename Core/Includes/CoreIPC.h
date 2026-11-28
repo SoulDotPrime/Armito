@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_IPC_H
 #define ARMITO_CORE_IPC_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 #define ARMITO_IPC_MAX_MESSAGES 64
 #define ARMITO_IPC_MAX_PAYLOAD 256

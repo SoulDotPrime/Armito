@@ -1,7 +1,109 @@
 #include "Includes/AARCH64.h"
 
+#include <string.h>
+
 #include "Catalog/AARCH64Catalog.h"
 #include "Includes/IR.h"
+
+static AARCH64CatalogGuestProfile AARCH64DecodeProfile;
+static uint8_t AARCH64DecodeProfileReady;
+
+static void AARCH64DecodeProfileEnsure(void)
+{
+    uint32_t feature;
+
+    if (AARCH64DecodeProfileReady)
+        return;
+
+    AARCH64CatalogGuestProfileInitialize(
+        &AARCH64DecodeProfile, AARCH64_CATALOG_ABI_AARCH64
+    );
+
+    for (feature = 0; feature < AARCH64CatalogFeatureCount(); feature++) {
+        AARCH64CatalogGuestProfileSetFeature(
+            &AARCH64DecodeProfile,
+            AARCH64CatalogFeatureName(feature),
+            1u
+        );
+    }
+
+    AARCH64DecodeProfileReady = 1;
+}
+
+static uint8_t AARCH64FormIsForwarded(const AARCH64CatalogForm *form)
+{
+    static const char *const forwarded[] = {
+        "ldstexclr", "ldstexclp", "ldstexclr_unpriv", "ldstord",
+        "comswap", "comswappr", "comswap_unpriv", "comswappr_unpriv",
+        "memop", "memop_128", "rcwcomswap", "rcwcomswappr",
+        "ldst_pac", "ldst_gcs", "ldapstl_unscaled", "ldapstl_simd",
+        "ldapstl_writeback", "ldiappstilp"
+    };
+    const AARCH64CatalogGroup *group;
+    uint32_t index;
+
+    if (form->family != AARCH64_CATALOG_FAMILY_LOAD_STORE ||
+        form->group_count == 0)
+        return 0;
+
+    group = AARCH64CatalogGetGroup(
+        form->group_indices[form->group_count - 1u]
+    );
+
+    if (group == NULL || group->name == NULL)
+        return 0;
+
+    for (index = 0;
+         index < sizeof(forwarded) / sizeof(forwarded[0]);
+         index++) {
+        if (strcmp(group->name, forwarded[index]) == 0)
+            return 1;
+    }
+
+    return 0;
+}
+
+static ArmitoDecoderStatus AARCH64DecodeLoadStore(
+    uint32_t encoding,
+    uint64_t address,
+    AARCH64Instruction *instruction
+)
+{
+    AARCH64CatalogMatch match;
+    AARCH64CatalogResult result;
+    AARCH64OperandExtractionStatus extraction;
+
+    AARCH64DecodeProfileEnsure();
+
+    result = AARCH64CatalogLookupWithProfile(
+        encoding, &AARCH64DecodeProfile, &match
+    );
+
+    if (result == AARCH64_CATALOG_RESERVED_PATTERN ||
+        result == AARCH64_CATALOG_INVALID_ENCODING ||
+        result == AARCH64_CATALOG_AMBIGUOUS)
+        return ARMITO_DECODER_INVALID_INSTRUCTION;
+
+    if (result != AARCH64_CATALOG_VALID_ENCODING ||
+        match.form == NULL)
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+
+    if (match.form->family != AARCH64_CATALOG_FAMILY_LOAD_STORE)
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+
+    if (AARCH64FormIsForwarded(match.form))
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+
+    extraction = AARCH64OperandsExtractWithProfile(
+        &match, result, encoding, address, &AARCH64DecodeProfile,
+        instruction->operands
+    );
+
+    if (extraction != AARCH64_OPERAND_EXTRACTION_COMPLETE)
+        return ARMITO_DECODER_UNSUPPORTED_INSTRUCTION;
+
+    return ARMITO_DECODER_SUCCESS;
+}
 
 static int64_t AARCH64SignExtend(uint32_t value, uint8_t width)
 {
@@ -262,7 +364,11 @@ ArmitoDecoderStatus AARCH64ClassifyMnemonic(uint32_t encoding, const char **mnem
     return ARMITO_DECODER_SUCCESS;
 }
 
-ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruction)
+ArmitoDecoderStatus AARCH64DecodeWithAddress(
+    uint32_t encoding,
+    uint64_t address,
+    AARCH64Instruction *instruction
+)
 {
     AARCH64Opcode opcode;
     ArmitoDecoderStatus status;
@@ -274,8 +380,11 @@ ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruc
         return ARMITO_DECODER_INVALID_ARGUMENT;
 
     status = AARCH64Classify(encoding, &opcode);
-    if (status != ARMITO_DECODER_SUCCESS)
+    if (status != ARMITO_DECODER_SUCCESS) {
+        if (opcode == AARCH64_OPCODE_CATALOG_ONLY)
+            return AARCH64DecodeLoadStore(encoding, address, instruction);
         return status;
+    }
 
     instruction->opcode = opcode;
     instruction->width_bits = 64;
@@ -566,6 +675,13 @@ ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruc
     }
 
     return ARMITO_DECODER_INVALID_INSTRUCTION;
+}
+
+ArmitoDecoderStatus AARCH64Decode(uint32_t encoding, AARCH64Instruction *instruction)
+{
+    if (instruction != NULL)
+        instruction->operands = NULL;
+    return AARCH64DecodeWithAddress(encoding, 0u, instruction);
 }
 
 static ArmitoIRStatus AARCH64IRGetRegisterValue(

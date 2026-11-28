@@ -9,7 +9,7 @@ import integer_form_differential as differential
 import integer_implicit_operands as implicit
 import integer_alias_predicates as aliasmod
 
-REPORT = "Tests/Decoder/AARCH64/integer_comprehensive_validation.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/integer_comprehensive_validation.csv"
 REPORT_SHA256 = "3f24c847e36c8df3cfa51db23146c11bcb903dbb6414afccedb21e06fcec2b49"
 
 

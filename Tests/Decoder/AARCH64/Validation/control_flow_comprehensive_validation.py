@@ -12,7 +12,7 @@ import authenticated_control_flow_validation as authenticated
 import control_flow_validation as conventional
 import llvm_toolchain
 
-REPORT = "Tests/Decoder/AARCH64/control_flow_comprehensive_validation.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/control_flow_comprehensive_validation.csv"
 REPORT_SHA256 = "5a96fa23d0351af1660a1ffe46f2c0b0959368296882da5286503568c72dd62e"
 PINNED = {
     "integer_register_baseline.csv": "739a129672c95570dddc8b256f2dc9bf9dae2957b470fa8c531130e3f2534015",
@@ -38,7 +38,7 @@ FEATURES = "+cmpbr,+hbc,+pauth,+pauth-lr,+tme,+el3"
 
 
 def verify_pinned():
-    root = "Tests/Decoder/AARCH64/"
+    root = "Tests/Decoder/AARCH64/Results/"
     for name, expected in PINNED.items():
         digest = hashlib.sha256()
         with open(root + name, "rb") as stream:

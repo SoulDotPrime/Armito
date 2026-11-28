@@ -1,22 +1,22 @@
 CC      ?= gcc
 CFLAGS  ?= -std=gnu11 -Wall -Wextra -O2
-CPPFLAGS ?= -ICore -IIR -IDecoder -ICPU -ITests -I.
+CPPFLAGS ?= -ICore -IIR -IDecoder -IArchitecture -IFormats/MachO -ITests -I.
 
 CORE_SRC := \
     Core/Core.c \
-    Core/Config/CoreConfig.c \
-    Core/Config/CoreConfigValidation.c \
-    Core/Registry/CoreRegistry.c \
-    Core/Dependency/CoreDependency.c \
-    Core/Init/CoreInit.c \
-    Core/Diagnostics/CoreDiagnostics.c \
-    Core/Dispatch/CoreDispatch.c \
-    Core/Monitor/CoreMonitor.c \
-    Core/Topology/CoreTopology.c \
-    Core/Scheduler/CoreScheduler.c \
-    Core/IPC/CoreIPC.c \
-    Core/Memory/CoreMemory.c \
-    Core/Shutdown/CoreShutdown.c
+    Core/CoreConfig.c \
+    Core/CoreConfigValidation.c \
+    Core/CoreRegistry.c \
+    Core/CoreDependency.c \
+    Core/CoreInit.c \
+    Core/CoreDiagnostics.c \
+    Core/CoreDispatch.c \
+    Core/CoreMonitor.c \
+    Core/CoreTopology.c \
+    Core/CoreScheduler.c \
+    Core/CoreIPC.c \
+    Core/CoreMemory.c \
+    Core/CoreShutdown.c
 
 IR_SRC := \
     IR/IR.c \
@@ -35,10 +35,10 @@ DECODER_SRC := \
     Decoder/AARCH64/Operands/AARCH64Operands.c \
     Decoder/AARCH64/AARCH64.c
 
-AARCH64_CPU_STATE_SRC := CPU/AARCH64/AARCH64CPUState.c
+AARCH64_CPU_STATE_SRC := Architecture/AARCH64/AARCH64CPUState.c
 AARCH64_ARM64E_SRC := \
-    CPU/AARCH64/AARCH64PointerAuth.c \
-    CPU/AARCH64/AARCH64MachO.c
+    Architecture/AARCH64/AARCH64PointerAuth.c \
+    Formats/MachO/AARCH64MachO.c
 
 HOST_BUILD_DIR := Build/Host
 
@@ -58,25 +58,28 @@ AARCH64_CATALOG_INDEX_TEST := $(HOST_BUILD_DIR)/aarch64catalogindextest
 AARCH64_CATALOG_REFERENCE_TEST := $(HOST_BUILD_DIR)/aarch64catalogreferencetest
 AARCH64_OPERANDS_TEST := $(HOST_BUILD_DIR)/aarch64operandstest
 INTEGER_OPERANDS_REFERENCE := $(HOST_BUILD_DIR)/aarch64integerreference
-INTEGER_OPERANDS_REFERENCE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/IntegerOperandReferenceTest.o
+INTEGER_OPERANDS_REFERENCE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/Unit/IntegerOperandReferenceTest.o
 INTEGER_FORM_PROBE := $(HOST_BUILD_DIR)/aarch64integerformprobe
-INTEGER_FORM_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/IntegerFormProbe.o
+INTEGER_FORM_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/Probes/IntegerFormProbe.o
 CONTROL_FLOW_PROBE := $(HOST_BUILD_DIR)/aarch64controlflowprobe
-CONTROL_FLOW_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/ControlFlowProbe.o
+CONTROL_FLOW_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/Probes/ControlFlowProbe.o
 MEMORY_PROBE := $(HOST_BUILD_DIR)/aarch64memoryprobe
-MEMORY_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/MemoryProbe.o
+MEMORY_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/Probes/MemoryProbe.o
+INTEGRATION_PROBE := $(HOST_BUILD_DIR)/aarch64integrationprobe
+INTEGRATION_PROBE_OBJ := $(HOST_BUILD_DIR)/Tests/Decoder/AARCH64/Probes/IntegrationProbe.o
 AARCH64_CATALOG_DIR := Decoder/AARCH64/Catalog
+TOOLS_CATALOG_DIR := Tools/Catalog
 AARCH64_TEST_DIR := Tests/Decoder/AARCH64
 AARCH64_FIXTURE_DIR := Tests/Fixtures/AARCH64
 CORE_TEST_SRC := Tests/Core/CoreTest.c
 IR_TEST_SRC := Tests/IR/IRTest.c
 DECODER_TEST_SRC := Tests/Decoder/DecoderTest.c
-AARCH64_CPU_STATE_TEST_SRC := Tests/CPU/AARCH64/CPUStateHostTest.c
-ARM64E_TEST_SRC := Tests/CPU/AARCH64/ARM64EHostTest.c
-AARCH64_CATALOG_TEST_SRC := $(AARCH64_TEST_DIR)/CatalogCoverageTest.c
-AARCH64_CATALOG_INDEX_TEST_SRC := $(AARCH64_TEST_DIR)/CatalogIndexTest.c
-AARCH64_CATALOG_REFERENCE_TEST_SRC := $(AARCH64_TEST_DIR)/CatalogReferenceTest.c
-AARCH64_OPERANDS_TEST_SRC := $(AARCH64_TEST_DIR)/OperandExtractionTest.c
+AARCH64_CPU_STATE_TEST_SRC := Tests/Architecture/AARCH64/CPUStateHostTest.c
+ARM64E_TEST_SRC := Tests/Architecture/AARCH64/ARM64EHostTest.c
+AARCH64_CATALOG_TEST_SRC := $(AARCH64_TEST_DIR)/Unit/CatalogCoverageTest.c
+AARCH64_CATALOG_INDEX_TEST_SRC := $(AARCH64_TEST_DIR)/Unit/CatalogIndexTest.c
+AARCH64_CATALOG_REFERENCE_TEST_SRC := $(AARCH64_TEST_DIR)/Unit/CatalogReferenceTest.c
+AARCH64_OPERANDS_TEST_SRC := $(AARCH64_TEST_DIR)/Unit/OperandExtractionTest.c
 
 HOST_TEST_SRC := \
     $(CORE_TEST_SRC) \
@@ -147,6 +150,9 @@ $(CONTROL_FLOW_PROBE): $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.
 $(MEMORY_PROBE): $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o $(MEMORY_PROBE_OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(MEMORY_PROBE_OBJ) $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o $(HOST_BUILD_DIR)/Decoder/AARCH64/Operands/AARCH64Operands.o -o $@
 
+$(INTEGRATION_PROBE): $(DECODER_OBJ) $(IR_OBJ) $(INTEGRATION_PROBE_OBJ)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(INTEGRATION_PROBE_OBJ) $(DECODER_OBJ) $(IR_OBJ) -o $@
+
 $(HOST_BUILD_DIR)/Decoder/AARCH64/Catalog/AARCH64Catalog.o: Decoder/AARCH64/Catalog/AARCH64Catalog.h Decoder/AARCH64/Catalog/AARCH64CatalogData.inc
 $(HOST_BUILD_DIR)/Decoder/AARCH64/AARCH64.o: Decoder/AARCH64/Catalog/AARCH64Catalog.h
 
@@ -172,13 +178,13 @@ arm64e-test: $(ARM64E_TEST)
 	./$(ARM64E_TEST)
 
 catalog-structure-test:
-	python3 $(AARCH64_CATALOG_DIR)/catalog_tool.py validate
+	python3 $(TOOLS_CATALOG_DIR)/catalog_tool.py validate
 
 catalog-index-test: $(AARCH64_CATALOG_INDEX_TEST)
 	./$(AARCH64_CATALOG_INDEX_TEST)
 
 catalog-differential-test: $(AARCH64_CATALOG_REFERENCE_TEST)
-	python3 $(AARCH64_TEST_DIR)/catalog_llvm_differential.py ./$(AARCH64_CATALOG_REFERENCE_TEST)
+	python3 $(AARCH64_TEST_DIR)/Validation/catalog_llvm_differential.py ./$(AARCH64_CATALOG_REFERENCE_TEST)
 
 catalog-coverage-test: $(AARCH64_CATALOG_TEST)
 	./$(AARCH64_CATALOG_TEST)
@@ -186,24 +192,25 @@ catalog-coverage-test: $(AARCH64_CATALOG_TEST)
 catalog-test: catalog-structure-test catalog-coverage-test catalog-index-test \
 	catalog-differential-test
 
-operand-extraction-test: $(AARCH64_OPERANDS_TEST) $(INTEGER_OPERANDS_REFERENCE) $(INTEGER_FORM_PROBE) $(CONTROL_FLOW_PROBE) $(MEMORY_PROBE)
+operand-extraction-test: $(AARCH64_OPERANDS_TEST) $(INTEGER_OPERANDS_REFERENCE) $(INTEGER_FORM_PROBE) $(CONTROL_FLOW_PROBE) $(MEMORY_PROBE) $(INTEGRATION_PROBE)
 	./$(AARCH64_OPERANDS_TEST)
-	python3 $(AARCH64_TEST_DIR)/integer_operand_llvm_differential.py ./$(INTEGER_OPERANDS_REFERENCE)
-	python3 $(AARCH64_TEST_DIR)/integer_form_differential.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_immediate_differential.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_immediate_rejection_audit.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/bitmask_exhaustive.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_condition_audit.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_alias_predicates.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_alias_coverage.py
-	python3 $(AARCH64_TEST_DIR)/integer_implicit_operands.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_invalid_encodings.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/integer_comprehensive_validation.py ./$(INTEGER_FORM_PROBE)
-	python3 $(AARCH64_TEST_DIR)/control_flow_validation.py ./$(CONTROL_FLOW_PROBE)
-	python3 $(AARCH64_TEST_DIR)/authenticated_control_flow_validation.py ./$(CONTROL_FLOW_PROBE)
-	python3 $(AARCH64_TEST_DIR)/control_flow_comprehensive_validation.py ./$(CONTROL_FLOW_PROBE)
-	python3 $(AARCH64_TEST_DIR)/memory_operand_validation.py ./$(MEMORY_PROBE)
-	python3 $(AARCH64_TEST_DIR)/specialized_memory_validation.py ./$(MEMORY_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_operand_llvm_differential.py ./$(INTEGER_OPERANDS_REFERENCE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_form_differential.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_immediate_differential.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_immediate_rejection_audit.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/bitmask_exhaustive.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_condition_audit.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_alias_predicates.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_alias_coverage.py
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_implicit_operands.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_invalid_encodings.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integer_comprehensive_validation.py ./$(INTEGER_FORM_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/control_flow_validation.py ./$(CONTROL_FLOW_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/authenticated_control_flow_validation.py ./$(CONTROL_FLOW_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/control_flow_comprehensive_validation.py ./$(CONTROL_FLOW_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/memory_operand_validation.py ./$(MEMORY_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/specialized_memory_validation.py ./$(MEMORY_PROBE)
+	python3 $(AARCH64_TEST_DIR)/Validation/integration_validation.py ./$(INTEGRATION_PROBE)
 
 test: $(CORE_TEST) $(IR_TEST) $(DECODER_TEST) $(AARCH64_CPU_STATE_TEST) $(ARM64E_TEST) catalog-test operand-extraction-test
 	./$(CORE_TEST)

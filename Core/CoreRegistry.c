@@ -1,5 +1,5 @@
 #include "Includes/CoreRegistry.h"
-#include "Config/Includes/CoreConfig.h"
+#include "Includes/CoreConfig.h"
 
 typedef struct {
     ArmitoModuleDescriptor descriptor;

@@ -85,7 +85,7 @@ bloqueio de configuração, validação de configuração.
    `memcpy` (incompatível com freestanding) — Fase 03.
 3. Scheduler sem liberação de slot — Fase 03.
 4. `Armito.inf` não inclui `Core/` — a integração EDK2 é Fase 04.
-5. `Decoder/`, `IR/` e `CPUToCPU/` são pastas vazias — Fases 07–09.
+5. `Decoder/`, `IR/` e `Compatibility/` são pastas vazias — Fases 07–09.
 
 ---
 
@@ -97,7 +97,7 @@ definida pelo responsável do projeto:
 ```
 Decoder/            decodificador (AArch64 Apple)
 IR/                 Universal Intermediate Representation
-CPUToCPU/AMD/FX/8320E/   backend de destino
+Compatibility/CPU/   backend de destino
 ```
 
 Direção: **Mac mini M2 (ARM64 Apple) → FX-8320E (x86_64)**.

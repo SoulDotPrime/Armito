@@ -2,10 +2,10 @@
 #include <stdint.h>
 
 #include "Includes/Core.h"
-#include "Config/Includes/CoreConfig.h"
-#include "Init/Includes/CoreInit.h"
-#include "Registry/Includes/CoreRegistry.h"
-#include "Dependency/Includes/CoreDependency.h"
+#include "Includes/CoreConfig.h"
+#include "Includes/CoreInit.h"
+#include "Includes/CoreRegistry.h"
+#include "Includes/CoreDependency.h"
 #include "Decoder/Includes/Decoder.h"
 
 

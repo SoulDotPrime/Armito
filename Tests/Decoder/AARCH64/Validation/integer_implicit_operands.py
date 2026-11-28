@@ -8,7 +8,7 @@ import sys
 
 import integer_form_differential as differential
 
-REPORT = "Tests/Decoder/AARCH64/integer_implicit_operands.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/integer_implicit_operands.csv"
 REPORT_SHA256 = "6df6ade821c168b50a1f3846743be99700c66b0889375dca05ee86ac7e4734c0"
 IMPLICIT = 0x100
 SPECIAL_SP = 1

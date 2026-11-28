@@ -3,6 +3,8 @@
 #include "AARCH64/Catalog/AARCH64Catalog.h"
 #include "AARCH64/Includes/AARCH64Operands.h"
 
+#include <string.h>
+
 #include "Includes/IR.h"
 
 static ArmitoDecoderConfig armito_decoder_config;
@@ -214,12 +216,14 @@ AARCH64OperandExtractorFunction ArmitoDecoderGetOperandExtractor(void)
     return armito_operand_extractor;
 }
 
-ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
+ArmitoDecoderStatus ArmitoDecoderDecodeInstructionWithOperands(
     const ArmitoDecoderInstruction *instruction,
-    ArmitoDecodeResult *result
+    ArmitoDecodeResult *result,
+    AARCH64OperandSet *operands
 )
 {
     AARCH64Instruction decoded;
+    AARCH64OperandSet local_operands;
     ArmitoDecoderStatus status;
     uint32_t operations = 0;
 
@@ -232,7 +236,12 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
 
     *result = ARMITO_DECODE_INVALID;
 
-    status = AARCH64Decode(instruction->encoding, &decoded);
+    memset(&local_operands, 0, sizeof(local_operands));
+    decoded.operands = &local_operands;
+
+    status = AARCH64DecodeWithAddress(
+        instruction->encoding, instruction->address, &decoded
+    );
 
     if (status != ARMITO_DECODER_SUCCESS) {
         *result = AARCH64ResultFor(status);
@@ -246,6 +255,17 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
             *result, instruction->offset, instruction->encoding, operations
         );
         return status;
+    }
+
+    if (decoded.operands != NULL &&
+        decoded.operands->status == AARCH64_OPERAND_EXTRACTION_COMPLETE) {
+        if (operands != NULL)
+            *operands = *decoded.operands;
+        *result = ARMITO_DECODE_OK;
+        ArmitoDecoderStatsRecord(
+            ARMITO_DECODE_OK, instruction->offset, instruction->encoding, 0
+        );
+        return ARMITO_DECODER_SUCCESS;
     }
 
     status = AARCH64ToIR(&decoded, instruction->address, &operations);
@@ -265,6 +285,16 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
     );
 
     return ARMITO_DECODER_SUCCESS;
+}
+
+ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
+    const ArmitoDecoderInstruction *instruction,
+    ArmitoDecodeResult *result
+)
+{
+    return ArmitoDecoderDecodeInstructionWithOperands(
+        instruction, result, NULL
+    );
 }
 
 ArmitoDecoderStatus ArmitoDecoderDecodeBlock(

@@ -13,8 +13,8 @@ import integer_form_differential as differential
 import llvm_toolchain
 
 CATALOG = "Decoder/AARCH64/Catalog/AARCH64InstructionCatalog.json"
-REPORT = "Tests/Decoder/AARCH64/memory_operand_validation.csv"
-REPORT_SHA256 = "e7893e5f0c2b6443f1df6d978ad7d31136d9a34dfadca708a4ec3fcccfa2de41"
+REPORT = "Tests/Decoder/AARCH64/Results/memory_operand_validation.csv"
+REPORT_SHA256 = "313b773c73ff173519effcb6513dc2abf0b53a38f6c5071bf94a632770967606"
 PINNED = {
     "integer_register_baseline.csv": "739a129672c95570dddc8b256f2dc9bf9dae2957b470fa8c531130e3f2534015",
     "integer_immediate_all_candidates.csv": "ed292fcffc46970c987fddf22e2f73d7a7d7dd75831d5bb187f072b6b5e12fb9",
@@ -35,13 +35,19 @@ CONVENTIONAL = frozenset((
     "ldst_pos", "ldst_regoff", "ldst_immpost", "ldst_immpre", "ldst_unscaled",
     "loadlit", "ldstpair_off", "ldstpair_post", "ldstpair_pre",
     "ldstnapair_offs"))
+FORWARD = frozenset((
+    "ldstexclr", "ldstexclp", "ldstexclr_unpriv", "ldstord",
+    "comswap", "comswappr", "comswap_unpriv", "comswappr_unpriv",
+    "memop", "memop_128", "rcwcomswap", "rcwcomswappr",
+    "ldst_pac", "ldst_gcs", "ldapstl_unscaled", "ldapstl_simd",
+    "ldapstl_writeback", "ldiappstilp"))
 PC = 0x1000000000004000
 MASK64 = (1 << 64) - 1
 FEATURES = "+cmpbr,+hbc,+pauth,+pauth-lr,+tme,+el3"
 
 
 def verify_pinned():
-    root = "Tests/Decoder/AARCH64/"
+    root = "Tests/Decoder/AARCH64/Results/"
     for name, expected in PINNED.items():
         digest = hashlib.sha256()
         with open(root + name, "rb") as stream:
@@ -57,6 +63,19 @@ def field(word, lsb, width):
 
 def sxt(value, bits):
     return value - (1 << bits) if value & (1 << (bits - 1)) else value
+
+
+def reserved_phase(form):
+    group = form["family_path"][1]
+    if group not in FORWARD:
+        return "specialized-3.4.2"
+    if group in ("ldst_pac", "ldst_gcs"):
+        return "forward-3.5-3.6-pac-gcs"
+    if group in ("comswap", "comswappr", "comswap_unpriv",
+                 "comswappr_unpriv", "memop", "memop_128",
+                 "rcwcomswap", "rcwcomswappr"):
+        return "forward-3.6-atomic"
+    return "forward-3.6-exclusive-ordering"
 
 
 def probe_rows(probe, cases):
@@ -80,20 +99,28 @@ def probe_rows(probe, cases):
         mem = tuple(map(int, parts[3][4:].split(":")))
         if len(mem) < 15:
             raise RuntimeError("memory metadata layout changed")
+        mx = None
         operands = {}
         for item in parts[4:]:
             data = item.split(":")
             if data[0] == "MX":
+                mx = tuple(map(int, data[1:]))
                 continue
             operands[data[0]] = tuple(map(int, data[1:]))
-        results.append((mem, operands))
+        if mx is None or len(mx) != 19:
+            raise RuntimeError("memory extended metadata layout changed")
+        results.append((mem, mx, operands))
     return results
 
 
 def validate(form, word, result):
-    mem, operands = result
+    mem, mx, operands = result
     (access, count, direction, writeback, base, data, pair, sxt_flag,
      zxt_flag, literal, base_sp, base_zero, data_sp, data_zero, offset) = mem
+    (element_width, vector_width, lane, register_count, wraparound,
+     nontemporal, unprivileged, acquire, release, exclusive, atomic, tagged,
+     phase, offset_register, offset_extend, offset_scale,
+     expression_resolved, static_overlap, execution_overlap) = mx
     group = form["family_path"][1]
     name = form["id"]
     is_store = name.startswith(("STR", "STUR", "STP", "STNP"))
@@ -103,7 +130,7 @@ def validate(form, word, result):
         raise RuntimeError(f"direction mismatch {name} {word:08X}")
     is_pair = group in ("ldstpair_off", "ldstpair_post", "ldstpair_pre",
                         "ldstnapair_offs")
-    exp_count = 2 if is_pair else 1
+    exp_count = 0 if is_prefetch else 2 if is_pair else 1
     if count != exp_count:
         raise RuntimeError(f"element count mismatch {name}")
     if group == "loadlit":
@@ -113,6 +140,10 @@ def validate(form, word, result):
         exp = (PC + sxt(imm19, 19) * 4) & MASK64
         if offset != sxt(imm19, 19) * 4 & MASK64:
             raise RuntimeError(f"literal offset mismatch {name}")
+        if not expression_resolved or wraparound != (
+                1 if (sxt(imm19, 19) >= 0 and exp < PC) or
+                (sxt(imm19, 19) < 0 and exp > PC) else 0):
+            raise RuntimeError(f"literal expression mismatch {name}")
     else:
         if literal:
             raise RuntimeError(f"unexpected literal {name}")
@@ -120,9 +151,11 @@ def validate(form, word, result):
             raise RuntimeError(f"base register mismatch {name}")
         if base_sp != (1 if field(word, 5, 5) == 31 else 0):
             raise RuntimeError(f"base SP flag mismatch {name}")
+        if expression_resolved:
+            raise RuntimeError(f"runtime base address marked resolved {name}")
         if group == "ldst_pos":
             imm12 = field(word, 10, 12)
-            exp_off = imm12 * (access // 8)
+            exp_off = imm12 * (8 if is_prefetch else access // 8)
             if offset != exp_off:
                 raise RuntimeError(f"imm12 offset mismatch {name} {word:08X}")
         elif group in ("ldst_unscaled", "ldst_immpost", "ldst_immpre"):
@@ -133,20 +166,33 @@ def validate(form, word, result):
             imm7 = field(word, 15, 7)
             if offset != (sxt(imm7, 7) * (access // 8)) & MASK64:
                 raise RuntimeError(f"imm7 offset mismatch {name}")
+        elif group == "ldst_regoff":
+            exp_scale = (8 if is_prefetch else access // 8) if field(word, 12, 1) else 0
+            if (offset_register, offset_extend, offset_scale) != (
+                    field(word, 16, 5), field(word, 13, 3), exp_scale):
+                raise RuntimeError(f"register offset expression mismatch {name}")
     exp_wb = 1 if group == "ldst_immpre" else 2 if group == "ldst_immpost" else 0
     if writeback != exp_wb:
         raise RuntimeError(f"writeback mismatch {name}")
-    if data != field(word, 0, 5):
-        raise RuntimeError(f"data register mismatch {name}")
-    if data_sp or (data_zero != (1 if field(word, 0, 5) == 31 else 0)):
-        raise RuntimeError(f"data ZR flag mismatch {name}")
+    if is_prefetch:
+        if data != 255 or data_sp or data_zero:
+            raise RuntimeError(f"PRFM exposes data register {name}")
+        prfop = operands["Rt"]
+        if (prfop[0], prfop[1], prfop[4], prfop[9]) != (
+                6, 5, field(word, 0, 5), 0):
+            raise RuntimeError(f"PRFM operation mismatch {name}")
+    else:
+        if data != field(word, 0, 5):
+            raise RuntimeError(f"data register mismatch {name}")
+        if data_sp or (data_zero != (1 if field(word, 0, 5) == 31 else 0)):
+            raise RuntimeError(f"data ZR flag mismatch {name}")
     rt = operands["Rt"]
     exp_rt_w = 64 if (name.startswith(("LDR_64", "STR_64", "LDRSW", "LDPSW",
                                         "LDUR_64", "STUR_64", "LDP_64", "STP_64",
                                         "LDNP_64", "STNP_64"))
                       or (name.startswith(("LDRSB", "LDRSH")) and
                           field(word, 30, 2) == 1)) else 32
-    if rt[9] != exp_rt_w:
+    if not is_prefetch and rt[9] != exp_rt_w:
         raise RuntimeError(f"Rt width mismatch {name} {word:08X}: {rt[9]}!={exp_rt_w}")
     if is_pair and operands["Rt2"][9] != exp_rt_w:
         raise RuntimeError(f"Rt2 width mismatch {name}")
@@ -155,6 +201,13 @@ def validate(form, word, result):
     for op_name, op in operands.items():
         if op[2] != 1 or (op[0] == 0 and not op[8] & 0x80):
             raise RuntimeError(f"uninterpreted operand {name} {op_name}")
+    exp_overlap = int(not literal and not is_prefetch and
+                      field(word, 5, 5) in (
+                          field(word, 0, 5),
+                          field(word, 10, 5) if is_pair else -1))
+    if (static_overlap, execution_overlap) != (
+            exp_overlap, int(exp_overlap and writeback != 0)):
+        raise RuntimeError(f"overlap classification mismatch {name}")
     return access
 
 
@@ -174,14 +227,14 @@ def main(probe):
     spec = []
     for form in ldst:
         fid = form["id"]
-        is_gpr = "32" in fid or "64" in fid
+        is_gpr = "32" in fid or "64" in fid or fid.startswith("PRFM_")
         feature_gated = bool(form.get("feature_identifiers"))
         if (form["family_path"][1] in CONVENTIONAL and is_gpr and
                 not feature_gated):
             conv.append(form)
         else:
             spec.append(form)
-    if len(conv) != 91 or len(spec) != 905:
+    if len(conv) != 94 or len(spec) != 902:
         raise RuntimeError(f"split changed: {len(conv)} conv {len(spec)} spec")
     baseline = []
     for form in conv:
@@ -196,8 +249,8 @@ def main(probe):
     for (fid, word), result in zip(baseline, seed_rows):
         if result is not None:
             complete[fid].append(word)
-    if len(complete) != 91:
-        raise RuntimeError(f"missing COMPLETE candidates: {91 - len(complete)}")
+    if len(complete) != 94:
+        raise RuntimeError(f"missing COMPLETE candidates: {94 - len(complete)}")
     exe = os.environ.get("LLVM_MC_CONTROL", shutil.which("llvm-mc-21") or
                          llvm_toolchain.executable())
     _, version = llvm_toolchain.require_qualified(exe)
@@ -222,12 +275,45 @@ def main(probe):
         pattern = patterns[form["encoding_id"]]
         mask = int(pattern["mask"], 16)
         cases.append((fid, word, "seed", "-"))
+        group = form["family_path"][1]
+        fields = differential.bit_fields(form, groups, sets)
+        if "Rn" in fields:
+            for value in (0, 31):
+                cases.append((fid, (word & ~(31 << fields["Rn"]["lsb"])) |
+                              value << fields["Rn"]["lsb"], "base-register", "-"))
+        if "Rt" in fields:
+            values = range(32) if fid.startswith("PRFM_") else (0, 31)
+            for value in values:
+                cases.append((fid, (word & ~(31 << fields["Rt"]["lsb"])) |
+                              value << fields["Rt"]["lsb"],
+                              "prefetch-operation" if fid.startswith("PRFM_")
+                              else "data-register", "-"))
+        if "Rt2" in fields:
+            for value in (0, 31):
+                cases.append((fid, (word & ~(31 << fields["Rt2"]["lsb"])) |
+                              value << fields["Rt2"]["lsb"], "pair-register", "-"))
+        if group == "ldst_pos" and "imm12" in fields:
+            for value in (0, 1, 0xfff):
+                cases.append((fid, (word & ~(0xfff << fields["imm12"]["lsb"])) |
+                              value << fields["imm12"]["lsb"], "imm12-boundary", "-"))
+        elif group in ("ldst_unscaled", "ldst_immpost", "ldst_immpre"):
+            for value in range(512):
+                cases.append((fid, (word & ~(0x1ff << fields["imm9"]["lsb"])) |
+                              value << fields["imm9"]["lsb"], "imm9-exhaustive", "-"))
+        elif group in ("ldstpair_off", "ldstpair_post", "ldstpair_pre",
+                       "ldstnapair_offs"):
+            for value in range(128):
+                cases.append((fid, (word & ~(0x7f << fields["imm7"]["lsb"])) |
+                              value << fields["imm7"]["lsb"], "imm7-exhaustive", "-"))
+        elif group == "loadlit":
+            for value in (0, 1, 0x3ffff, 0x40000, 0x7ffff):
+                cases.append((fid, (word & ~(0x7ffff << fields["imm19"]["lsb"])) |
+                              value << fields["imm19"]["lsb"], "imm19-boundary", "-"))
         for index in range(32):
             if mask & (1 << index):
                 cases.append((fid, word ^ (1 << index), "fixed-bit-negative", "-"))
         for feature in form.get("feature_identifiers", []):
             cases.append((fid, word, "feature-negative", feature))
-        cases.append((fid, word, "boundary-zero", "-"))
     cases = list(dict.fromkeys(cases))
     results = probe_rows(probe, cases)
     exe = os.environ.get("LLVM_MC_CONTROL", shutil.which("llvm-mc-21") or
@@ -235,7 +321,9 @@ def main(probe):
     _, version = llvm_toolchain.require_qualified(exe)
     if version != "21.1.8":
         raise RuntimeError("qualified LLVM MC 21.1.8 required")
-    ref_cases = [c for c in cases if c[2] in ("seed", "boundary-zero")]
+    ref_cases = [c for c in cases if c[2] in (
+        "seed", "imm12-boundary", "imm19-boundary",
+        "prefetch-operation")]
     ref_text = branch.llvm_rows(exe, ref_cases, FEATURES)
     reference = {c: t for c, t in zip(ref_cases, ref_text)}
     if len(ref_cases) != len(ref_text):
@@ -245,7 +333,10 @@ def main(probe):
     writer.writerow(("class", "form", "operation", "group", "feature", "variant",
                      "word", "result", "access_width", "elements", "direction",
                      "writeback", "base", "data", "pair", "sign", "zero",
-                     "literal", "base_sp", "data_zero", "offset", "llvm"))
+                     "literal", "base_sp", "data_zero", "offset",
+                     "offset_register", "offset_extend", "offset_scale",
+                     "expression_resolved", "static_overlap",
+                     "execution_overlap", "wraparound", "llvm"))
     counts = collections.Counter()
     witnesses = set()
     access_by_form = {}
@@ -257,10 +348,16 @@ def main(probe):
             if result is not None:
                 raise RuntimeError(f"undue accept {fid} {word:08X} {variant}")
             state = "rejected-by-form"
+        elif result is None and variant == "prefetch-operation" and \
+                text == "<invalid>":
+            state = "globally-invalid"
+        elif result is None and variant == "prefetch-operation" and \
+                text != "-" and text.split()[0] != form["mnemonic"].lower():
+            state = "sibling-form"
         else:
             if result is None:
                 raise RuntimeError(f"valid rejected {fid} {word:08X}: {text}")
-            if text == "-" or text.split()[0] != form["mnemonic"].lower():
+            if case in reference and text.split()[0] != form["mnemonic"].lower():
                 raise RuntimeError(f"LLVM mismatch {fid}: {text}")
             access_by_form[fid] = validate(form, word, result)
             state = "complete"
@@ -268,28 +365,34 @@ def main(probe):
                 witnesses.add(fid)
         counts[(variant, state)] += 1
         mem = result[0] if result is not None else (0,) * 15
+        mx = result[1] if result is not None else (0,) * 19
         writer.writerow(("conventional", fid, form["operation_id"],
                          form["family_path"][1],
                          disabled if disabled != "-" else
                          ",".join(form.get("feature_identifiers", [])) or "-",
                          variant, f"{word:08X}", state, mem[0], mem[1], mem[2],
                          mem[3], mem[4], mem[5], mem[6], mem[7], mem[8], mem[9],
-                         mem[10], mem[13], mem[14],
-                         "llvm-verified" if state == "complete" else text))
+                         mem[10], mem[13], mem[14], mx[13], mx[14], mx[15],
+                         mx[16], mx[17], mx[18], mx[4],
+                         "llvm-verified" if case in reference and
+                         state == "complete" else
+                         "runtime-verified" if state == "complete" else text))
+    reservation_counts = collections.Counter(reserved_phase(form) for form in spec)
     for form in spec:
-        writer.writerow(("specialized-3.4.2", form["id"], form["operation_id"],
+        writer.writerow((reserved_phase(form), form["id"], form["operation_id"],
                          form["family_path"][1],
                          ",".join(form.get("feature_identifiers", [])) or "-",
-                         *(["-"] * 17)))
-    if len(witnesses) != 91:
-        raise RuntimeError(f"COMPLETE witnesses missing: {91 - len(witnesses)}")
+                         *(["-"] * 24)))
+    if len(witnesses) != 94:
+        raise RuntimeError(f"COMPLETE witnesses missing: {94 - len(witnesses)}")
     lengths = {len(row) for row in csv.reader(io.StringIO(output.getvalue()))}
-    if lengths != {22}:
+    if lengths != {29}:
         raise RuntimeError(f"CSV columns misaligned: {lengths}")
     data = output.getvalue().encode("utf-8")
     digest = hashlib.sha256(data).hexdigest()
     print("Memory validation", len(witnesses), "COMPLETE", len(spec),
-          "specialized", len(cases), "cases", dict(counts), "sha256", digest)
+          "reserved", dict(reservation_counts), len(cases), "cases",
+          dict(counts), "sha256", digest)
     if REPORT_SHA256 != "PENDING" and digest != REPORT_SHA256:
         raise RuntimeError(f"memory report hash changed: {digest}")
     if os.environ.get("ARMITO_WRITE_REPORT") == "1":

@@ -105,7 +105,7 @@ de origem foi projetado na IR. Classes: `GPR`, `VECTOR`, `FLAGS`, `PC`,
 
 Esse mapeamento é simbólico e não contém os valores concretos dos
 registradores da CPU convidada. O estado arquitetural AArch64 em runtime é
-mantido separadamente por `CPU/AARCH64/AARCH64CPUState`.
+mantido separadamente por `Architecture/AARCH64/AARCH64CPUState`.
 
 ## 4. Contrato com o Decoder
 

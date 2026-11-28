@@ -25,6 +25,25 @@ static uint8_t AARCH64OperandsStringEquals(
     return *left == *right;
 }
 
+static uint8_t AARCH64OperandsStringContains(
+    const char *text,
+    const char *part
+)
+{
+    while (text != 0 && *text != '\0') {
+        const char *left = text;
+        const char *right = part;
+        while (*left != '\0' && *right != '\0' && *left == *right) {
+            left++;
+            right++;
+        }
+        if (*right == '\0')
+            return 1;
+        text++;
+    }
+    return 0;
+}
+
 static uint8_t AARCH64OperandsStringEndsWith(
     const char *text,
     const char *suffix
@@ -211,7 +230,8 @@ static uint8_t AARCH64OperandsConventionalMemory(
     uint8_t is_gpr = 0;
     const char *scan;
 
-    if (form->family != AARCH64_CATALOG_FAMILY_LOAD_STORE)
+    if (form->family != AARCH64_CATALOG_FAMILY_LOAD_STORE ||
+        form->feature_count != 0u)
         return 0;
     for (scan = form->id; *scan != '\0'; scan++) {
         if (scan[0] == '3' && scan[1] == '2') {
@@ -223,6 +243,8 @@ static uint8_t AARCH64OperandsConventionalMemory(
             break;
         }
     }
+    if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PRFM_"))
+        is_gpr = 1;
     if (!is_gpr)
         return 0;
     if (!(AARCH64OperandsFormHasGroup(form, "ldst_pos") ||
@@ -317,7 +339,7 @@ static uint8_t AARCH64OperandsMemoryRegisterWidth(
         AARCH64OperandsStringEquals(name, "Rs"))
         return 64u;
     if (AARCH64OperandsStringEquals(name, "Rm"))
-        return ((encoding >> 13) & 7u) == 7u ? 64u : 32u;
+        return ((encoding >> 13) & 1u) != 0u ? 64u : 32u;
     if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDRSW"))
         return 64u;
     if (AARCH64OperandsFormHasGroup(form, "loadlit")) {
@@ -343,6 +365,94 @@ static uint8_t AARCH64OperandsMemoryRegisterWidth(
     return size == 3u ? 64u : 32u;
 }
 
+static uint8_t AARCH64OperandsAdvSIMDMemory(
+    const AARCH64CatalogForm *form
+)
+{
+    return AARCH64OperandsFormHasGroup(form, "asisdlse") ||
+        AARCH64OperandsFormHasGroup(form, "asisdlsep") ||
+        AARCH64OperandsFormHasGroup(form, "asisdlso") ||
+        AARCH64OperandsFormHasGroup(form, "asisdlsop");
+}
+
+static uint8_t AARCH64OperandsFPDataWidth(
+    const AARCH64CatalogForm *form,
+    uint32_t encoding
+)
+{
+    const char *suffix = form->id;
+
+    if (AARCH64OperandsAdvSIMDMemory(form))
+        return (encoding & (1u << 30)) != 0u ? 128u : 64u;
+    while (*suffix != '\0' && *suffix != '_')
+        suffix++;
+    if (*suffix != '_')
+        return 0;
+    suffix++;
+    if (*suffix == 'B')
+        return 8u;
+    if (*suffix == 'H')
+        return 16u;
+    if (*suffix == 'S')
+        return 32u;
+    if (*suffix == 'D')
+        return 64u;
+    if (*suffix == 'Q')
+        return 128u;
+    return 0;
+}
+
+static uint8_t AARCH64OperandsMemoryListLength(
+    const AARCH64CatalogForm *form
+)
+{
+    const char *name = form->id;
+    uint8_t count = 1u;
+
+    if (form->operation_id[2] >= '2' && form->operation_id[2] <= '4')
+        count = (uint8_t)(form->operation_id[2] - '0');
+    while (*name != '\0') {
+        if (*name == '_' &&
+            (name[1] == 'R' || name[1] == 'I') &&
+            name[2] >= '2' && name[2] <= '4' && name[3] == '_')
+            count = (uint8_t)(name[2] - '0');
+        name++;
+    }
+    return count;
+}
+
+static uint8_t AARCH64OperandsSpecializedMemoryEncodingValid(
+    const AARCH64CatalogForm *form,
+    uint32_t encoding
+)
+{
+    uint64_t q = 0;
+    uint64_t size = 0;
+    uint64_t s = 0;
+    uint64_t opcode = 0;
+    uint8_t scale;
+
+    if (!AARCH64OperandsAdvSIMDMemory(form))
+        return 1;
+    AARCH64OperandsFindField(form, encoding, "Q", &q, 0);
+    AARCH64OperandsFindField(form, encoding, "size", &size, 0);
+    if (AARCH64OperandsFormHasGroup(form, "asisdlse") ||
+        AARCH64OperandsFormHasGroup(form, "asisdlsep"))
+        return q != 0u || size != 3u ||
+            form->operation_id[2] < '2' || form->operation_id[2] > '4';
+    AARCH64OperandsFindField(form, encoding, "S", &s, 0);
+    AARCH64OperandsFindField(form, encoding, "opcode", &opcode, 0);
+    scale = (uint8_t)((opcode >> 1) & 3u);
+    if (scale == 3u)
+        return form->operation_id[0] == 'L' && s == 0u;
+    if (scale == 1u)
+        return (size & 1u) == 0u;
+    if (scale == 2u)
+        return (size & 2u) == 0u &&
+            ((size & 1u) == 0u || s == 0u);
+    return 1;
+}
+
 static void AARCH64OperandsSetMemoryMetadata(AARCH64OperandSet *set)
 {
     const AARCH64CatalogForm *form = set->form;
@@ -354,9 +464,11 @@ static void AARCH64OperandsSetMemoryMetadata(AARCH64OperandSet *set)
         !AARCH64OperandsSpecializedMemory(form) &&
         !AARCH64OperandsForwardedMemory(form))
         return;
-    set->memory_offset_register = 0xffu;
+    set->memory_base_register = 0xffu;
+    set->memory_data_register = 0xffu;
     set->memory_pair_register = 0xffu;
-    set->memory_address_expression_resolved = 1u;
+    set->memory_offset_register = 0xffu;
+    set->memory_address_expression_resolved = 0u;
     set->memory_element_count = 1u;
     set->memory_lane = 0xffu;
     set->memory_register_count = 1u;
@@ -490,18 +602,25 @@ static void AARCH64OperandsSetMemoryMetadata(AARCH64OperandSet *set)
             set->memory_address_expression_resolved = 0u;
         }
     }
-    if (set->memory_pair_register != 0xffu &&
-        (set->memory_base_register == set->memory_data_register ||
-         set->memory_base_register == set->memory_pair_register))
+    if (set->memory_base_register != 0xffu &&
+        ((set->memory_data_register != 0xffu &&
+          set->memory_base_register == set->memory_data_register) ||
+         (set->memory_pair_register != 0xffu &&
+          set->memory_base_register == set->memory_pair_register)))
         set->memory_static_overlap = 1u;
-    if (set->memory_writeback &&
-        set->memory_base_register == set->memory_data_register)
+    if (set->memory_writeback && set->memory_static_overlap)
         set->memory_execution_overlap = 1u;
     if (set->memory_literal) {
         uint64_t imm19 = 0;
         AARCH64OperandsFindField(form, encoding, "imm19", &imm19, 0);
         set->memory_offset = (uint64_t)(AARCH64OperandsSignExtend(imm19, 19u) * 4);
         set->memory_base_address = set->instruction_address + set->memory_offset;
+        set->memory_address_expression_resolved = 1u;
+        set->memory_wraparound =
+            ((int64_t)set->memory_offset >= 0 &&
+             set->memory_base_address < set->instruction_address) ||
+            ((int64_t)set->memory_offset < 0 &&
+             set->memory_base_address > set->instruction_address);
     } else if (set->memory_base_register != 0xffu) {
         uint64_t offset = 0;
         if (AARCH64OperandsFormHasGroup(form, "ldst_pos")) {
@@ -533,6 +652,316 @@ static void AARCH64OperandsSetMemoryMetadata(AARCH64OperandSet *set)
         }
         set->memory_offset = offset;
     }
+    if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PRFM_")) {
+        set->memory_access_width = 0u;
+        set->memory_element_width = 0u;
+        set->memory_vector_width = 0u;
+        set->memory_element_count = 0u;
+        set->memory_register_count = 0u;
+    }
+}
+
+static void AARCH64OperandsSetSpecializedMemoryMetadata(
+    AARCH64OperandSet *set
+)
+{
+    const AARCH64CatalogForm *form = set->form;
+    uint64_t q = 0;
+    uint64_t size = 0;
+    uint64_t s = 0;
+    uint64_t opcode = 0;
+    uint64_t rm = 0;
+    uint64_t value = 0;
+    uint16_t index;
+
+    if (!AARCH64OperandsSpecializedMemory(form) ||
+        AARCH64OperandsConventionalMemory(form))
+        return;
+    set->memory_predicate_register = 0xffu;
+    set->memory_register_list_start = 0xffu;
+    set->memory_mops_source_register = 0xffu;
+    set->memory_mops_destination_register = 0xffu;
+    set->memory_mops_length_register = 0xffu;
+    set->memory_list_stride = 0u;
+    AARCH64OperandsFindField(form, set->encoding, "Q", &q, 0);
+    AARCH64OperandsFindField(form, set->encoding, "size", &size, 0);
+    if (form->operation_id[0] == 'S')
+        set->memory_direction = 2u;
+    if (AARCH64OperandsFormHasGroup(form, "ldstpair_pre"))
+        set->memory_writeback = 1u;
+    else if (AARCH64OperandsFormHasGroup(form, "ldstpair_post"))
+        set->memory_writeback = 2u;
+    if (AARCH64OperandsAdvSIMDMemory(form)) {
+        uint8_t count = AARCH64OperandsMemoryListLength(form);
+        uint8_t datasize = q != 0u ? 128u : 64u;
+        uint8_t element = (uint8_t)(8u << size);
+
+        set->memory_kind = AARCH64_MEMORY_KIND_ADVSIMD_STRUCTURE;
+        set->memory_data_bank = AARCH64_CATALOG_OPERAND_FP_SIMD;
+        set->memory_register_count = count;
+        set->memory_structure_count =
+            form->operation_id[2] >= '2' && form->operation_id[2] <= '4'
+            ? (uint8_t)(form->operation_id[2] - '0') : 1u;
+        set->memory_interleave_factor = set->memory_structure_count;
+        set->memory_list_stride = 1u;
+        set->memory_vector_width = datasize;
+        set->memory_element_width = element;
+        if (AARCH64OperandsFormHasGroup(form, "asisdlso") ||
+            AARCH64OperandsFormHasGroup(form, "asisdlsop")) {
+            uint8_t scale;
+            AARCH64OperandsFindField(form, set->encoding, "opcode", &opcode, 0);
+            AARCH64OperandsFindField(form, set->encoding, "S", &s, 0);
+            scale = (uint8_t)((opcode >> 1) & 3u);
+            if (scale == 3u) {
+                set->memory_kind = AARCH64_MEMORY_KIND_ADVSIMD_REPLICATE;
+                set->memory_replicate = 1u;
+            } else {
+                set->memory_kind = AARCH64_MEMORY_KIND_ADVSIMD_LANE;
+                set->memory_lane_valid = 1u;
+                set->memory_merge_inactive =
+                    form->operation_id[0] == 'L';
+                if (scale == 0u)
+                    set->memory_lane =
+                        (uint8_t)((q << 3) | (s << 2) | size);
+                else if (scale == 1u)
+                    set->memory_lane =
+                        (uint8_t)((q << 2) | (s << 1) | (size >> 1));
+                else if ((size & 1u) == 0u)
+                    set->memory_lane = (uint8_t)((q << 1) | s);
+                else
+                    set->memory_lane = (uint8_t)q;
+            }
+            element = (uint8_t)(8u << (scale == 3u ? size : scale));
+            set->memory_element_count = count;
+            set->memory_total_bytes =
+                (uint16_t)(count * (element / 8u));
+        } else {
+            set->memory_element_count =
+                (uint8_t)(count * datasize / element);
+            set->memory_total_bytes =
+                (uint16_t)(count * datasize / 8u);
+        }
+        set->memory_element_width = element;
+        set->memory_access_width = element;
+        if (AARCH64OperandsFormHasGroup(form, "asisdlsep") ||
+            AARCH64OperandsFormHasGroup(form, "asisdlsop")) {
+            set->memory_writeback = 2u;
+            AARCH64OperandsFindField(form, set->encoding, "Rm", &rm, 0);
+            if (rm == 31u) {
+                set->memory_offset_register = 0xffu;
+                set->memory_offset = set->memory_total_bytes;
+                set->memory_postindex_immediate = set->memory_total_bytes;
+                set->memory_offset_kind = 1u;
+            } else {
+                set->memory_offset_register = (uint8_t)rm;
+                set->memory_offset_kind = 2u;
+            }
+        }
+    } else if (AARCH64OperandsFormHasGroup(form, "memcms")) {
+        uint64_t op1 = 0;
+        uint64_t op2 = 0;
+        uint8_t copy = AARCH64OperandsStringStartsWithIgnoreCase(
+            form->id, "CPY");
+
+        set->memory_kind = copy ? AARCH64_MEMORY_KIND_MOPS_COPY
+                                : AARCH64_MEMORY_KIND_MOPS_SET;
+        set->memory_direction = copy ? 4u : 2u;
+        set->memory_access_width = 8u;
+        set->memory_element_width = 8u;
+        set->memory_vector_width = 0u;
+        set->memory_element_count = 0u;
+        set->memory_register_count = 0u;
+        set->memory_state_dependent_size = 1u;
+        set->memory_offset_kind = 4u;
+        set->memory_writeback = 3u;
+        set->memory_writeback_register_count = copy ? 3u : 2u;
+        set->memory_base_register = 0xffu;
+        set->memory_data_register = 0xffu;
+        AARCH64OperandsFindField(form, set->encoding, "Rd", &value, 0);
+        set->memory_mops_destination_register = (uint8_t)value;
+        set->memory_mops_destination_discarded = value == 31u;
+        AARCH64OperandsFindField(form, set->encoding, "Rs", &value, 0);
+        set->memory_mops_source_register = (uint8_t)value;
+        set->memory_mops_source_zero = value == 31u;
+        AARCH64OperandsFindField(form, set->encoding, "Rn", &value, 0);
+        set->memory_mops_length_register = (uint8_t)value;
+        AARCH64OperandsFindField(form, set->encoding, "op1", &op1, 0);
+        AARCH64OperandsFindField(form, set->encoding, "op2", &op2, 0);
+        set->memory_mops_stage = (uint8_t)(copy ? op1 + 1u
+                                                : (op2 >> 2) + 1u);
+        set->memory_mops_options =
+            (uint8_t)(copy ? op2 : op2 & 3u);
+        set->memory_mops_reads_carry = set->memory_mops_stage != 1u;
+        set->memory_mops_writes_nzcv = set->memory_mops_stage == 1u;
+        set->memory_nontemporal =
+            copy ? (op2 & 12u) != 0u : (op2 & 2u) != 0u;
+        set->memory_static_overlap =
+            set->memory_mops_destination_register ==
+                set->memory_mops_length_register ||
+            set->memory_mops_destination_register ==
+                set->memory_mops_source_register ||
+            set->memory_mops_length_register ==
+                set->memory_mops_source_register;
+        set->memory_execution_overlap = set->memory_static_overlap;
+    } else if (AARCH64OperandsFormHasGroup(form, "memop_unpriv")) {
+        uint64_t acquire = 0;
+        uint64_t release = 0;
+        uint8_t bits = (set->encoding & (1u << 30)) != 0u ? 64u : 32u;
+
+        set->memory_kind = AARCH64_MEMORY_KIND_ATOMIC_RMW;
+        set->memory_access_width = bits;
+        set->memory_element_width = bits;
+        set->memory_vector_width = 0u;
+        set->memory_total_bytes = (uint16_t)(bits / 8u);
+        set->memory_unprivileged = 1u;
+        set->memory_atomic = 1u;
+        set->memory_direction = 4u;
+        AARCH64OperandsFindField(form, set->encoding, "A", &acquire, 0);
+        AARCH64OperandsFindField(form, set->encoding, "R", &release, 0);
+        set->memory_atomic_read_result =
+            set->memory_data_register != 31u;
+        set->memory_acquire =
+            acquire != 0u && set->memory_atomic_read_result;
+        set->memory_release = release != 0u;
+    } else if (AARCH64OperandsFormHasGroup(form, "ldsttags") ||
+               AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STGP_")) {
+        set->memory_kind = AARCH64_MEMORY_KIND_MTE_TAG;
+        set->memory_tagged = 1u;
+        set->memory_tag_granule_bytes = 16u;
+        set->memory_element_width = 4u;
+        set->memory_access_width = 4u;
+        set->memory_vector_width = 0u;
+        set->memory_total_bytes = 0u;
+        if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STGP_")) {
+            set->memory_access_width = 128u;
+            set->memory_element_width = 64u;
+            set->memory_element_count = 2u;
+            set->memory_register_count = 2u;
+            set->memory_total_bytes = 16u;
+            AARCH64OperandsFindField(form, set->encoding, "simm7", &value, 0);
+            set->memory_offset = (uint64_t)(
+                AARCH64OperandsSignExtend(value, 7u) * 16);
+        }
+        if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDGM_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STGM_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STZGM_")) {
+            set->memory_element_count = 0u;
+            set->memory_tag_block_symbolic = 1u;
+            set->memory_state_dependent_size = 1u;
+            set->memory_min_el = 1u;
+        }
+        set->memory_tag_zero_data =
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STZG") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STZ2G_");
+        if (AARCH64OperandsStringContains(form->id, "Spre_"))
+            set->memory_writeback = 1u;
+        else if (AARCH64OperandsStringContains(form->id, "Spost_"))
+            set->memory_writeback = 2u;
+        if (set->memory_tag_zero_data &&
+            !set->memory_tag_block_symbolic)
+            set->memory_total_bytes =
+                AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STZ2G_")
+                ? 32u : 16u;
+        if (AARCH64OperandsFindField(form, set->encoding, "imm9", &value, 0))
+            set->memory_offset = (uint64_t)(
+                AARCH64OperandsSignExtend(value, 9u) * 16);
+        if (set->memory_tag_block_symbolic)
+            set->memory_offset_kind = 5u;
+    } else if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "RPRFM_") ||
+               AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PRFUM_")) {
+        set->memory_kind = AARCH64_MEMORY_KIND_PREFETCH;
+        set->memory_direction = 3u;
+        set->memory_access_width = 0u;
+        set->memory_element_count = 0u;
+        set->memory_data_register = 0xffu;
+    } else if (AARCH64OperandsFPDataWidth(form, set->encoding) != 0u) {
+        uint8_t width = AARCH64OperandsFPDataWidth(form, set->encoding);
+
+        set->memory_kind = AARCH64_MEMORY_KIND_FP_SCALAR;
+        set->memory_data_bank = AARCH64_CATALOG_OPERAND_FP_SIMD;
+        set->memory_access_width = width;
+        set->memory_element_width = width;
+        set->memory_vector_width = width;
+        set->memory_total_bytes = (uint16_t)(
+            (width / 8u) * set->memory_element_count);
+        set->memory_register_count = set->memory_element_count;
+        if (AARCH64OperandsFormHasGroup(form, "ldst_pos")) {
+            AARCH64OperandsFindField(form, set->encoding, "imm12", &value, 0);
+            set->memory_offset = value * (width / 8u);
+        } else if (AARCH64OperandsFormHasGroup(form, "ldst_regoff")) {
+            AARCH64OperandsFindField(form, set->encoding, "S", &value, 0);
+            set->memory_offset_scale = value != 0u ? width / 8u : 0u;
+        } else if (AARCH64OperandsFormHasGroup(form, "ldstpair_off") ||
+                   AARCH64OperandsFormHasGroup(form, "ldstpair_post") ||
+                   AARCH64OperandsFormHasGroup(form, "ldstpair_pre") ||
+                   AARCH64OperandsFormHasGroup(form, "ldstnapair_offs")) {
+            AARCH64OperandsFindField(form, set->encoding, "imm7", &value, 0);
+            set->memory_offset = (uint64_t)(
+                AARCH64OperandsSignExtend(value, 7u) * (int64_t)(width / 8u));
+            if (AARCH64OperandsFormHasGroup(form, "ldstpair_pre"))
+                set->memory_writeback = 1u;
+            else if (AARCH64OperandsFormHasGroup(form, "ldstpair_post"))
+                set->memory_writeback = 2u;
+        }
+    } else {
+        set->memory_kind = AARCH64_MEMORY_KIND_UNPRIVILEGED;
+        set->memory_total_bytes =
+            (uint16_t)((set->memory_access_width / 8u) *
+                       set->memory_element_count);
+        if (AARCH64OperandsFormHasGroup(form, "ldst_unpriv")) {
+            AARCH64OperandsFindField(form, set->encoding, "imm9", &value, 0);
+            set->memory_offset = (uint64_t)AARCH64OperandsSignExtend(value, 9u);
+        }
+        if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTP_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STTP_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTNP_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "STTNP_")) {
+            set->memory_unprivileged = 1u;
+            set->memory_access_width = 64u;
+            set->memory_total_bytes = 16u;
+            AARCH64OperandsFindField(form, set->encoding, "imm7", &value, 0);
+            set->memory_offset = (uint64_t)(
+                AARCH64OperandsSignExtend(value, 7u) * 8);
+        }
+        if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTRSB_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTRSH_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTRSW_"))
+            set->memory_sign_extend = 1u;
+        if (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTRB_") ||
+            AARCH64OperandsStringStartsWithIgnoreCase(form->id, "LDTRH_"))
+            set->memory_zero_extend = 1u;
+    }
+    for (index = 0; index < set->operand_count; index++) {
+        const AARCH64Operand *operand = &set->operands[index];
+        if (operand->kind == AARCH64_CATALOG_OPERAND_FP_SIMD &&
+            AARCH64OperandsStringEquals(operand->name, "Rt"))
+            set->memory_register_list_start = operand->register_index;
+    }
+    if (set->memory_kind == AARCH64_MEMORY_KIND_ADVSIMD_STRUCTURE ||
+        set->memory_kind == AARCH64_MEMORY_KIND_ADVSIMD_LANE ||
+        set->memory_kind == AARCH64_MEMORY_KIND_ADVSIMD_REPLICATE) {
+        set->memory_data_register = 0xffu;
+        set->memory_pair_register = 0xffu;
+        set->memory_static_overlap = 0u;
+        set->memory_execution_overlap = 0u;
+    }
+    if (set->memory_kind != AARCH64_MEMORY_KIND_MOPS_COPY &&
+        set->memory_kind != AARCH64_MEMORY_KIND_MOPS_SET &&
+        set->memory_offset_kind == 0u) {
+        if (set->memory_literal)
+            set->memory_offset_kind = 3u;
+        else if (set->memory_offset_register != 0xffu)
+            set->memory_offset_kind = 2u;
+        else if (set->memory_base_register != 0xffu)
+            set->memory_offset_kind = 1u;
+    }
+    if (set->memory_kind == AARCH64_MEMORY_KIND_ADVSIMD_STRUCTURE ||
+        set->memory_kind == AARCH64_MEMORY_KIND_ADVSIMD_LANE ||
+        set->memory_kind == AARCH64_MEMORY_KIND_ADVSIMD_REPLICATE ||
+        set->memory_kind == AARCH64_MEMORY_KIND_FP_SCALAR)
+        set->memory_tag_checked = set->memory_writeback ||
+            (set->memory_base_register != 0xffu &&
+             set->memory_base_register != 31u);
 }
 
 static void AARCH64OperandsSetPointerAuthMetadata(AARCH64OperandSet *set)
@@ -1262,6 +1691,8 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
     form = match->form;
     if (!AARCH64CatalogFormEncodingValid(form, encoding))
         return operands->status;
+    if (!AARCH64OperandsSpecializedMemoryEncodingValid(form, encoding))
+        return operands->status;
     if (form->operand_descriptor_count == 0u ||
         form->operand_descriptors == 0) {
         operands->status = AARCH64_OPERAND_EXTRACTION_UNSUPPORTED;
@@ -1360,6 +1791,39 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
                 AARCH64OperandsForwardedMemory(form))
                 operand->register_width = AARCH64OperandsMemoryRegisterWidth(
                     form, encoding, operand->name);
+            if (AARCH64OperandsSpecializedMemory(form) &&
+                !AARCH64OperandsConventionalMemory(form)) {
+                if ((AARCH64OperandsStringEquals(operand->name, "Rt") ||
+                     AARCH64OperandsStringEquals(operand->name, "Rt2")) &&
+                    AARCH64OperandsFPDataWidth(form, encoding) != 0u) {
+                    operand->kind = AARCH64_CATALOG_OPERAND_FP_SIMD;
+                    operand->register_width =
+                        AARCH64OperandsFPDataWidth(form, encoding);
+                    operand->role =
+                        form->operation_id[0] == 'S'
+                        ? AARCH64_CATALOG_OPERAND_ROLE_SOURCE
+                        : AARCH64_CATALOG_OPERAND_ROLE_DESTINATION;
+                } else if (AARCH64OperandsFormHasGroup(form, "ldsttags") &&
+                           (AARCH64OperandsStringEquals(operand->name, "Rt") ||
+                            AARCH64OperandsStringEquals(operand->name, "Rn")))
+                    operand->register_width = 64u;
+                else if ((AARCH64OperandsFormHasGroup(form, "memop_unpriv") ||
+                          AARCH64OperandsFormHasGroup(form, "ldst_unpriv")) &&
+                         !AARCH64OperandsStringEquals(operand->name, "Rn")) {
+                    const char *part = form->id;
+                    while (*part != '\0' && *part != '_')
+                        part++;
+                    if (*part == '_')
+                        part++;
+                    operand->register_width =
+                        part[0] == '6' && part[1] == '4' ? 64u : 32u;
+                }
+                if ((AARCH64OperandsAdvSIMDMemory(form) ||
+                     AARCH64OperandsStringStartsWithIgnoreCase(form->id,
+                         "RPRFM_")) &&
+                    AARCH64OperandsStringEquals(operand->name, "Rm"))
+                    operand->register_width = 64u;
+            }
             operand->status = AARCH64_OPERAND_VALUE_INTERPRETED;
             if (operand->register_index == 31u) {
                 if (descriptor->role == AARCH64_CATALOG_OPERAND_ROLE_BASE) {
@@ -1466,7 +1930,38 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
                    AARCH64OperandsStringStartsWithIgnoreCase(form->id, "AUTDB_")) &&
                   AARCH64OperandsStringEquals(operand->name, "Rn"))))
                 operand->register_special = AARCH64_REGISTER_SPECIAL_SP;
-            if (operand->register_width == 0u)
+            if (AARCH64OperandsConventionalMemory(form) &&
+                AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PRFM_") &&
+                AARCH64OperandsStringEquals(operand->name, "Rt")) {
+                operand->kind = AARCH64_CATALOG_OPERAND_IMMEDIATE;
+                operand->role = AARCH64_CATALOG_OPERAND_ROLE_CONTROL;
+                operand->register_width = 0u;
+                operand->register_special = AARCH64_REGISTER_SPECIAL_NONE;
+            }
+            if (operand->kind == AARCH64_CATALOG_OPERAND_FP_SIMD)
+                operand->register_special = AARCH64_REGISTER_SPECIAL_NONE;
+            if (AARCH64OperandsAdvSIMDMemory(form) &&
+                AARCH64OperandsStringEquals(operand->name, "Rm") &&
+                operand->register_index == 31u) {
+                operand->kind = AARCH64_CATALOG_OPERAND_RAW;
+                operand->role = AARCH64_CATALOG_OPERAND_ROLE_FIELD;
+                operand->register_special = AARCH64_REGISTER_SPECIAL_NONE;
+                operand->flags |= AARCH64_OPERAND_FLAG_ENCODING_SELECTOR;
+            }
+            if (AARCH64OperandsSpecializedMemory(form) &&
+                (AARCH64OperandsStringStartsWithIgnoreCase(form->id, "RPRFM_") ||
+                 AARCH64OperandsStringStartsWithIgnoreCase(form->id, "PRFUM_")) &&
+                AARCH64OperandsStringEquals(operand->name, "Rt")) {
+                operand->kind = AARCH64_CATALOG_OPERAND_IMMEDIATE;
+                operand->role = AARCH64_CATALOG_OPERAND_ROLE_CONTROL;
+                operand->register_width = 0u;
+                operand->register_special = AARCH64_REGISTER_SPECIAL_NONE;
+                if (AARCH64OperandsStringStartsWithIgnoreCase(form->id,
+                        "RPRFM_"))
+                    operand->value = operand->raw_value & 7u;
+            }
+            if (operand->kind == AARCH64_CATALOG_OPERAND_GPR &&
+                operand->register_width == 0u)
                 operand->status = AARCH64_OPERAND_VALUE_PARTIAL;
         } else if (descriptor->kind == AARCH64_CATALOG_OPERAND_FP_SIMD ||
                    descriptor->kind == AARCH64_CATALOG_OPERAND_SVE_VECTOR ||
@@ -1681,6 +2176,7 @@ AARCH64OperandExtractionStatus AARCH64OperandsExtractWithProfile(
     AARCH64OperandsSetPointerAuthMetadata(operands);
     AARCH64OperandsSetExceptionalControlMetadata(operands);
     AARCH64OperandsSetMemoryMetadata(operands);
+    AARCH64OperandsSetSpecializedMemoryMetadata(operands);
     if (AARCH64OperandsConventionalBranch(form)) {
         uint16_t branch_index;
         operands->branch_condition = 0xffu;

@@ -158,7 +158,7 @@ desempenho ou adequação a qualquer plataforma.
 -   Diagnostics precisa ser conectado ao `fail.c`, `Display.c` e
     `LogGen.c`.
 -   O estado arquitetural AArch64, incluindo o estado PAC ARM64E, fica
-    em `CPU/AARCH64/`; sua integração com o ciclo de execução do Core
+    em `Architecture/AARCH64/`; sua integração com o ciclo de execução do Core
     ainda não existe.
 
 ## 9. Regra de falhas

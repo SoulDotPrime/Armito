@@ -9,9 +9,9 @@ import integer_form_differential as register
 import integer_immediate_differential as immediate
 
 
-REPORT = "Tests/Decoder/AARCH64/integer_immediate_rejections.csv"
-HISTORICAL = "Tests/Decoder/AARCH64/integer_register_rejections.csv"
-FULL_REPORT = "Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/integer_immediate_rejections.csv"
+HISTORICAL = "Tests/Decoder/AARCH64/Results/integer_register_rejections.csv"
+FULL_REPORT = "Tests/Decoder/AARCH64/Results/integer_immediate_all_candidates.csv"
 
 
 def architectural_reason(form, word):

@@ -6,10 +6,15 @@ Armito is a modular project for translating and preparing operations across proc
 
 - `Boot/` — firmware entry and boot handoff.
 - `Core/` — module lifecycle, configuration, dispatch, and coordination.
-- `CPU/` — source-architecture CPU state and architecture-specific behavior.
+- `Architecture/AARCH64/` — source-architecture CPU state and architecture-specific behavior.
+- `Formats/MachO/` — Mach-O container parsing for architecture identification.
 - `Decoder/` — instruction recognition, validation, and operand decoding.
 - `IR/` — the universal intermediate representation.
-- `CPUToCPU/`, `GPUToGPU/`, and `JIT/` — destination and translation areas under development.
+- `Translator/JIT/` — JIT translation area under development.
+- `Hardware/` — device identification, descriptions, and capabilities.
+- `Platform/` — machine models (Mac14_3, FX8320E).
+- `Compatibility/` — CPU and GPU adaptation mechanisms (logic separated from hardware descriptions).
+- `Tools/Catalog/` — catalog maintenance and generation tooling.
 - `Tests/` — host tests grouped by subsystem; AArch64 fixtures are in `Tests/Fixtures/AARCH64/`.
 - `Docs/` — architecture, compatibility, status, decisions, and roadmap documentation.
 
@@ -27,7 +32,7 @@ The catalog-specific structural and differential checks can also be run with:
 make catalog-test
 ```
 
-Catalog data and generation metadata remain with the AArch64 decoder. Test-only samples are kept under `Tests/Fixtures/`.
+Catalog data remains with the AArch64 decoder (`Decoder/AARCH64/Catalog/`); the generation tool lives in `Tools/Catalog/catalog_tool.py`. Test-only samples are kept under `Tests/Fixtures/`.
 
 ## Documentation
 

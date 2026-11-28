@@ -121,7 +121,7 @@ dentro de `Decoder/`. `Decoder/` contém o decodificador; `IR/` é a
 camada compartilhada entre o decodificador e os backends.
 
 **Consequência:** `Decoder/IR/` (vazio) deixa de ser o local da IR e
-precisa ser removido. Um backend em `CPUToCPU/` inclui `IR/` sem incluir
+precisa ser removido. Um backend em `Compatibility/` inclui `IR/` sem incluir
 `Decoder/`.
 
 ## D-022 --- Semântica PAC explícita

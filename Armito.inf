@@ -10,25 +10,25 @@
     Boot/BootEntry.c
     Boot/ArmitoBoot.c
 
-    CPU/AARCH64/AARCH64CPUState.c
-    CPU/AARCH64/AARCH64PointerAuth.c
-    CPU/AARCH64/AARCH64MachO.c
+    Architecture/AARCH64/AARCH64CPUState.c
+    Architecture/AARCH64/AARCH64PointerAuth.c
+    Formats/MachO/AARCH64MachO.c
 
     # Core (fechado: Tests/CoreTest.c 74/0)
     Core/Core.c
-    Core/Config/CoreConfig.c
-    Core/Config/CoreConfigValidation.c
-    Core/Registry/CoreRegistry.c
-    Core/Dependency/CoreDependency.c
-    Core/Init/CoreInit.c
-    Core/Diagnostics/CoreDiagnostics.c
-    Core/Dispatch/CoreDispatch.c
-    Core/Monitor/CoreMonitor.c
-    Core/Topology/CoreTopology.c
-    Core/Scheduler/CoreScheduler.c
-    Core/IPC/CoreIPC.c
-    Core/Memory/CoreMemory.c
-    Core/Shutdown/CoreShutdown.c
+    Core/CoreConfig.c
+    Core/CoreConfigValidation.c
+    Core/CoreRegistry.c
+    Core/CoreDependency.c
+    Core/CoreInit.c
+    Core/CoreDiagnostics.c
+    Core/CoreDispatch.c
+    Core/CoreMonitor.c
+    Core/CoreTopology.c
+    Core/CoreScheduler.c
+    Core/CoreIPC.c
+    Core/CoreMemory.c
+    Core/CoreShutdown.c
 
     # Universal IR (fechada: Tests/IRTest.c 172/0)
     IR/IR.c

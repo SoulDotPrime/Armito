@@ -1,6 +1,6 @@
 #include "Includes/CoreTopology.h"
-#include "Registry/Includes/CoreRegistry.h"
-#include "Dependency/Includes/CoreDependency.h"
+#include "Includes/CoreRegistry.h"
+#include "Includes/CoreDependency.h"
 
 static ArmitoModuleID topology_order[ARMITO_TOPOLOGY_MAX_MODULES];
 static uint32_t topology_count = 0;

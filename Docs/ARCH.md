@@ -19,7 +19,7 @@ não foi inventada. EL2/EL3, EL corrente, ESR e permissões de exceção
 continuam requisitos de futuros consumidores, não validação de execução.
 `AARCH64OperandSet` oferece metadados mas CPUState ainda não possui bancos
 ELR/SPSR nem EL corrente; UIR/JIT/AOT não executam os efeitos descritos.
-PointerAuth mantém provider `compatibility_only` e CPUToCPU/Apple/Mac14_3
+PointerAuth mantém provider `compatibility_only` e Compatibility/CPU
 continua sem backend. As 53 formas não desviadas (31 hints, 7 barreiras,
 4 PSTATE, 11 sistema) ficam formalmente reservadas à Fase 3.6, não 3.4.
 
@@ -46,7 +46,7 @@ codifica features e ABI, **não** o EL atual: `exception_min_el` e requisitos
 EL2/EL3 são para validação posterior com CPUState, não prova de execução
 autorizada no EL corrente. `AARCH64PointerAuth` tem provider de software
 `compatibility_only` e helpers, mas este extrator não calcula PAC nem
-entra em exceção. CPUToCPU/Apple/Mac14_3 não implementa backend; nenhuma
+entra em exceção. Compatibility/CPU não implementa backend; nenhuma
 instrução privada ARM64E, convenção ABI não publicada ou algoritmo Apple
 foi presumido. As 53 formas restantes (hints 31, barreiras 7, PSTATE 4,
 sistema 11) foram inventariadas para a futura 3.3.3, não iniciada.
@@ -139,7 +139,7 @@ tradutor/IR) é requisito das fases semânticas futuras.
 
 # Política de toolchain LLVM — 3.2.5.2
 
-`Tests/Decoder/AARCH64/llvm_toolchain.py` centraliza a seleção e qualificação do
+`Tests/Decoder/AARCH64/Validation/llvm_toolchain.py` centraliza a seleção e qualificação do
 `llvm-mc`. O executável vem de `LLVM_MC` (padrão `llvm-mc`); `version` lê a
 versão; `require_qualified` aceita apenas `QUALIFIED` = {18.1.3 (referência
 histórica), 18.1.8, 21.1.8} e rejeita as demais com diagnóstico explícito. A
@@ -253,7 +253,7 @@ nem certifica immediates ou registradores implícitos fixos.
 
 # Limites da verificação por forma Integer (histórico anterior, 2026-11-26)
 
-O probe host em C (`Tests/Decoder/AARCH64/IntegerFormProbe.c`) fornece para
+O probe host em C (`Tests/Decoder/AARCH64/Probes/IntegerFormProbe.c`) fornece para
 cada codificação a forma selecionada e os operandos interpretados; não integra
 o firmware. O driver Python usa LLVM MC como referência independente somente
 para registradores explícitos e mantém falha para divergências, sem transformar
@@ -451,7 +451,7 @@ nem torna os descritores raw operandos arquiteturais interpretados.
 
 ### 4.3 Apple ARM64E
 
-`CPU/AARCH64/AARCH64MachO` identifica `CPU_TYPE_ARM64` e separa o subtype
+`Formats/MachO/AARCH64MachO` identifica `CPU_TYPE_ARM64` e separa o subtype
 base dos bits de capacidade. `CPU_SUBTYPE_ARM64E` tem valor base 2;
 `ARM64E_X1` é reconhecido separadamente. A camada também lê cabeçalhos
 Mach-O 64-bit e localiza slices ARM64E em arquivos universais, mas não é
@@ -528,6 +528,59 @@ para `Display.c` e `LogGen.c`.
 -   Backends consomem IR e geram instruções de destino.
 -   Falhas seguem a autoridade única definida em [FAILS.md](FAILS.md).
 
+## 9.1 Estrutura arquitetural (Fase 3.4.R)
+
+``` text
+Armito/
+├── Architecture/AARCH64/      CPU state, pointer auth (CPU/AARCH64 migrado)
+├── Formats/MachO/             Mach-O parser (extraído de CPU/AARCH64)
+├── Boot/                      UEFI entry, boot orchestration
+├── Core/                      Scheduler, IPC, registry, config, dispatch
+├── Decoder/                   AArch64 decoder + catalog + operands
+├── IR/                        Universal IR
+├── Translator/JIT/            JIT translation (JIT/ migrado)
+├── Hardware/                  Device identification, descriptions, capabilities
+├── Platform/                  Machine models (Mac14_3, FX8320E)
+├── Compatibility/             CPU/GPU adaptation logic (CPUToCPU+GPUToGPU)
+├── Tools/Catalog/             Catalog maintenance/generation (catalog_tool.py)
+├── Tests/
+│   ├── Architecture/AARCH64/  CPU state + ARM64E host tests
+│   ├── Core/                  Core host tests
+│   ├── Decoder/               Decoder tests
+│   │   └── AARCH64/
+│   │       ├── Unit/          Unit tests (.c)
+│   │       ├── Probes/        Probe programs (.c)
+│   │       ├── Validation/    Validation scripts (.py)
+│   │       └── Results/       Result CSVs
+│   ├── Fixtures/AARCH64/      Catalog patterns + golden
+│   └── IR/                    IR host tests
+└── Docs/                      Architecture, status, roadmap, compatibility
+```
+
+## 9.2 Grafo de dependência
+
+``` text
+Boot → Core → Decoder → IR
+                ↓
+        Architecture/AARCH64 (CPUState, PointerAuth)
+        Formats/MachO (MachO parser)
+                ↓
+        Hardware (device descriptions)
+        Platform (machine models)
+        Compatibility (CPU/GPU adaptation)
+                ↓
+        Translator/JIT (planned)
+```
+
+-   `Architecture/AARCH64` depende de `IR` (CPUState) e `Decoder` (ARM64E).
+-   `Formats/MachO` é independente; consumido por `Architecture/AARCH64` (ARM64E).
+-   `Hardware` descreve dispositivos; não depende de `Compatibility`.
+-   `Platform` descreve máquinas; referencia `Hardware` para capacidades.
+-   `Compatibility` consome `IR` e `Hardware`/`Platform`; separa descrições de lógica.
+-   `Translator/JIT` consome `IR` (planejado, sem implementação).
+-   `Tools/Catalog` opera sobre `Decoder/AARCH64/Catalog` (dados) e `Tests/Fixtures`.
+-   `Tests/Decoder/AARCH64/{Unit,Probes}` linkam `Decoder`+`IR`; `Validation` consome `Results`.
+
 ## 10. Evolução
 
 A arquitetura deve ser consolidada por contratos e testes antes da
@@ -541,5 +594,35 @@ writeback, registradores base/dado/pair, SP/ZR, literal e offset. O offset pode
 ser imediato, literal relativo ao PC ou expressão registrada; somente literais
 calculam endereço efetivo base/PC, enquanto endereços indexados permanecem
 expressões até resolução de estado. Sobreposições base/dado/pair são separadas
-em restrições estáticas e dependentes de execução. Sem MMU/TLB/acesso real.
+em restrições estáticas e dependentes de writeback. PRFM expõe `prfop` como
+imediato de controle, sem registrador de dados, largura ou elemento transferido;
+unsigned offset mantém escala ×8, registro offset preserva extend/shift e
+literal usa PC+imm19×4. Sem MMU/TLB/acesso real.
 
+# Memória especializada
+
+`AARCH64OperandSet` e os metadados simbólicos em `AARCH64Operands.h` cobrem
+as 433 formas especializadas de Load/Store. `AARCH64MemoryKind` classifica o
+acesso (GPR, FP/SIMD, estrutural, lane, replicate, MOPS, LSUI RMW, MTE, prefetch).
+Metadados incluem banco e largura de registrador, início de lista estrutural,
+contagem de estruturas, interleave, replicate, merge de lane inativa, validade
+de lane, ausência de predicate/VL/SVL, estágios/registradores/options MOPS,
+estado de tag MTE, tipo de offset (signed/unsigned/literal/register), bytes
+totais, post-index e zero-discard MOPS. A extração convencional permanece
+gated por `feature_count == 0`; formas especializadas rejeitam `Q:size` e
+lane/replicate inválidos estaticamente. Sem MMU/TLB, execução semântica ou
+acessos reais; 3.5/3.6 (PAC/GCS, exclusive/ordering, atomics) encaminhadas.
+
+# Fluxo Load/Store integrado
+
+`ArmitoDecoderDecodeInstructionWithOperands` é o ponto de entrada real.
+`AARCH64DecodeWithAddress` classifica via `AARCH64Classify` (cadeias fixas +
+fallback de catálogo), intercepta `CATALOG_ONLY` e chama `AARCH64DecodeLoadStore`,
+que faz lookup indexado com perfil de features, verifica família Load/Store,
+rejeita formas encaminhadas (18 grupos via `AARCH64FormIsForwarded`), e invoca
+`AARCH64OperandsExtractWithProfile`. O `AARCH64OperandSet` é retornado por
+ponteiro (`AARCH64Instruction.operands`), preenchido pelo chamador. Formas
+COMPLETE retornam `ARMITO_DECODE_OK` com operandos; encaminhadas retornam
+`ARMITO_DECODE_UNSUPPORTED`; reservadas/inválidas retornam
+`ARMITO_DECODE_INVALID`. Busca determinística, sem alocação dinâmica por
+instrução, compatível x86-64 sem AVX2 e EDK2.

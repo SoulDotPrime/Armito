@@ -9,7 +9,7 @@ import integer_form_differential as reference
 import integer_immediate_differential as immediate
 
 
-REPORT = "Tests/Decoder/AARCH64/bitmask_exhaustive.csv"
+REPORT = "Tests/Decoder/AARCH64/Results/bitmask_exhaustive.csv"
 REPORT_SHA256 = "ffbd31d7d7a6ad071602fc44b7b8fc776e0dc33cf62eaed80374f595ab4d8a3c"
 OPERATIONS = {"AND", "ORR", "EOR", "ANDS", "BFM", "SBFM", "UBFM"}
 
@@ -68,7 +68,7 @@ def main(probe):
         raise RuntimeError("exhaustive domain incomplete")
     responses = reference.probe_rows(probe, requests)
     llvm = reference.llvm_disassemble([word for _, word in requests])
-    with open("Tests/Decoder/AARCH64/integer_immediate_all_candidates.csv",
+    with open("Tests/Decoder/AARCH64/Results/integer_immediate_all_candidates.csv",
               newline="", encoding="utf-8") as stream:
         transferred = [row for row in csv.DictReader(stream)
                        if row["group"] == "log_imm"]

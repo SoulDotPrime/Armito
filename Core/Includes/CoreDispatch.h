@@ -1,7 +1,7 @@
 #ifndef ARMITO_CORE_DISPATCH_H
 #define ARMITO_CORE_DISPATCH_H
 
-#include "../../Includes/Core.h"
+#include "../Includes/Core.h"
 
 typedef ArmitoCoreStatus (*ArmitoDispatchFunction)(
     void *context

@@ -1,7 +1,7 @@
 #include "Includes/CoreInit.h"
-#include "../Registry/Includes/CoreRegistry.h"
-#include "../Dependency/Includes/CoreDependency.h"
-#include "../Config/Includes/CoreConfig.h"
+#include "Includes/CoreRegistry.h"
+#include "Includes/CoreDependency.h"
+#include "Includes/CoreConfig.h"
 
 static ArmitoModuleID initialization_order[ARMITO_CORE_MAX_MODULES];
 

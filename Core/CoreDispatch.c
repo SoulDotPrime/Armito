@@ -1,5 +1,5 @@
 #include "Includes/CoreDispatch.h"
-#include "../Registry/Includes/CoreRegistry.h"
+#include "Includes/CoreRegistry.h"
 
 static uint8_t initialized = 0;
 

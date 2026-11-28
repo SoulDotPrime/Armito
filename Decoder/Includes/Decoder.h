@@ -43,6 +43,12 @@ ArmitoDecoderStatus ArmitoDecoderDecodeInstruction(
     ArmitoDecodeResult *result
 );
 
+ArmitoDecoderStatus ArmitoDecoderDecodeInstructionWithOperands(
+    const ArmitoDecoderInstruction *instruction,
+    ArmitoDecodeResult *result,
+    AARCH64OperandSet *operands
+);
+
 ArmitoDecoderStatus ArmitoDecoderGetStats(ArmitoDecoderStats *stats);
 ArmitoISA ArmitoDecoderGetISA(void);
 const char *ArmitoDecoderStatusName(ArmitoDecoderStatus status);

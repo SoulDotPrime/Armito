@@ -1,7 +1,7 @@
 #include "Includes/CoreIPC.h"
-#include "../Registry/Includes/CoreRegistry.h"
-#include "../Config/Includes/CoreConfig.h"
-#include "../Memory/Includes/CoreMemory.h"
+#include "Includes/CoreRegistry.h"
+#include "Includes/CoreConfig.h"
+#include "Includes/CoreMemory.h"
 
 typedef struct {
     ArmitoIPCMessage message;
